@@ -96,7 +96,7 @@ require 'validators/schematron_validator'
 require 'validators/umls_validator'
 require 'validators/xds_metadata_validator'
 
-{
+validator_config = {
   'C32 v2.1/v2.3' => [
     Validators::C32Validation::Validator.new,
     Validators::Schema::Validator.new("C32 Schema Validator",
@@ -129,9 +129,19 @@ require 'validators/xds_metadata_validator'
       "#{RAILS_ROOT}/resources/nhin_schematron/nhin_errors.xsl"),
     Validators::Umls::UmlsValidator.new("warning")
   ],
-}.each do |type, validators|
+}
+
+# See README.rdoc for details of setting CCR validation
+ccr_schema_path = "#{RAILS_ROOT}/#{CCR_XSD_LOCATION}"
+if File.exists?(ccr_schema_path)
+  validator_config['CCR'] = [
+    Validators::Schema::Validator.new("CCR Schema Validator", ccr_schema_path),
+    Validators::Umls::UmlsValidator.new("warning"),
+  ]
+end
+
+validator_config.each do |type, validators|
   validators.each do |validator|
     Validation.register_validator type.to_sym, validator
   end
-
 end

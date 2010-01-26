@@ -70,19 +70,23 @@ describe Validators::Umls::UmlsValidator, "Can validate codes/code_systems " do
     end
   end
 
-  describe "with a bad configuration" do
+  describe "without umls schema" do
+    # testing whether a umls configuration allows a connection is out of scope
+    # but we can check to see how the validator reacts if it can connect to a database without
+    # umls tables in it
 
     before do
-      @current_configuration = ActiveRecord::Base.configurations[Validators::Umls.configuration_key]
-      ActiveRecord::Base.configurations[Validators::Umls.configuration_key] = { 
-        :adapter   => "jdbcmysql",
-        :host      => "localhost",
-        :database  => "umls_does_not_exist",
-      }
+      @current_test_configuration = ActiveRecord::Base.configurations['test']
+      @current_umls_configuration = ActiveRecord::Base.configurations[Validators::Umls.configuration_key]
+      ActiveRecord::Base.configurations[Validators::Umls.configuration_key] = @current_test_configuration
+      Validators::Umls::UmlsBase.establish_connection(@current_test_configuration)
     end
 
     after do
-      ActiveRecord::Base.configurations[Validators::Umls.configuration_key] = @current_configuration
+      ActiveRecord::Base.configurations[Validators::Umls.configuration_key] = @current_umls_configuration
+      unless @current_umls_configuration.nil?
+        Validators::Umls::UmlsBase.establish_connection(@current_umls_configuration)
+      end
     end
 
     it "should show that we are configured" do

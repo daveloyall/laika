@@ -49,6 +49,6 @@ module XmlHelper
         text = content.get_text().clone()
         parent.elements[index]=text
       end
+    end
   end
-end
 end

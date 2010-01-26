@@ -44,6 +44,17 @@ Two implementations of syslog are available in this package: http://cloud.github
 
 A README.TXT file is included in the package outlining the installation procedure.
 
+=== CCR Validation ===
+
+The CCR XSD is proprietary and can be obtained through ASTM for a fee:
+
+http://www.astm.org/BOOKSTORE/ADJUNCT/734.htm
+
+If you wish to test CCR documents, you will need to obtain the XSD and place it
+in resources/schemas/infrastructure/ccr as CCR.xsd.  The relative path to the XSD resource should be:
+
+resources/schemas/infrastructure/ccr/CCR.xsd
+
 == Resources
 
 The source repository is hosted on GitHub:
