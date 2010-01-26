@@ -46,6 +46,17 @@ Install the rest of the gem dependencies; from the root of your Laika project:
 
 The default XDS setup on Laika points to localhost. You can change the initial XDS endpoints by editing the settings.yml in spec/fixtures. If you do not have your own XDS set up, you can use the public registry provided by NIST (more information at http://129.6.24.109:9080/index.html); simply change localhost to the following IP address: http://129.6.24.109:9080.
 
+== CCR Validation
+
+The CCR XSD is proprietary and can be obtained through ASTM for a fee:
+
+http://www.astm.org/BOOKSTORE/ADJUNCT/734.htm
+
+If you wish to test CCR documents, you will need to obtain the XSD and place it
+in resources/schemas/infrastructure/ccr as CCR.xsd.  The relative path to the XSD resource should be:
+
+resources/schemas/infrastructure/ccr/CCR.xsd
+
 == Database
 
 Install the database adapters:

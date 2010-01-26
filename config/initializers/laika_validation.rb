@@ -131,7 +131,7 @@ validator_config = {
   ],
 }
 
-# See README.rdoc for details of setting CCR validation
+# See INSTALL.rdoc for details of setting CCR validation
 ccr_schema_path = "#{RAILS_ROOT}/#{CCR_XSD_LOCATION}"
 if File.exists?(ccr_schema_path)
   validator_config['CCR'] = [
