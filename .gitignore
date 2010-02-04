@@ -23,3 +23,9 @@ config/laika.yml
 laika_development
 laikadev
 laika_test
+resources/schemas/infrastructure/ccr/CCR.xsd
+vendor/ccr-validation-service/META-INF/
+vendor/ccr-validation-service/ValidationService.war
+vendor/ccr-validation-service/WEB-INF/
+vendor/ccr-validation-service/XSLT/
+vendor/ccr-validation-service/index.html
