@@ -38,7 +38,12 @@ module Validation
      end
      
    end
-   
+ 
+  # This base class is used as a clue to the Validator to let it know
+  # that it should supply the path to the file rather than an in memory
+  # document tree of the xml.
+  class FileValidator < BaseValidator; end
+ 
   class Validator
    
     attr_accessor :validators
@@ -51,9 +56,18 @@ module Validation
     end
     
     def validate(patient_data, document)
-      errors = []       
+      errors = []
+      # see if we have been given a ClinicalDocument, if so, get the xml
+      xml_document = document.respond_to?(:as_xml_document) ? document.as_xml_document : document
+      # and get the public path to the file if available
+      xml_file_path = document.public_filename if document.respond_to?(:public_filename)
       validators.each do |validator|
-        errors.concat(validator.validate(patient_data,document))
+        case validator
+          when FileValidator
+            errors.concat(validator.validate(patient_data, xml_file_path))
+          else
+            errors.concat(validator.validate(patient_data, xml_document))
+        end
       end
 
       errors

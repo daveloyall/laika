@@ -36,25 +36,21 @@ class GenerateAndFormatPlan < TestPlan
 
   # This is the primary validation operation for Generate and Format.
   def validate_clinical_document_content
-    document = nil
+    validator = Validation.get_validator(clinical_document.doc_type)
+
+#    logger.debug(validator.inspect)
+    errors = nil
     begin
-      document = clinical_document.as_xml_document
+      errors = validator.validate(patient, clinical_document)
     rescue REXML::ParseException => e
       logger.info("ERROR DURING DOCUMENT PARSING: #{e.inspect}\n#{e.backtrace.join("\n")}")
       raise(ValidationError, "Unable to parse (is this a well-formed XML document?)")
-    end
-    validator = Validation.get_validator(clinical_document.doc_type)
-
-    #logger.debug(validator.inspect)
-    errors = nil
-    begin
-      errors = validator.validate(patient, document)
     rescue StandardError => e # XXX rescuing everything is almost never a good idea
       logger.info("ERROR DURING VALIDATION: #{e.inspect}\n#{e.backtrace.join("\n")}")
       raise(ValidationError, "Laika encountered an unexpected error while validating.  Please refer to the system logs.")
     end
-    #logger.debug(errors.inspect)
-    #logger.debug("PD #{patient}  doc #{document}")
+#    logger.debug(errors.inspect)
+#    logger.debug("PD #{patient}  doc #{clinical_document.current_data}")
 
     content_errors.clear
     content_errors.concat errors

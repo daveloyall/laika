@@ -149,11 +149,16 @@ validator_config = {
 
 # See INSTALL.rdoc for details of setting CCR validation
 ccr_schema_path = "#{RAILS_ROOT}/#{CCR_XSD_LOCATION}"
-if File.exists?(ccr_schema_path)
-  validator_config[Validation::CCR_TYPE] = [
-    Validators::Schema::Validator.new("CCR Schema Validator", ccr_schema_path),
+ccr_schema_exists = File.exists?(ccr_schema_path)
+ccr_rules_validator_schema_path = "#{RAILS_ROOT}/#{CCR_RULES_VALIDATOR_XSD_LOCATION}"
+ccr_rules_validator_exists = File.exists?(ccr_rules_validator_schema_path)
+if ccr_schema_exists || ccr_rules_validator_exists
+  ccr_validators = [
     Validators::Umls::UmlsValidator.new("warning"),
   ]
+  ccr_validators.unshift Validators::CCR::WaldrenRulesValidator.new("CCR Rules Validator") if ccr_rules_validator_exists
+  ccr_validators.unshift Validators::Schema::Validator.new("CCR Schema Validator", ccr_schema_path) if ccr_schema_exists
+  validator_config[Validation::CCR_TYPE] = ccr_validators
 end
 
 validator_config.each do |type, validators|

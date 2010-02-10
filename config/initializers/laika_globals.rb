@@ -10,3 +10,5 @@ AFFINITY_DOMAIN_CONFIG = XDS::AffinityDomainConfig.new(File.expand_path(File.dir
 XDS_REPOSITORY_UNIQUE_ID = '&1.3.6.1.4.1.21367.2005.3.7&ISO'
 
 CCR_XSD_LOCATION = 'resources/schemas/infrastructure/ccr/CCR.xsd'
+CCR_RULES_VALIDATOR_LOCATION = 'vendor/ccr-validation-service'
+CCR_RULES_VALIDATOR_XSD_LOCATION = CCR_RULES_VALIDATOR_LOCATION + '/WEB-INF/classes/org/openhealthdata/validation/CCRV1.xsd'

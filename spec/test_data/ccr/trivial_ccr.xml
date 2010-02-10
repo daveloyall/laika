@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <ContinuityOfCareRecord xmlns="urn:astm-org:CCR">
   <CCRDocumentObjectID>SampleCCRDocument</CCRDocumentObjectID>
   <Language>
@@ -12,7 +12,7 @@
     <ExactDateTime>2010-01-25T17:00:00UTC</ExactDateTime>
   </DateTime>
   <Patient>
-    <ActorID>Patient</ActorID> 
+    <ActorID>Patient</ActorID>
   </Patient>
   <From>
     <ActorLink>
@@ -28,8 +28,8 @@
         <CCRDataObjectID>foo</CCRDataObjectID>
         <Source></Source>
       </Payer>
-    </Payers> 
-  </Body> 
+    </Payers>
+  </Body>
   <Actors>
     <Actor>
       <ActorObjectID>Patient</ActorObjectID>
@@ -39,5 +39,5 @@
       <ActorObjectID>Doctor</ActorObjectID>
       <Source></Source>
     </Actor>
-  </Actors> 
+  </Actors>
 </ContinuityOfCareRecord>
