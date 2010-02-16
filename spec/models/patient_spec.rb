@@ -6,6 +6,33 @@ describe Patient, "with no fixtures" do
   end
 end
 
+describe Patient, "from factory" do
+  before(:each) do
+    @patient = Patient.factory.new
+  end
+
+  describe "with no registration information" do
+    it "should provide source_patient_info without errors" do
+      @patient.source_patient_info.should be_kind_of(Hash)
+    end
+  end
+
+  describe "with gender and date of birth registration information" do
+    before do
+      @patient.registration_information = @registration_information = RegistrationInformation.factory.new(:gender => @gender = Gender.factory.new, :date_of_birth => Date.today)
+    end
+
+    it "should provide source_patient_info" do
+      @patient.source_patient_info.should == {
+        :name => @patient.name,
+        :gender => @gender.code,
+        :date_of_birth => Date.today.to_s(:brief),
+        :source_patient_identifier => nil,
+      }
+    end
+  end
+end
+
 describe Patient, "with joe smith" do
   fixtures :patients, :registration_information, :person_names, :addresses, :telecoms, :genders, :patient_identifiers
   before(:each) do

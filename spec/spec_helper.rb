@@ -71,6 +71,12 @@ ModelFactory.configure do
     filename { 'factory_document' }
   end
 
+  default(Gender) do
+    name { 'Male' }
+    code { 'M' }
+    description { 'Male' }
+  end
+
 end
 
 Spec::Runner.configure do |config|

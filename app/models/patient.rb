@@ -67,8 +67,8 @@ class Patient < ActiveRecord::Base
   def source_patient_info
     spi = {}
     spi[:name] = name
-    spi[:gender] = registration_information.gender.code
-    spi[:date_of_birth] = registration_information.date_of_birth.to_s(:brief)
+    spi[:gender] = registration_information.try(:gender).try(:code)
+    spi[:date_of_birth] = registration_information.try(:date_of_birth).try(:to_s,:brief)
     spi[:source_patient_identifier] = patient_identifier
     spi
   end
