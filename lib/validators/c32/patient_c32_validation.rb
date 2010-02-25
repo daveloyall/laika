@@ -1,8 +1,10 @@
- module PatientC32Validation
+module PatientC32Validation
 
-
-
-    def validate_c32(clinical_document)
+    # Accepts an options hash.  This may be passed to any subsection which needs to validate
+    # differently based on the C32 version.  Currently the only used option is:
+    #
+    #  :validation_type => which must be on of Validation::*_TYPE constants
+    def validate_c32(clinical_document, options = {})
 
       errors = []
 
@@ -28,7 +30,7 @@
 
       # Medications
         self.medications.each do |medication|
-          errors.concat(medication.validate_c32(clinical_document))
+          errors.concat(medication.validate_c32(clinical_document, options))
         end
 
       # Supports          
@@ -72,6 +74,4 @@
       errors
     end
 
-
-
-  end
+end

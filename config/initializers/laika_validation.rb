@@ -97,7 +97,7 @@ require 'validators/umls_validator'
 require 'validators/xds_metadata_validator'
 
 validator_config = {
-  'C32 v2.1/v2.3' => [
+  Validation::C32_V2_1_2_3_TYPE => [
     Validators::C32Validation::Validator.new,
     Validators::Schema::Validator.new("C32 Schema Validator",
       "#{RAILS_ROOT}/resources/schemas/infrastructure/cda/C32_CDA.xsd"),
@@ -107,7 +107,7 @@ validator_config = {
       "#{RAILS_ROOT}/resources/schematron/c32_v2.1/c32_v2.1_errors.xslt"),
     Validators::Umls::UmlsValidator.new("warning")
   ],
-  'C32 v2.5' => [
+  Validation::C32_V2_5_TYPE => [
     Validators::C32Validation::Validator.new,
     Validators::Schema::Validator.new("C32 Schema Validator",
       "#{RAILS_ROOT}/resources/schemas/infrastructure/cda/C32_CDA.xsd"),
@@ -117,7 +117,7 @@ validator_config = {
       "#{RAILS_ROOT}/resources/schematron/c32_v2.5/c32_v2.5_errors.xslt"),
     Validators::Umls::UmlsValidator.new("warning")
   ],
-  'NHIN C32' => [
+  Validation::C32_NHIN_TYPE => [
     Validators::C32Validation::Validator.new,
     Validators::Schema::Validator.new("C32 Schema Validator",
       "#{RAILS_ROOT}/resources/schemas/infrastructure/cda/C32_CDA.xsd"),
@@ -134,7 +134,7 @@ validator_config = {
 # See INSTALL.rdoc for details of setting CCR validation
 ccr_schema_path = "#{RAILS_ROOT}/#{CCR_XSD_LOCATION}"
 if File.exists?(ccr_schema_path)
-  validator_config['CCR'] = [
+  validator_config[Validation::CCR_TYPE] = [
     Validators::Schema::Validator.new("CCR Schema Validator", ccr_schema_path),
     Validators::Umls::UmlsValidator.new("warning"),
   ]

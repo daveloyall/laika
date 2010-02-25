@@ -21,25 +21,34 @@ class Medication < ActiveRecord::Base
       :expiration_date => :hitsp_r2_optional,
     }
   end
-  
+
+  # Generates a reference id used within C32 generation to point to the product name. 
+  def c32_medication_id
+    "medication-" + id.to_s
+  end
+ 
   def to_c32(xml)
     xml.entry {
       xml.substanceAdministration("classCode" => "SBADM", "moodCode" => "EVN") {
         xml.templateId("root" => "2.16.840.1.113883.10.20.1.24", "assigningAuthorityName" => "CCD")
-        xml.templateId("root" => "2.16.840.1.113883.3.88.11.32.8", "assigningAuthorityName" => "HITSP/C32")
+        xml.templateId("root" => "2.16.840.1.113883.3.88.11.83.8", "assigningAuthorityName" => "HITSP/C32")
+        xml.templateId("root" => "1.3.6.1.4.1.19376.1.5.3.1.4.7", "assigningAuthorityName" => "HITSP/C83")
+        xml.templateId("root" => "1.3.6.1.4.1.19376.1.5.3.1.4.7.1", "assigningAuthorityName" => "HITSP/C83")
         xml.id
+        xml.statusCode("code" => "completed")
         xml.consumable {        
           xml.manufacturedProduct("classCode" => "MANU") {
             xml.templateId("root" => "2.16.840.1.113883.10.20.1.53", "assigningAuthorityName" => "CCD") 
-            xml.templateId("root" => "2.16.840.1.113883.3.88.11.32.9", "assigningAuthorityName" => "HITSP/C32") 
+            xml.templateId("root" => "2.16.840.1.113883.3.88.11.83.8.2", "assigningAuthorityName" => "HITSP/C83")
+            xml.templateId("root" => "1.3.6.1.4.1.19376.1.5.3.1.4.7.2", "assigningAuthorityName" => "HITSP/C83")
             xml.manufacturedMaterial("classCode" => "MMAT", "determinerCode" => "KIND") {
               
              if(product_code && !product_code.blank? && code_system && !code_system.blank?)
               xml.code("code" => product_code, 
                        "displayName" => product_coded_display_name, 
                        "codeSystem" => code_system.code, 
-                       "codeSystemName" => code_system.name){
-                           xml.originalText(product_coded_display_name)
+                       "codeSystemName" => code_system.name) {
+                           xml.originalText { xml.reference("value" => c32_medication_id) } if product_coded_display_name
                        } 
                end         
               if free_text_brand_name 
@@ -65,11 +74,12 @@ class Medication < ActiveRecord::Base
         if status
           xml.entryRelationship("typeCode" => "REFR") {
             xml.observation("classCode" => "OBS", "moodCode" => "EVN") {
+              xml.templateId("root" => "2.16.840.1.113883.10.20.1.47")
               xml.code("code" => "33999-4", 
                        "displayName" => "Status", 
                        "codeSystem" => "2.16.840.1.113883.6.1", 
                        "codeSystemName" => "LOINC")
-              xml.statusCode("code" =>status)
+              xml.statusCode("code" => status)
               xml.value("xsi:type" => "CE", 
                         "code" => "55561003", 
                         "displayName" => "Active", 
@@ -82,15 +92,18 @@ class Medication < ActiveRecord::Base
         if quantity_ordered_value  || quantity_ordered_unit  || expiration_time 
           xml.entryRelationship("typeCode" => "REFR") {
             xml.supply("classCode" => "SPLY", "moodCode" => "INT") {
-              xml.templateId("root" => "2.16.840.1.113883.3.88.1.11.32.11")
-              if quantity_ordered_unit 
-                xml.id("root" => quantity_ordered_unit, "extension" => "SCRIP#")
-              end 
+              xml.templateId("root" => "2.16.840.1.113883.3.88.11.83.8.3")
+              xml.templateId("root" => "2.16.840.1.113883.10.20.1.34")
+              xml.templateId("root" => "1.3.6.1.4.1.19376.1.5.3.1.4.7.3")
+              xml.id
               if expiration_time 
                   xml.effectiveTime("value" => expiration_time.to_s(:brief))
               end
-              if quantity_ordered_value 
-                xml.quantity("value" => quantity_ordered_value)
+              if quantity_ordered_value || quantity_ordered_unit
+                quantity_attributes = {}
+                quantity_attributes["value"] = quantity_ordered_value if quantity_ordered_value 
+                quantity_attributes["unit"] = quantity_ordered_unit if quantity_ordered_unit 
+                xml.quantity(quantity_attributes)
               end  
             }
           }
@@ -121,6 +134,7 @@ class Medication < ActiveRecord::Base
         xml.section do
           xml.templateId("root" => "2.16.840.1.113883.10.20.1.8", 
                          "assigningAuthorityName" => "CCD")
+          xml.templateId("root" => "1.3.6.1.4.1.19376.1.5.3.1.3.19")
           xml.code("code" => "10160-0", 
                    "displayName" => "History of medication use", 
                    "codeSystem" => "2.16.840.1.113883.6.1", 
@@ -143,7 +157,7 @@ class Medication < ActiveRecord::Base
                     if medication.product_coded_display_name != nil
                       xml.td do
                         xml.content(medication.product_coded_display_name, 
-                                    "ID" => "medication-"+medication.id.to_s)
+                                    "ID" => medication.c32_medication_id)
                       end
                     else
                       xml.td

@@ -11,6 +11,10 @@ require "test/unit"
 # to have loaded the default data, and you will have to have added at least one
 # test plan.
 # 
+# XXX It is best to use a new inspection with a single Display and Format test.
+# If you have other test plans (such as XDS Provide and Register) which have Execute
+# links, the test will try to execute those by mistake, and fail.
+#
 # Run:
 #
 # jruby -S rake selenium:rc:start
@@ -27,6 +31,8 @@ require "test/unit"
 # This test assumes a 500MB heap.
 class Untitled < Test::Unit::TestCase
   def setup
+    @test_file = "/home/jpartlow/dev/osourcery/elbe/laika/spec/test_data/joe_c32.xml"
+    #@test_file = "/home/jpartlow/dev/osourcery/elbe/laika/david-carter-medication-2.3.xml"
     @verification_errors = []
     if $selenium
       @selenium = $selenium
@@ -62,8 +68,9 @@ class Untitled < Test::Unit::TestCase
     @selenium.click "//input[@value='Assign']"
     @selenium.wait_for_page_to_load "300000"
     @selenium.click "link=Execute", :wait_for => :ajax
-    @selenium.type "//input[starts-with(@id,'upload')]", "/home/jpartlow/dev/osourcery/elbe/laika/spec/test_data/joe_c32.xml"
+    @selenium.type "//input[starts-with(@id,'upload')]", @test_file 
     @selenium.click "//input[@name='commit' and @value='Attach']"
     @selenium.wait_for_page_to_load "300000"
+    assert_equal "0", @selenium.get_xpath_count("//div[@class='notice']"), "No notices (errors) should be returned"
   end
 end

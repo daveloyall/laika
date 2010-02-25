@@ -2,15 +2,32 @@
 
     include MatchHelper
 
-   
-
-
     #Reimplementing from MatchHelper
     def section_name
       "Medications Module"
     end
 
-    def validate_c32(document)
+    # Accepts an options hash.  Currently the only used option is:
+    #
+    #  :validation_type => which must be on of Validation::*_TYPE constants
+    def validate_c32(document, options = {})
+      options ||= {}
+      validation_type = options[:validation_type] || Validation::C32_V2_5_TYPE
+      xpath_args = case 
+        when validation_type == Validation::C32_V2_5_TYPE
+        then {
+          :substance_administration_xpath => "./cda:entry/cda:substanceAdministration[ ./cda:consumable/cda:manufacturedProduct/cda:manufacturedMaterial/cda:code/cda:originalText/cda:reference[@value = '#{c32_medication_id}']]",
+        }
+        else {
+          :substance_administration_xpath => "./cda:entry/cda:substanceAdministration[ ./cda:consumable/cda:manufacturedProduct/cda:manufacturedMaterial/cda:code/cda:originalText/text() = '#{product_coded_display_name}']",
+        }
+      end
+      _validate_c32(document, xpath_args)
+    end
+
+    private
+
+    def _validate_c32(document, xpath_args)
       errors=[]
       errors << safe_match(document) do 
         errors << match_required(document,
@@ -20,14 +37,16 @@
                                   nil,
                                   "C32 Medication section with templateId 2.16.840.1.113883.10.20.1.8 not found",
                                   document.xpath) do |section|
-          # IF there is an entry for this medication then there will be a substanceAdministration element
-          # that contains a consumable that contains a manufacturedProduct that has a code with the original text 
-          # equal to the name of the generic medication
-          # the consumeable/manfucaturedProduct/code/originalText is a required field if the substanceAdministration entry is there
+          # IF there is an entry for this medication then there will be a
+          # substanceAdministration element that contains a consumable that
+          # contains a manufacturedProduct that has a code with the original
+          # text equal to the name of the generic medication the
+          # consumeable/manfucaturedProduct/code/originalText is a required
+          # field if the substanceAdministration entry is there
           errors << match_required(section,
-                                  "./cda:entry/cda:substanceAdministration[ ./cda:consumable/cda:manufacturedProduct/cda:manufacturedMaterial/cda:code/cda:originalText/text() = $original]",
+                                  xpath_args[:substance_administration_xpath], 
                                   MatchHelper::DEFAULT_NAMESPACES,
-                                  {"original"=>product_coded_display_name},
+                                  {},
                                   "substanceAdministration",
                                   "A substanceAdministration section does not exist for the medication",
                                    section.xpath) do |substance_administration|
@@ -53,7 +72,7 @@
                                  medication_type.try(:name))
             # validate the status
             errors << match_value(substance_administration,
-                                 "cda:entryRelationship[@typeCode='REFR']/cda:observation[cda:templateId/@root='2.16.840.1.113883.10.20.1.47']/cda:value/@code", 
+                                 "cda:entryRelationship[@typeCode='REFR']/cda:observation[cda:templateId/@root='2.16.840.1.113883.10.20.1.47']/cda:statusCode/@code", 
                                  'status', 
                                  status)
     

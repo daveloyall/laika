@@ -3,10 +3,21 @@ require File.dirname(__FILE__) + '/../spec_helper'
 describe Medication, 'it can validate medication elements in a C32' do
   fixtures :medications, :code_systems, :medication_types
 
-  it "should verify a medication in a C32 doc" do
+  it "should verify a medication in a C32 doc version 2.3" do
     document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/medications/jenny_medication.xml'))
     med = medications(:jennifer_thompson_medication)
-    errors = med.validate_c32(document)
+    errors = med.validate_c32(document, :validation_type => Validation::C32_V2_1_2_3_TYPE)
+    errors.should be_empty
+  end
+
+  it "should verify a medication in a C32 doc version 2.5" do
+    document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/medications/jenny_medication_2.5.xml'))
+    med = medications(:jennifer_thompson_medication)
+    errors = med.validate_c32(document, :validation_type => Validation::C32_V2_5_TYPE)
+    errors.size.should == 1
+    errors.first.error_message.should == "Expected nil got 30.0"
+    med.quantity_ordered_value = 30.0
+    errors = med.validate_c32(document, :validation_type => Validation::C32_V2_5_TYPE)
     errors.should be_empty
   end
 end

@@ -3,6 +3,7 @@
 # The C32Validator then just calls the validate 32 method on the pateint data
 # object
 
+require 'match_helper'
 # FIXME Requiring files using the full path is bad practice.
 # Ideally we should rename/namespace the *C32Validation modules so that they
 # can be autoloaded by Rails.
@@ -66,12 +67,12 @@ module Validators
           C32Validation.add_validation_routines
         end
         
-        errors = patient.validate_c32(document)
+        errors = patient.validate_c32(document, :validation_type => validation_type)
         # set the validator field for the errors
-         errors.each do |e|
-            e.validator = C32VALIDATOR
-            e.inspection_type = ::CONTENT_INSPECTION
-          end
+        errors.each do |e|
+          e.validator = C32VALIDATOR
+          e.inspection_type = ::CONTENT_INSPECTION
+        end
         return errors
       end
 

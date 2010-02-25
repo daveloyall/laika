@@ -45,7 +45,7 @@ class GenerateAndFormatPlan < TestPlan
     end
     validator = Validation.get_validator(clinical_document.doc_type)
 
-    logger.debug(validator.inspect)
+    #logger.debug(validator.inspect)
     errors = nil
     begin
       errors = validator.validate(patient, document)
@@ -53,8 +53,8 @@ class GenerateAndFormatPlan < TestPlan
       logger.info("ERROR DURING VALIDATION: #{e.inspect}\n#{e.backtrace.join("\n")}")
       raise(ValidationError, "Laika encountered an unexpected error while validating.  Please refer to the system logs.")
     end
-    logger.debug(errors.inspect)
-    logger.debug("PD #{patient}  doc #{document}")
+    #logger.debug(errors.inspect)
+    #logger.debug("PD #{patient}  doc #{document}")
 
     content_errors.clear
     content_errors.concat errors

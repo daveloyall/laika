@@ -1,4 +1,10 @@
 module Validation
+
+  C32_V2_1_2_3_TYPE = 'C32 v2.1/v2.3'
+  C32_V2_5_TYPE     = 'C32 v2.5'
+  C32_NHIN_TYPE     = 'NHIN C32'
+  CCR_TYPE          = 'CCR'
+
    def Validation.unregister_validators
      ValidationRegistry.instance.unregister_validators
    end
@@ -25,6 +31,7 @@ module Validation
    # this is just a stubbed out marker class to we can ensure that
    # everything that is registered as a validator really is one
    class BaseValidator
+     attr_accessor :validation_type
      
      def validate(patient_data, document)
          raise "Implement me damn it"
@@ -84,7 +91,8 @@ module Validation
       @types << doc_type
       
       raise InvalidValidatorException if !validator.kind_of? Validation::BaseValidator
-      
+     
+      validator.validation_type = doc_type.to_s if validator.validation_type.nil? 
       doc_validator = get_validator(doc_type)
       doc_validator << validator unless doc_validator.contains?(validator)
     end
