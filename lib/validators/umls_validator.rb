@@ -7,18 +7,19 @@ module Validators
       !ActiveRecord::Base.configurations[self.configuration_key].nil?
     end
 
-    # Returns the key value that will be used to look up the UMLS database configuration for 
-    # the current environment.
+    # Returns the key value that will be used to look up the UMLS database
+    # configuration for the current environment.
     def self.configuration_key
       "umls_#{RAILS_ENV}" 
     end
 
-    #Base class that sets the connection information for all of the other  UMLS models to use
+    # Base class that sets the connection information for all of the other
+    # UMLS models to use
     class UmlsBase < ActiveRecord::Base
       self.abstract_class = true
-      # if a umls database configuration has been established for the current environment
-      # then use it, otherwise Umls ActiveRecord classes will be looked for in the
-      # current laika database.
+      # if a umls database configuration has been established for the current
+      # environment then use it, otherwise Umls ActiveRecord classes will be
+      # looked for in the current laika database.
       if Validators::Umls.configured?
         establish_connection(Validators::Umls.configuration_key)
       else

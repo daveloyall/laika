@@ -27,18 +27,19 @@ class ActiveRecord::Base
 end
 
 Rails::Initializer.run do |config|
-  # Settings in config/environments/* take precedence over those specified here.
-  # Application configuration should go into files in config/initializers
-  # -- all .rb files in that directory are automatically loaded.
-  # See Rails::Configuration for more options.
+  # Settings in config/environments/* take precedence over those specified
+  # here.  Application configuration should go into files in
+  # config/initializers -- all .rb files in that directory are automatically
+  # loaded.  See Rails::Configuration for more options.
 
-  # Skip frameworks you're not going to use (only works if using vendor/rails).
-  # To use Rails without a database, you must remove the Active Record framework
+  # Skip frameworks you're not going to use (only works if using
+  # vendor/rails).  To use Rails without a database, you must remove the
+  # Active Record framework
   # config.frameworks -= [ :active_record, :active_resource, :action_mailer ]
 
-  # Only load the plugins named here, in the order given. By default, all plugins 
-  # in vendor/plugins are loaded in alphabetical order.
-  # :all can be used as a placeholder for all plugins not explicitly named
+  # Only load the plugins named here, in the order given. By default, all
+  # plugins in vendor/plugins are loaded in alphabetical order.  :all can be
+  # used as a placeholder for all plugins not explicitly named
   # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
 
   # Add additional load paths for your own custom dirs
@@ -62,9 +63,10 @@ Rails::Initializer.run do |config|
   # (create the session table with 'rake db:sessions:create')
   config.action_controller.session_store = :active_record_store
 
-  # Use SQL instead of Active Record's schema dumper when creating the test database.
-  # This is necessary if your schema can't be completely dumped by the schema dumper,
-  # like if you have constraints or database-specific column types
+  # Use SQL instead of Active Record's schema dumper when creating the test
+  # database.  This is necessary if your schema can't be completely dumped by
+  # the schema dumper, like if you have constraints or database-specific
+  # column types
   # config.active_record.schema_format = :sql
 
   # Activate observers that should always be running
@@ -79,9 +81,10 @@ Rails::Initializer.run do |config|
   config.gem 'calendar_date_select', :version => '1.15'
   config.gem 'mislav-will_paginate', :version => '>= 2.3.6', :lib => 'will_paginate', :source => 'http://gems.github.com'
 
-  # These are declared as dependencies of the CCHIT-xds-facade gem but they're
-  # not being automatically installed during rake gems:install. This is because
-  # GitHub is specified as the sole gem source so dependencies are not found.
+  # These are declared as dependencies of the CCHIT-xds-facade gem but
+  # they're not being automatically installed during rake gems:install. This
+  # is because GitHub is specified as the sole gem source so dependencies are
+  # not found.
   config.gem 'uuid', :version => '2.0.1'
   config.gem 'builder', :version => '2.1.2'
   config.gem 'CCHIT-xds-facade', :lib => 'xds-facade', :version => '>= 0.1.1', :source => 'http://gems.github.com'
@@ -93,7 +96,8 @@ Rails::Initializer.run do |config|
   config.gem 'rspec-rails', :lib => false, :version => '>= 1.2.2'
   config.gem 'selenium-client', :lib => false
 
-  # Setting a default timezone, please change this to where ever you are deployed
+  # Setting a default timezone, please change this to where ever you are
+  # deployed
   config.time_zone = "Eastern Time (US & Canada)"
 end
 

@@ -27,52 +27,97 @@ As an alternative, you may create CLASSPATH environment variable as part of the 
 
 Note that many rake tasks load the environment, and thus will also fail if the CLASSPATH does not include Saxon.
 
-== Install JRuby and Required Gems
+== Install JRuby
 
 Ensure that you have JRuby version 1.3.1 installed locally (available here: http://dist.codehaus.org/jruby/1.3.1/) and add <jruby-install>/bin to your PATH environment variable.
 
+On a Linux based system, JRuby can be installed painlessly by untarring as root into /opt.  On a Debian based distro, /etc/environment has the global PATH environment variable.  You will need to restart X to get this into your root terminal sessions.
+
+== Setup Gem and Install Rails
+
+NOTE: For installing gems, you need to decide whether you are installing them locally as a non-root user, or globally as root.  The examples below assume root access through sudo, to install the gems globally.
+
 You will need to install Rails for JRuby:
 
- $ jruby -S gem sources -a http://gems.github.com
- $ jruby -S gem install rails -v=2.3.4 --no-rdoc --no-ri
+ $ sudo jruby -S gem sources -a http://gems.github.com
+ $ sudo jruby -S gem install rails -v=2.3.4 --no-rdoc --no-ri
 
-Several commands require the use of rake, which in turn loads the local rails environment and will complain if the configuration files are not set up.  So make a local copy of config/database.yml.template as config/database.yml.  The file just has to exist for now, we will configure it below.
+== Database Adapters
 
-Install the rest of the gem dependencies; from the root of your Laika project:
+Several commands require the use of rake, which in turn loads the local rails environment and will complain if the configuration files are not set up.  So make a local copy of config/database.yml.template as config/database.yml.
 
- $ jruby -S rake gems:install
+Currently the initalization environment depends on the activerecord-jdbc-adapter gem as well, so you will need to install this first.
+
+ $ sudo jruby -S gem install activerecord-jdbc-adapter
+
+Next you need to install the database adapter you intend to use for local databases.  JDBC adapters for both MySQL and PostgreSQL are referenced in the database.yml.template.  Laika's rails database can be either mysql or postgresql.  However, the UMLS, ATNA and XDS databases have their own requirements (see below).
+
+  $ sudo jruby -S gem install activerecord-jdbcmysql-adapter
+  $ sudo jruby -S gem install activerecord-jdbcpostgresql-adapter
+
+(if you want to use sqlite3 for development or testing - install:
+  $ sudo jruby -S gem install activerecord-jdbcsqlite3-adapter
+NOTE: this is experimental :)
+)
+
+Then modify your config/database.yml as needed.  Typically this will be the core development, production and test databases used by the Laika Rails application.  However, see the following sections if you are setting up ATNA, UMLS or XDS.
+
+== ATNA Syslog
+
+If you wish to set up an ATNA syslog database, please see:
+
+http://wiki.github.com/CCHIT/laika/atna-syslog-server
+
+And follow the instructions contained in http://github.com/downloads/CCHIT/laika/syslog_server.zip
+
+Regardless of whether you are going to use the ATNA syslog, you will at least need an empty syslog database to prevent errors being thrown when the AtnaAudit model is loaded.
+
+== UMLS HOST
+
+Detailed information about UMLS may be found here at NIH:
+
+http://www.nlm.nih.gov/research/umls/
+
+UMLS is required for Laika's Generate and Format tests.  If you have access to an existing UMLS database, specify that in your config/database.yml and make sure that you have the correct database adapter installed (most likely jdbcmysql).
+
+Setting up a local UMLS database requires a lot of space.  See the NIH site and search the laika-talk mailing list for more details: http://sourceforge.net/mailarchive/forum.php?forum_name=laika-talk
 
 == XDS HOST
 
-The default XDS setup on Laika points to localhost. You can change the initial XDS endpoints by editing the settings.yml in spec/fixtures. If you do not have your own XDS set up, you can use the public registry provided by NIST (more information at http://129.6.24.109:9080/index.html); simply change localhost to the following IP address: http://129.6.24.109:9080.
+The default XDS setup on Laika points to localhost. You can change the initial XDS endpoints by editing the settings.yml in spec/fixtures.  If you do not have your own XDS set up, you can use the public registry provided by NIST (more information at http://129.6.24.109:9080/index.html); simply change localhost to the following IP address: http://129.6.24.109:9080.
 
-== CCR Validation
+If you are not conducting XDS tests, you will need to comment out this database in your config/database.yml
 
-The CCR XSD is proprietary and can be obtained through ASTM for a fee:
+== Installing Required Gems
 
-http://www.astm.org/BOOKSTORE/ADJUNCT/734.htm
+With a functional config/database.yml, you can now use rake to install the rest of Laika's gem dependencies.  From the root of your Laika project:
 
-If you wish to test CCR documents, you will need to obtain the XSD and place it
-in resources/schemas/infrastructure/ccr as CCR.xsd.  The relative path to the XSD resource should be:
+ $ sudo jruby -S rake gems:install
 
-resources/schemas/infrastructure/ccr/CCR.xsd
+If you will be running the test suite, also perform
 
-== Database
+ $ sudo jruby -S rake gems:install RAILS_ENV=test
 
-Install the database adapters:
+== Database initialization
 
-  $ jruby -S gem install activerecord-jdbcmysql-adapter
-  $ jruby -S gem install activerecord-jdbcpostgresql-adapter
+Make sure your local database server is running and create a new user *laika* with password *laika*.  You will need to ensure that this user will have access to the laika database.  MySQL and PostgreSQL have different authentication and authorization methods; check their manuals.  Make sure that your database.yml settings reflect your choice of user/password/database, for example:
 
-Make sure your local database server is running and create a new user *laika* with password *laika* and a new database/schema called *laika*. Find the database.yml.template file in laika/config under your local Laika project and edit it to include your database settings, for example:
-
-  development:
+ # default settings
+ login: &login
    adapter: jdbcpostgresql
-   database: laika
    host: localhost
    port: 5432
+   encoding: UTF8
+   username: laika
+   password: laika
+  
+ # laika development settings
+ development:
+   database: laika
    <<: *login
 
+To the extent that you have different settings per database environment, move them out of the login: macro and into the specific environment's database settings (development:, production:, etc.)
+ 
 Save the file as database.yml (i.e., without .template extension). Initialize the databases and load the seed data:
 
   $ jruby -S rake db:create
@@ -80,6 +125,22 @@ Save the file as database.yml (i.e., without .template extension). Initialize th
   $ jruby -S rake db:seed
 
 You will be prompted for information about the administrator account.
+
+NOTE: this only  prepares the Laika Rail's databases.  Prepation of UMLS, XDS or ATNA databases is a separate installation process not covered in this document.  See the above notes for pointers.
+
+NOTE: You must have your classpath set so that Laika can find the Saxon libraries in order to run rake.  See 'Environment' above.
+
+= CCR Validation
+
+The CCR XSD is proprietary and can be obtained through ASTM for a fee:
+
+http://www.astm.org/BOOKSTORE/ADJUNCT/734.htm
+
+If you wish to test CCR documents, you will need to obtain the XSD and place
+it in resources/schemas/infrastructure/ccr as CCR.xsd.  The relative path to
+the XSD resource should be:
+
+resources/schemas/infrastructure/ccr/CCR.xsd
 
 == Mail Settings
 
@@ -98,7 +159,7 @@ exception_notifier:
 
 Install the Glassfish server using the Glassfish gem:
 
-  $ jruby -S gem install glassfish
+  $ sudo jruby -S gem install glassfish
 
 GlassFish will use default options for the server if you do not have a glassfish.yml file in your config directory. Laika provides a glassfish.yml.template file that you may edit. Note that GlassFish cannot run as a daemon process on Windows.
 
