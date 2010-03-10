@@ -1,0 +1,53 @@
+david_carter_information_source:
+  time: 2009-10-10
+  document_id: ABC-1234567-AA
+  organization_name: CCHIT Testing Labs
+  patient: david_carter
+  
+jim_grayson_information_source:
+  time: 2009-04-10
+  document_id: ABC-1234567-BB
+  organization_name: CCHIT Testing Labs
+  patient: jim_grayson
+                               
+patrick_mcsorley_information_source:
+  time: 2008-04-19
+  document_id: ABC-1234567-CC
+  organization_name: CCHIT Testing Labs
+  patient: patrick_mcsorley
+                               
+suzanne_smith_information_source:
+  time: 2009-05-20
+  document_id: ABC-1234567-DD
+  organization_name: CCHIT Testing Labs
+  patient: suzanne_smith
+
+emily_jones_information_source:
+  time: 2009-04-30
+  document_id: ABC-1234567-EE
+  organization_name: Health Providers
+  patient: emily_jones
+
+jennifer_thompson_information_source:
+  time: 2010-01-26
+  document_id: ABC-1234567-FF
+  organization_name: B-Good Health
+  patient: jennifer_thompson
+
+joe_smith_information_source:
+  time: 2010-02-23
+  document_id: ABC-1234567-GG
+  organization_name: I-Like-Life Hospital
+  patient: joe_smith
+
+theodore_smith_information_source:
+  time: 2009-06-24
+  document_id: ABC-1234567-HH
+  organization_name: Health Testing in a Minute
+  patient: theodore_smith
+
+will_haynes_information_source:
+  time: 2010-02-15
+  document_id: ABC-1234567-II
+  organization_name: Goodie Health Testing
+  patient: will_haynes  

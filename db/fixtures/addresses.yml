@@ -1,0 +1,130 @@
+david_carters_address:
+  street_address_line_one: 1234 Willow Way
+  city: Silver Spring
+  state: MD
+  postal_code: 20902
+  iso_country: usa
+  addressable: david_carter (RegistrationInformation)
+
+david_carter_comment_address:
+  addressable: david_carter_comment (Comment)
+
+jim_graysons_address:
+  street_address_line_one: 834 Ocean Vista Avenue  
+  street_address_line_two: Apt. 202
+  city: Santa Monica
+  state: CA
+  postal_code: 90401
+  iso_country: usa
+  addressable: jim_grayson (RegistrationInformation)
+
+jim_grayson_comment_address:
+  addressable: jim_grayson_comment (Comment)
+
+patrick_mcsorelys_address:
+  street_address_line_one: 76 Wilson Road
+  city: Baltimore
+  state: MD
+  postal_code: 21236
+  iso_country: usa
+  addressable: patrick_mcsorely (RegistrationInformation)
+
+patrick_mcsorelys_comment_address:
+  addressable: patrick_mcsorely_comment (Comment)
+
+suzanne_smiths_address:
+  street_address_line_one: 89 Fenland Way
+  city: Alexandria
+  state: VA
+  postal_code: 21234
+  iso_country: usa
+  addressable: suzanne_smith (RegistrationInformation)
+
+suzanne_smiths_comment_address:
+  addressable: suzanne_smith_comment (Comment)
+
+emily_jones_address:
+  street_address_line_one: 2501 Merrvale Road
+  city: Rockville
+  state: MD
+  postal_code: 20847
+  iso_country: usa
+  addressable: emily_jones (RegistrationInformation)
+
+emily_jones_comment_address:
+  addressable: emily_jones_comment (Comment)
+
+jennifer_thompsons_address:
+  street_address_line_one: 2300 Commonwealth Avenue
+  city: Anytown
+  state: MA
+  postal_code: '02111'
+  iso_country: usa
+  addressable: jennifer_thompson (RegistrationInformation)
+
+jennifer_thompson_comment_address:
+  addressable: jennifer_thompson_comment (Comment)
+
+joe_smiths_address:
+  street_address_line_one: 1600 Rockville Pike
+  city: Rockville
+  state: MD
+  postal_code: 20847 
+  iso_country: usa
+  addressable: joe_smith (RegistrationInformation)
+
+joe_smith_comment_address:
+  addressable: joe_smith_comment (Comment)
+
+theodore_smiths_address:
+  street_address_line_one: 2300 Commonwealth Avenue
+  city: Anytown
+  state: MD
+  postal_code: 22222
+  iso_country: usa
+  addressable: theodore_smith (RegistrationInformation)
+
+theodore_smith_comment_address:
+  addressable: theodore_smith_comment (Comment)
+
+will_haynes_address:
+  street_address_line_one: 16167 King Street
+  city: Alexandria
+  state: VA
+  postal_code: 22301
+  iso_country: usa
+  addressable: will_haynes (RegistrationInformation)
+
+will_haynes_comment_address:
+  addressable: will_haynes_comment (Comment)
+
+emily_jones_moms_address:
+  addressable: emily_jones_mom (Support)
+
+jennifer_thompsons_husbands_address:
+  street_address_line_one: 2300 Commonwealth Avenue
+  city: Brighton
+  state: MA
+  postal_code: '02135'
+  iso_country: usa
+  addressable: jennifer_thompson_husband (Support)
+
+joe_smiths_moms_address:
+  street_address_line_one: 1600 Rockville Pike
+  city: Rockville
+  state: MD
+  postal_code: 20847 
+  iso_country: usa
+  addressable: joe_smiths_mom (Support)
+
+joe_smiths_vendor_moms_address:
+  street_address_line_one: 1600 Rockville Pike
+  city: Rockville
+  state: MD
+  postal_code: 20847 
+  iso_country: usa
+  addressable: joe_smiths_vendor_mom (Support)
+  
+will_haynes_dads_address:
+  addressable: will_haynes_dad (Support)
+

@@ -6,7 +6,7 @@ joe_smith:
   ethnicity: spaniard
   marital_status: never_married
   affinity_domain_identifier: joe_smith_pid
-  document_timestamp: 1972-04-12
+  document_timestamp: 1972-04-12 12:00
   patient: joe_smith
 
 emily_jones:
@@ -17,7 +17,7 @@ emily_jones:
   ethnicity: not_hispanic_or_latino
   marital_status: married
   affinity_domain_identifier: emily_jones_pid
-  document_timestamp: 2007-03-26
+  document_timestamp: 2007-03-26 12:00
   patient: emily_jones
 
 will_haynes:
@@ -28,7 +28,7 @@ will_haynes:
   ethnicity: not_hispanic_or_latino
   marital_status: divorced
   affinity_domain_identifier: will_haynes_pid
-  document_timestamp: 2007-06-08
+  document_timestamp: 2007-06-08 12:00
   patient: will_haynes
 
 jennifer_thompson:
@@ -39,7 +39,7 @@ jennifer_thompson:
   ethnicity: mexican
   marital_status: polygamous
   affinity_domain_identifier: jennifer_thompson_pid
-  document_timestamp: 1987-06-18
+  document_timestamp: 1987-06-18 12:00
   patient: jennifer_thompson
 
 theodore_smith:
@@ -50,7 +50,7 @@ theodore_smith:
   ethnicity: not_hispanic_or_latino
   marital_status: domestic_partner
   affinity_domain_identifier: theodore_smith_pid
-  document_timestamp: 1999-02-28
+  document_timestamp: 1999-02-28 12:00
   patient: theodore_smith
 
 david_carter:
@@ -61,5 +61,5 @@ david_carter:
   ethnicity: not_hispanic_or_latino
   marital_status: annulled
   affinity_domain_identifier: david_carter_pid
-  document_timestamp: 2003-01-06
+  document_timestamp: 2003-01-06 12:00
   patient: david_carter

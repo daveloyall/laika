@@ -1,0 +1,7 @@
+Seed fixtures come from spec/fixtures by default.
+
+spec/fixtures is also the root fixture directory for all spec test fixtures.  (Rails Fixtures module only allows for a single base fixtures directory.)
+
+You may add additional production seed fixtures which you do not want accessible to the tests here.
+
+You may also override test spec/fixtures but adding a matching file here.  It will be used in preference to the test fixture.  If you wish to prevent a test fixture from being loaded as production seed data, simply add an empty file of the same name to db/fixtures.

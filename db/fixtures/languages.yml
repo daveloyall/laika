@@ -1,0 +1,54 @@
+david_carter_english_language:
+  iso_language: english
+  iso_country: usa
+  preference: true
+  patient: david_carter
+
+jim_grayson_english_language:
+  iso_language: english
+  iso_country: usa
+  preference: true
+  patient: jim_grayson
+
+patrick_mcsorely_english_language:
+  iso_language: english
+  iso_country: usa
+  preference: true
+  patient: patrick_mcsorely
+
+suzanne_smith_english_language:
+  iso_language: english
+  iso_country: usa
+  preference: true
+  patient: suzanne_smith
+
+emily_jones_english_language:
+  iso_language: english
+  iso_country: usa
+  preference: true
+  patient: emily_jones
+
+jennifer_thompson_english_language:
+  iso_language: english
+  iso_country: usa
+  preference: true
+  patient: jennifer_thompson
+  
+joe_smith_english_language:
+  iso_language: english
+  iso_country: usa
+#  language_ability_mode: received_written
+  preference: true
+  patient: joe_smith
+
+theodore_smith_english_language:
+  iso_language: english
+  iso_country: usa
+  preference: true
+  patient: theodore_smith
+
+will_haynes_english_language:
+  iso_language: english
+  iso_country: usa
+  preference: true
+  patient: will_haynes

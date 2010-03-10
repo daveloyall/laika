@@ -82,7 +82,4 @@ end
 Spec::Runner.configure do |config|
   config.use_transactional_fixtures = true
   config.use_instantiated_fixtures  = false
-  # We do not use test-specific fixtures, so
-  # all "fixture" data is actually seed data.
-  config.fixture_path = RAILS_ROOT + '/db/fixtures/'
 end

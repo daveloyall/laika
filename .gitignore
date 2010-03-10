@@ -20,3 +20,6 @@ public/stylesheets/blueprint/*_bundle.css
 public/javascripts/*_bundle.js
 .ackrc
 config/laika.yml
+laika_development
+laikadev
+laika_test

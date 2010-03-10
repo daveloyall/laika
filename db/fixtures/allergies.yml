@@ -1,0 +1,109 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+davids_allergy:
+  start_event: 2005-06-30
+#  end_event:
+  free_text_product: iodine
+  product_code: 5933
+  code_system: rxnorm
+  adverse_event_type: drug_allergy
+  severity_term: mild_to_moderate
+  allergy_type_code: adverse_reaction
+  allergy_status_code: active
+  patient: david_carter
+
+jims_allergy:
+  start_event: 2005-02-21
+#  end_event:
+  free_text_product: erythromycin
+  product_code: 4053
+  code_system: rxnorm
+  adverse_event_type: allergy_to_substance
+  severity_term: severe
+  allergy_type_code: allergy
+  allergy_status_code: active
+  patient: jim_grayson
+
+patricks_allergy:
+  start_event: 1977-07-21
+#  end_event:
+  free_text_product: codeine
+  product_code: 2670
+  code_system: rxnorm
+  adverse_event_type: allergy_to_substance
+  severity_term: severe
+  allergy_type_code: allergy
+  allergy_status_code: active
+  patient: patrick_mcsorley
+
+suzannes_allergy:
+  start_event: 2005-02-21
+#  end_event: 2008-02-21
+  free_text_product: penicillin g
+  product_code: 7980
+  code_system: rxnorm
+  adverse_event_type: allergy_to_substance
+  severity_term: severe
+  allergy_type_code: allergy
+  allergy_status_code: active
+  patient: suzanne_smith
+
+emilys_allergy:
+  start_event: 2007-02-09
+#  end_event:
+  free_text_product: penicillin g
+  product_code: 7980
+  code_system: rxnorm
+  adverse_event_type: drug_allergy
+  severity_term: moderate_to_severe
+  allergy_type_code: allergy
+  allergy_status_code: prior_history
+  patient: emily_jones
+
+jennifers_allergy:
+  start_event: 1977-10-01
+#  end_event:
+  free_text_product: ibuprofen
+  product_code: 5640
+  code_system: rxnorm
+  adverse_event_type: drug_allergy
+  severity_term: moderate_to_severe
+  allergy_type_code: allergy
+  allergy_status_code: prior_history
+  patient: jennifers_thompson
+
+joes_allergy:
+  start_event: 2006-09-27
+  free_text_product: diphenhydramine HCl
+  product_code: 1362
+  code_system: rxnorm
+  adverse_event_type: propensity_to_adverse_reactions
+  severity_term: moderate
+  allergy_type_code: allergy
+  allergy_status_code: active
+  patient: joe_smith
+
+teds_allergy:
+  start_event: 1943-05-06
+#  end_event: 2008-02-21
+  free_text_product: sulfur
+  product_code: 10223
+  code_system: rxnorm
+  adverse_event_type: propensity_to_adverse_reactions_to_drug
+  severity_term: severe
+  allergy_type_code: allergy
+  allergy_status_code: active
+  patient: theodore_smith
+
+wills_allergy:
+  start_event: 2004-03-21
+#  end_event: 2048-12-21
+  free_text_product: morphine
+  product_code: 7052
+  code_system: rxnorm
+  adverse_event_type: drug_intolerance
+  severity_term: mild
+  allergy_type_code: adverse_reaction
+  allergy_status_code: active
+  patient: will_haynes
+

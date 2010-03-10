@@ -1,0 +1,107 @@
+david_carter_medication:
+  patient: david_carter
+  product_coded_display_name: amoxicillin
+  product_code: 723
+  code_system: rxnorm
+  free_text_brand_name:
+  medication_type: prescription_drug
+  status:
+  quantity_ordered_value:
+  quantity_ordered_unit:
+  expiration_time:
+  
+jim_grayson_medication:
+  patient: jim_grayson
+  product_coded_display_name: spironolactone
+  product_code: 9997
+  code_system: rxnorm
+  free_text_brand_name:
+  medication_type: prescription_drug
+  status:
+  quantity_ordered_value:
+  quantity_ordered_unit:
+  expiration_time:
+  
+patrick_mcsorely_medication:
+  patient: patrick_mcsorely
+  product_coded_display_name: cephalexin
+  product_code: 2231
+  code_system: rxnorm
+  free_text_brand_name:
+  medication_type: prescription_drug
+  status:
+  quantity_ordered_value:
+  quantity_ordered_unit:
+  expiration_time:
+  
+suzanne_smith_medication:
+  patient: suzanne_smith
+  product_coded_display_name: cipro
+  product_code: 203563
+  code_system: rxnorm
+  free_text_brand_name:
+  medication_type: prescription_drug
+  status:
+  quantity_ordered_value:
+  quantity_ordered_unit:
+  expiration_time:
+  
+emily_jones_medication:
+  patient: emily_jones
+  product_coded_display_name: atarax
+  product_code: 197116
+  code_system: rxnorm
+  free_text_brand_name:
+  medication_type: prescription_drug
+  status:
+  quantity_ordered_value:
+  quantity_ordered_unit:
+  expiration_time:
+  
+jennifer_thompson_medication:
+  patient: jennifer_thompson
+  product_coded_display_name: glucotrol
+  product_code: 203680
+  code_system: rxnorm
+  free_text_brand_name:
+  medication_type:
+  status:
+  quantity_ordered_value:
+  quantity_ordered_unit:
+  expiration_time:
+  
+joe_smith_medication:
+  patient: joe_smith
+  product_coded_display_name: prednisone
+  product_code: 8640
+  code_system: rxnorm
+  free_text_brand_name:
+  medication_type: prescription_drug
+  status:
+  quantity_ordered_value:
+  quantity_ordered_unit:
+  expiration_time:
+  
+theodore_smith_medication:
+  patient: theodore_smith
+  product_coded_display_name: lasix
+  product_code: 202991
+  code_system: rxnorm
+  free_text_brand_name:
+  medication_type: prescription_drug
+  status: 
+  quantity_ordered_value:
+  quantity_ordered_unit: 
+  expiration_time:       
+
+will_haynes_medication:
+  patient: will_haynes
+  product_coded_display_name: azithromycin
+  product_code: 18631
+  code_system: rxnorm
+  free_text_brand_name:
+  medication_type: prescription_drug
+  status:
+  quantity_ordered_value:
+  quantity_ordered_unit:
+  expiration_time:

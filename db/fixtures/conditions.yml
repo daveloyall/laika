@@ -1,0 +1,61 @@
+davids_condition:
+  start_event: 2009-06-30
+  end_event: 2009-12-21
+  problem_name: Otitis media disorder
+  problem_type: problem
+  patient: david_carter
+
+jims_condition:
+  start_event: 1984-01-02
+#  end_event: 2021-12-21
+  problem_name: Chronic nonalcoholic liver disease disorder
+  problem_type: problem
+  patient: jim_grayson
+
+patricks_condition:
+  start_event: 1998-08-30
+  end_event: 1999-02-11
+  problem_name: Cellulitis disorder
+  problem_type: problem
+  patient: patrick_mcsorely
+
+suzannes_condition:
+  start_event: 2009-09-27
+  end_event: 2009-11-15
+  problem_name: Upper urinary tract infection disorder
+  problem_type: finding
+  patient: suzanne_smith
+
+emilys_condition:
+  start_event: 2007-01-11
+  end_event: 2007-03-26
+  problem_name: Eczema disorder
+  problem_type: problem
+  patient: emily_jones
+
+jennifers_condition:
+  start_event: 1985-07-30
+#  end_event: 2038-12-21
+  problem_name: Diabetes mellitus type 2 disorder
+  problem_type: condition
+  patient: jennifer_thompson
+
+joes_condition:
+  start_event: 2004-04-13
+  problem_name: Chronic bronchitis disorder
+  problem_type: problem
+  patient: joe_smith
+
+teds_condition:
+  start_event: 2009-11-25
+  end_event: 2009-12-21
+  problem_name: Congestive heart failure disorder
+  problem_type: problem
+  patient: theodore_smith
+
+wills_condition:
+  start_event: 2000-06-02
+  end_event: 2000-07-12
+  problem_name: Streptococcal infectious disease disorder
+  problem_type: finding
+  patient: will_haynes

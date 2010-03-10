@@ -1,0 +1,44 @@
+david_carter_pid:
+  patient_identifier: 41205328
+  affinity_domain: CCHIT&1.3.6.1.4.1.21367.2005.3.7&ISO
+  patient: david_carter
+
+jim_grayson_pid:
+  patient_identifier: '00000333'
+  affinity_domain: CCHIT&1.3.6.1.4.1.21367.2005.3.7&ISO
+  patient: jim_grayson
+
+patrick_mcsorely_pid:
+  patient_identifier: 64508265
+  affinity_domain: CCHIT&1.3.6.1.4.1.21367.2005.3.7&ISO
+  patient: patrick_mcsorely
+
+suzanne_smith_pid:
+  patient_identifier: 64508266
+  affinity_domain: CCHIT&1.3.6.1.4.1.21367.2005.3.7&ISO
+  patient: suzanne_smith
+
+emily_jones_pid:
+  patient_identifier: 41205324
+  affinity_domain: CCHIT&1.3.6.1.4.1.21367.2005.3.7&ISO
+  patient: emily_jones
+
+jennifer_thompson_pid:
+  patient_identifier: '00000111'
+  affinity_domain: CCHIT&1.3.6.1.4.1.21367.2005.3.7&ISO
+  patient: jennifer_thompson
+
+joe_smith_pid:
+  patient_identifier: 41205322
+  affinity_domain: CCHIT&1.3.6.1.4.1.21367.2005.3.7&ISO
+  patient: joe_smith
+
+theodore_smith_pid:
+  patient_identifier: '00000222'
+  affinity_domain: CCHIT&1.3.6.1.4.1.21367.2005.3.7&ISO
+  patient: theodore_smith
+
+will_haynes_pid:
+  patient_identifier: 41205325
+  affinity_domain: CCHIT&1.3.6.1.4.1.21367.2005.3.7&ISO
+  patient: will_haynes

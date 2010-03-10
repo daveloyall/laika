@@ -1,0 +1,72 @@
+david_carter_procedure:
+  procedure_id: e401f340-7be2-11db-9fe1-0800200c9a66
+  name: Tympanometry
+  code: 91573000
+  procedure_date: 2006-10-24
+  patient: david_carter
+  procedure_status_code_id: 989355118
+
+jim_grayson_procedure:
+  procedure_id: e401f340-7be2-11db-9fe1-0800200c9a66
+  name: Liver function study
+  code: 79036002
+  procedure_date: 2006-10-24
+  patient: jim_grayson
+  procedure_status_code_id: 989355118
+
+patrick_mcsorely_procedure:
+  procedure_id: e401f340-7be2-11db-9fe1-0800200c9a66
+  name: Incision and drainage
+  code: 56783008
+  procedure_date: 2006-10-24
+  patient: patrick_mcsorely
+  procedure_status_code_id: 989355118
+
+suzanne_smith_procedure:
+  procedure_id: e401f340-7be2-11db-9fe1-0800200c9a66
+  name: Urine culture
+  code: 117010004
+  procedure_date: 2006-10-24
+  patient: suzanne_smith
+  procedure_status_code_id: 989355118
+
+emily_jones_procedure:
+  procedure_id: e401f340-7be2-11db-9fe1-0800200c9a66
+  name: Biopsy
+  code: 86273004
+  procedure_date: 2006-10-24
+  patient: emily_jones
+  procedure_status_code_id: 989355118
+
+jennifer_thompson_procedure:
+  procedure_id: e401f340-7be2-11db-9fe1-0800200c9a66
+  name: Glucose tolerance test
+  code: 113076002
+  procedure_date: 1999-03-23
+  patient: jennifer_thompson
+  procedure_status_code_id: 989355118
+
+joe_smith_procedure:
+  procedure_id: e401f340-7be2-11db-9fe1-0800200c9a66
+  name: Chest x-ray
+  code: 399208008 
+  procedure_date: 1976-12-31
+  patient: joe_smith
+  procedure_status_code_id: 989355118
+
+theodore_smith_procedure:
+  procedure_id: e401f340-7be2-11db-9fe1-0800200c9a66
+  name: Chest x-ray
+  code: 399208008 
+  procedure_date: 2002-07-15
+  patient: theodore_smith
+  procedure_status_code_id: 989355118  
+
+will_haynes_procedure:
+  procedure_id: e401f340-7be2-11db-9fe1-0800200c9a66
+  name: Throat culture
+  code: 117015009
+  procedure_date: 2003-04-30
+  patient: will_haynes
+  procedure_status_code_id: 989355118
+

@@ -1,0 +1,63 @@
+david_carter_immunization:
+  administration_date: 2009-10-31
+  refusal: false
+  vaccine: influenza_virus_vaccine_whole_virus
+  lot_number_text: mm345-417-DFF
+  patient: david_carter
+
+jim_grayson_immunization:
+  administration_date: 1980-12-10
+  refusal: false
+  vaccine: hepatitis_B_vaccine_adult
+  lot_number_text: mm322-417-AFF
+  patient: jim_grayson
+
+patrick_mcsorely_immunization:
+  administration_date: 1987-11-11
+  refusal: false
+  vaccine: tetanus_immune_globulin
+  lot_number_text: mm345-687-DEE
+  patient: patrick_mcsorely
+
+suzanne_smith_immunization:
+  administration_date: 2009-09-08
+  refusal: false
+  vaccine: influenza_virus_vaccine_whole_virus
+  lot_number_text: mm145-417-CBF
+  patient: suzanne_smith
+
+emily_jones_immunization:
+  administration_date: 2007-05-13
+  refusal: false
+  vaccine: tetanus_toxoid_reduced_diphtheria_toxoid_and_acellular_pertussis_vaccine_adsorbed
+  lot_number_text: mm245-417-AEB
+  patient: emily_jones
+
+jennifer_thompson_immunization:
+  administration_date: 1999-05-27
+  refusal: false
+  vaccine: influenza_virus_vaccine_whole_virus
+  lot_number_text: mm945-917-DDF
+  patient: jennifer_thompson
+
+joe_smith_immunization:
+  administration_date: 1980-12-02
+  refusal: false
+  vaccine: pneumococcal_polysaccharide_vaccine
+  lot_number_text: mm565-217-DFF
+  patient: joe_smith
+
+theodore_smith_immunization:
+  administration_date: 2000-02-12
+  refusal: false
+  vaccine: pneumococcal_polysaccharide_vaccine
+  lot_number_text: mm347-617-FFF
+  patient: theodore_smith  
+
+will_haynes_immunization:
+  administration_date: 1998-09-03
+  refusal: false
+  vaccine: measles_mumps_and_rubella_virus_vaccine
+  lot_number_text: mm995-997-DFF
+  patient: will_haynes
+

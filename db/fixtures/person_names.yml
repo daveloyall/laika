@@ -1,0 +1,164 @@
+david_carter:
+  name_prefix: Mr.
+  first_name: David
+  last_name: Carter
+  nameable: david_carter (RegistrationInformation)
+
+jim_grayson:
+  name_prefix: Mr.
+  first_name: Jim
+  last_name: Grayson
+  nameable: jim_grayson (RegistrationInformation)
+
+patrick_mcsorely:
+  name_prefix: Mr.
+  first_name: Patrick
+  last_name: McSorely
+  nameable: patrick_mcsorely (RegistrationInformation)
+
+suzanne_smith:
+  name_prefix: Ms.
+  first_name: Suzanne
+  last_name: Smith
+  nameable: suzanne_smith (RegistrationInformation)
+
+emily_jones:
+  name_prefix: Ms.
+  first_name: Emily
+  last_name: Jones
+  nameable: emily_jones (RegistrationInformation)
+
+jennifer_thompson:
+  name_prefix: Ms.
+  first_name: Jennifer
+  last_name: Thompson
+  nameable: jennifer_thompson (RegistrationInformation)
+
+joe_smith:
+  name_prefix: Mr.
+  first_name: Joe
+  middle_name: William
+  last_name: Smith
+  nameable: joe_smith (RegistrationInformation)
+
+theodore_smith:
+  name_prefix: Mr.
+  first_name: Theodore
+  last_name: Smith
+  nameable: theodore_smith (RegistrationInformation)
+
+will_haynes:
+  name_prefix: Mr.
+  first_name: Will
+  last_name: Haynes
+  name_suffix: Jr.
+  nameable: will_haynes (RegistrationInformation)
+
+ringo_starr:
+  name_prefix: Mr.
+  first_name: Ringo
+  last_name: Starr
+  nameable: david_carter_information_source (InformationSource)
+
+paul_mccartney:
+  name_prefix: Mr.
+  first_name: Paul
+  last_name: McCartney
+  nameable: jim_grayson_information_source (InformationSource)
+
+george_harrison:
+  name_prefix: Mr.
+  first_name: George
+  last_name: Harrison
+  nameable: patrick_mcsorely_information_source (InformationSource)
+
+jane_eyre:
+  name_prefix: Ms.
+  first_name: Jane
+  last_name: Eyre
+  nameable: suzanne_smith_information_source (InformationSource)
+
+david_evans:
+  name_prefix: Mr.
+  first_name: David
+  last_name: Evans
+  nameable: emily_jones_information_source (InformationSource)
+
+adam_clayton:
+  name_prefix: Mr.
+  first_name: Adam
+  last_name: Clayton
+  nameable: jennifer_thompson_information_source (InformationSource)
+
+paul_hewson:
+  name_prefix: Mr.
+  first_name: Paul
+  last_name: Hewson
+  nameable: joe_smith_information_source (InformationSource)
+
+john_lennon:
+  name_prefix: Mr.
+  first_name: John
+  last_name: Lennon
+  nameable: theodore_smith_information_source (InformationSource)
+
+larry_mullen:
+  name_prefix: Mr.
+  first_name: Larry
+  last_name: Mullen   
+  name_suffix: Jr.
+  nameable: will_haynes_information_source (InformationSource)
+
+david_carter_comment:
+  name_prefix: Dr.
+  first_name: Nick
+  last_name: Simpson
+  nameable: david_carter_comment (Comment)
+
+jim_grayson_comment:
+  name_prefix: Dr.
+  first_name: Nick
+  last_name: Simpson
+  nameable: jim_grayson_comment (Comment)
+
+patrick_mcsorely_comment:
+  name_prefix: Dr.
+  first_name: Nick
+  last_name: Simpson
+  nameable: patrick_mcsorely_comment (Comment)
+
+suzanne_smith_comment:
+  name_prefix: Dr.
+  first_name: Nick
+  last_name: Simpson
+  nameable: suzanne_smith_comment (Comment)
+
+emily_jones_comment:
+  name_prefix: Dr.
+  first_name: Nick
+  last_name: Simpson
+  nameable: emily_jones_comment (Comment)
+
+jennifer_thompson_comment:
+  name_prefix: Dr.
+  first_name: Nick
+  last_name: Simpson
+  nameable: jennifer_thompson_comment (Comment)
+
+joe_smith_comment:
+  name_prefix: Dr.
+  first_name: Nick
+  last_name: Simpson
+  nameable: joe_smith_comment (Comment)
+
+theodore_smith_comment:
+  name_prefix: Dr.
+  first_name: Nick
+  last_name: Simpson
+  nameable: theodore_smith_comment (Comment)
+
+will_haynes_comment:
+  name_prefix: Dr.
+  first_name: Nick
+  last_name: Simpson
+  nameable: will_haynes_comment (Comment)

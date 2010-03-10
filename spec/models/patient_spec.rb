@@ -1,6 +1,8 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Patient, "with no fixtures" do
+  fixtures :snowmed_problems, :procedure_status_codes
+
   it "should create a random patient without errors" do
     lambda { Patient.new.randomize }.should_not raise_error
   end
