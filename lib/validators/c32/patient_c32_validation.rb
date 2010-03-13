@@ -5,7 +5,6 @@ module PatientC32Validation
     #
     #  :validation_type => which must be on of Validation::*_TYPE constants
     def validate_c32(clinical_document, options = {})
-
       errors = []
 
       # Registration information
@@ -27,10 +26,10 @@ module PatientC32Validation
           errors.concat(insurance_providers.validate_c32(clinical_document))
         end
 
-
       # Medications
+        substance_administration_hash = XmlHelper.dereference('substanceAdministration', clinical_document)
         self.medications.each do |medication|
-          errors.concat(medication.validate_c32(clinical_document, options))
+          errors.concat(medication.validate_c32(clinical_document, options.merge(:substance_administration_hash => substance_administration_hash)))
         end
 
       # Supports          

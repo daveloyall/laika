@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ClinicalDocument xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" moodCode="EVN" xmlns="urn:hl7-org:v3">
+    <realmCode code="US"/>
+    <typeId root="2.16.840.1.113883.1.3" extension="POCD_HD000040"/>
+    <templateId root="2.16.840.1.113883.10.20.3"/>
+    <templateId root="1.3.6.1.4.1.19376.1.5.3.1.1.1"/>
+    <templateId root="1.3.6.1.4.1.19376.1.5.3.1.1.5"/>
+    <templateId root="2.16.840.1.113883.10.20.1"/>
+    <templateId root="2.16.840.1.113883.3.88.11.32.1"/>
+    <id root="8A3A6864-12B3-49F0-AE1C-4CAD68CAB037"/>
+    <code code="34133-9" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Summarization of patient data"/>
+    <title>David Carter</title>
+    <effectiveTime value="20091207141847-0500"/>
+    <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25" codeSystemName="Confidentiality" displayName="Normal"/>
+    <languageCode code="en-US"/>
+    <recordTarget typeCode="RCT" contextControlCode="OP">
+        <patientRole classCode="PAT">
+            <id extension="19519"/>
+            <addr>
+                <streetAddressLine>1234 Willow Way</streetAddressLine>
+                <city>Silver Spring</city>
+                <state>MD</state>
+                <postalCode>20902</postalCode>
+                <country>US</country>
+            </addr>
+            <telecom value="301-555-0144" use="HP"/>
+            <patient classCode="PSN" determinerCode="INSTANCE">
+                <name>
+                    <prefix/>
+                    <given>David</given>
+                    <family>Carter</family>
+                    <suffix/>
+                </name>
+                <administrativeGenderCode code="M" codeSystem="2.16.840.1.113883.5.1" codeSystemName="Administrative Gender Code" displayName="Male"/>
+                <birthTime value="20010302"/>
+                <maritalStatusCode code="S" codeSystem="2.16.840.1.113883.5.2" codeSystemName="HL7v3 Marital Status Value Set" displayName="Never Married"/>
+                <raceCode code="2131-1" codeSystem="2.16.840.1.113883.6.238" codeSystemName="CDC Race Code Value Set" displayName="Other Race"/>
+                <languageCommunication>
+                    <templateId root="2.16.840.1.113883.3.88.11.32.2"/>
+                    <languageCode code="en"/>
+                </languageCommunication>
+            </patient>
+            <providerOrganization classCode="ORG" determinerCode="INSTANCE">
+                <name>Laika EHR</name>
+                <telecom value="(555)555-3323" use="WP"/>
+                <addr>
+                    <streetAddressLine/>
+                    <city>Portland</city>
+                    <state>OR</state>
+                    <postalCode>97225</postalCode>
+                    <country>US</country>
+                </addr>
+            </providerOrganization>
+        </patientRole>
+    </recordTarget>
+    <author typeCode="AUT" contextControlCode="OP">
+        <time value="20091207141847-0500"/>
+        <assignedAuthor classCode="ASSIGNED">
+            <id root="author1"/>
+            <addr>
+                <streetAddressLine/>
+                <city>Portland</city>
+                <state>OR</state>
+                <postalCode>97225</postalCode>
+                <country/>
+            </addr>
+            <telecom value="(555)555-3323" use="WP"/>
+            <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                <name>
+                    <prefix/>
+                    <given/>
+                    <family/>
+                    <suffix/>
+                </name>
+            </assignedPerson>
+            <representedOrganization classCode="ORG" determinerCode="INSTANCE">
+                <name>Laika EHR</name>
+                <telecom value="(555)555-3323" use="WP"/>
+                <addr>
+                    <streetAddressLine/>
+                    <city>Portland</city>
+                    <state>OR</state>
+                    <postalCode>97225</postalCode>
+                    <country/>
+                </addr>
+            </representedOrganization>
+        </assignedAuthor>
+    </author>
+    <custodian typeCode="CST">
+        <assignedCustodian classCode="ASSIGNED">
+            <representedCustodianOrganization classCode="ORG" determinerCode="INSTANCE">
+                <id root="47280a61-5ae3-493e-ba87-145c7fcc22fa"/>
+                <name>Laika EHR</name>
+                <telecom value="(555)555-3323" use="WP"/>
+                <addr>
+                    <streetAddressLine>9009 Somestreet St</streetAddressLine>
+                    <city>Portland</city>
+                    <state>OR</state>
+                    <postalCode>97225</postalCode>
+                    <country/>
+                </addr>
+            </representedCustodianOrganization>
+        </assignedCustodian>
+    </custodian>
+    <documentationOf typeCode="DOC">
+        <serviceEvent classCode="PCPR" moodCode="EVN">
+            <effectiveTime>
+                <low value="20091111111047-0500"/>
+                <high value="20091207141847-0500"/>
+            </effectiveTime>
+            <performer typeCode="PRF">
+                <templateId root="1.3.6.1.4.1.19376.1.5.3.1.2.3"/>
+                <functionCode code="PCP" codeSystem="2.16.840.1.113883.5.88"/>
+                <time>
+                    <low value="20091111111047-0500"/>
+                    <high value="20091207141847-0500"/>
+                </time>
+                <assignedEntity classCode="ASSIGNED">
+                    <id root="acd167d3-1127-459c-b970-f69b65b759ac" extension=" "/>
+                    <addr>
+                        <streetAddressLine>809 Someroad Rd</streetAddressLine>
+                        <city>Portland</city>
+                        <state>OR</state>
+                        <postalCode>97225</postalCode>
+                        <country/>
+                    </addr>
+                    <telecom use="WP"/>
+                    <assignedPerson classCode="PSN" determinerCode="INSTANCE">
+                        <name>
+                            <prefix/>
+                            <given/>
+                            <family/>
+                            <suffix/>
+                        </name>
+                    </assignedPerson>
+                </assignedEntity>
+            </performer>
+        </serviceEvent>
+    </documentationOf>
+    <component>
+        <structuredBody classCode="DOCBODY" moodCode="EVN">
+            <component>
+                <section classCode="DOCSECT" moodCode="EVN">
+                    <templateId root="2.16.840.1.113883.10.20.1.2"/>
+                    <templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.13"/>
+                    <id root="52ceb713-eb78-4825-ac48-97502eb53767"/>
+                    <code code="48765-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Allergies, adverse reactions, alerts"/>
+                    <title>Allergies and Adverse Reactions</title>
+                    <text mediaType="text/x-hl7-text+xml">
+                        <table border="1">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Reaction</td>
+                                    <td>Notes</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td ID="AllergyName-1">Erythromycin</td>
+                                    <td ID="AllergyReaction-1"/>
+                                    <td ID="AllergyComment-1"/>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </text>
+                    <entry>
+                        <act classCode="ACT" moodCode="EVN">
+                            <templateId root="2.16.840.1.113883.10.20.1.27"/>
+                            <templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.1"/>
+                            <templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5.3"/>
+                            <templateId root="2.16.840.1.113883.3.88.11.83.6"/>
+                            <id root="d8850ead-c4e8-4e23-b286-6333dd16da67"/>
+                            <code nullFlavor="NA"/>
+                            <statusCode code="active"/>
+                            <effectiveTime>
+                                <low nullFlavor="UNK"/>
+                            </effectiveTime>
+                            <entryRelationship typeCode="SUBJ" inversionInd="false">
+                                <observation classCode="OBS" moodCode="EVN" negationInd="false">
+                                    <templateId root="2.16.840.1.113883.10.20.1.18"/>
+                                    <templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.5"/>
+                                    <templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.6"/>
+                                    <templateId root="2.16.840.1.113883.10.20.1.28"/>
+                                    <id root="064e6da3-6210-48d0-ab91-fd654cd1dd8e"/>
+                                    <code code="419199007" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED CT" displayName="Allergy to substance (disorder)"/>
+                                    <text>
+                                        <reference value="#AllergyName-1"/>
+                                    </text>
+                                    <statusCode code="completed"/>
+                                    <effectiveTime nullFlavor="UNK">
+                                        <low nullFlavor="UNK"/>
+                                    </effectiveTime>
+                                    <value xsi:type="CD" nullFlavor="UNK"/>
+                                    <participant typeCode="CSM" contextControlCode="OP">
+                                        <time nullFlavor="UNK"/>
+                                        <participantRole classCode="MANU">
+                                            <playingEntity classCode="MMAT" determinerCode="INSTANCE">
+                                                <code code="315090" codeSystem="2.16.840.1.113883.6.88" codeSystemName="RxNorm" displayName="Erythromycin">
+                                                  <originalText>
+                                                  <reference value="#AllergyName-1"/>
+                                                  </originalText>
+                                                </code>
+                                                <name>Erythromycin</name>
+                                            </playingEntity>
+                                        </participantRole>
+                                    </participant>
+                                    <entryRelationship typeCode="SUBJ" inversionInd="true">
+                                        <act classCode="ACT" moodCode="EVN">
+                                            <templateId root="2.16.840.1.113883.10.20.1.40"/>
+                                            <templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.2"/>
+                                            <code code="48767-8" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Annotation Comment"/>
+                                            <text>
+                                                <reference value="#AllergyComment-1"/>
+                                            </text>
+                                            <statusCode code="completed"/>
+                                        </act>
+                                    </entryRelationship>
+                                </observation>
+                            </entryRelationship>
+                        </act>
+                    </entry>
+                </section>
+            </component>
+            <component>
+                <section classCode="DOCSECT" moodCode="EVN">
+                    <templateId root="2.16.840.1.113883.10.20.1.8"/>
+                    <templateId root="1.3.6.1.4.1.19376.1.5.3.1.3.19"/>
+                    <id root="9e0debd1-ba44-4601-9a8d-9fd82a6529e2"/>
+                    <code code="10160-0" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="HISTORY OF MEDICATION USE"/>
+                    <title>Medications</title>
+                    <text mediaType="text/x-hl7-text+xml">
+                        <table border="1">
+                            <thead>
+                                <tr>
+                                    <th colspan="5">Active</th>
+                                </tr>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Start Date</th>
+                                    <th>Estimated Completion Date</th>
+                                    <th>SIG</th>
+                                    <th>Comments</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td ID="MedName-1">Augmentin</td>
+                                    <td ID="MedStartDate-1">12/07/2009</td>
+                                    <td ID="MedExpireDate-1">12/14/2009</td>
+                                    <td ID="MedSIG-1">take 1 tablet by oral route every 12 hours for
+                                        7 days</td>
+                                    <td ID="MedComment-1"/>
+                                </tr>
+                                <tr>
+                                    <td ID="MedName-2">Aspirin</td>
+                                    <td ID="MedStartDate-2">12/17/2009</td>
+                                    <td ID="MedExpireDate-2">12/24/2009</td>
+                                    <td ID="MedSIG-2">take 2 tablets by oral route every 12 hours for
+                                        7 days</td>
+                                    <td ID="MedComment-2"/>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </text>
+                    <entry>
+                        <substanceAdministration classCode="SBADM" moodCode="EVN">
+                            <templateId root="2.16.840.1.113883.10.20.1.24"/>
+                            <templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.7"/>
+                            <templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.7.1"/>
+                            <templateId root="2.16.840.1.113883.3.88.11.83.8"/>
+                            <id root="001d6e65-e378-43c7-bda1-792e1f59302a"/>
+                            <statusCode code="completed"/>
+                            <effectiveTime xsi:type="IVL_TS">
+                                <low value="20091207"/>
+                                <high value="20091214"/>
+                            </effectiveTime>
+                            <doseQuantity value="1" unit="tablet"/>
+                            <consumable typeCode="CSM">
+                                <manufacturedProduct>
+                                    <templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.7.2"/>
+                                    <templateId root="2.16.840.1.113883.10.20.1.53"/>
+                                    <templateId root="2.16.840.1.113883.3.88.11.83.8.2"/>
+                                    <manufacturedMaterial classCode="MMAT">
+                                        <code code="562508" codeSystem="2.16.840.1.113883.6.88" codeSystemName="RxNorm" displayName="AMOX TR/POTASSIUM CLAVULANATE 875 mg-125 mg ORAL TABLET">
+                                            <originalText>
+                                                <reference value="#MedName-1"/>
+                                            </originalText>
+                                        </code>
+                                        <name>Augmentin</name>
+                                    </manufacturedMaterial>
+                                </manufacturedProduct>
+                            </consumable>
+                            <entryRelationship typeCode="SUBJ" inversionInd="true">
+                                <act classCode="ACT" moodCode="INT">
+                                    <templateId root="2.16.840.1.113883.10.20.1.49"/>
+                                    <templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.3"/>
+                                    <code code="PINSTRUCT" codeSystem="1.3.6.1.4.1.19376.1.5.3.2" codeSystemName="IHEActCode"/>
+                                    <text>
+                                        <reference value="#MedComment-1"/>
+                                    </text>
+                                    <statusCode code="completed"/>
+                                </act>
+                            </entryRelationship>
+                        </substanceAdministration>
+                        <substanceAdministration classCode="SBADM" moodCode="EVN">
+                            <templateId root="2.16.840.1.113883.10.20.1.24"/>
+                            <templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.7"/>
+                            <templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.7.1"/>
+                            <templateId root="2.16.840.1.113883.3.88.11.83.8"/>
+                            <id root="001d6e65-e378-43c7-bda1-792e1f59302b"/>
+                            <statusCode code="completed"/>
+                            <effectiveTime xsi:type="IVL_TS">
+                                <low value="20091217"/>
+                                <high value="20091224"/>
+                            </effectiveTime>
+                            <doseQuantity value="1" unit="tablet"/>
+                            <consumable typeCode="CSM">
+                                <manufacturedProduct>
+                                    <templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.7.2"/>
+                                    <templateId root="2.16.840.1.113883.10.20.1.53"/>
+                                    <templateId root="2.16.840.1.113883.3.88.11.83.8.2"/>
+                                    <manufacturedMaterial classCode="MMAT">
+                                        <code code="562508" codeSystem="2.16.840.1.113883.6.88" codeSystemName="RxNorm" displayName="AMOX TR/POTASSIUM CLAVULANATE 875 mg-125 mg ORAL TABLET">
+                                            <originalText>
+                                                <reference value="#MedName-2"/>
+                                            </originalText>
+                                        </code>
+                                        <name>Aspirin</name>
+                                    </manufacturedMaterial>
+                                </manufacturedProduct>
+                            </consumable>
+                            <entryRelationship typeCode="SUBJ" inversionInd="true">
+                                <act classCode="ACT" moodCode="INT">
+                                    <templateId root="2.16.840.1.113883.10.20.1.49"/>
+                                    <templateId root="1.3.6.1.4.1.19376.1.5.3.1.4.3"/>
+                                    <code code="PINSTRUCT" codeSystem="1.3.6.1.4.1.19376.1.5.3.2" codeSystemName="IHEActCode"/>
+                                    <text>
+                                        <reference value="#MedComment-2"/>
+                                    </text>
+                                    <statusCode code="completed"/>
+                                </act>
+                            </entryRelationship>
+                        </substanceAdministration>
+                    </entry>
+                </section>
+            </component>
+            <component>
+                <section classCode="DOCSECT" moodCode="EVN">
+                    <templateId root="2.16.840.1.113883.10.20.1.11"/>
+                    <code code="11450-4" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Problem list"/>
+                    <title>Problems</title>
+                    <text mediaType="text/x-hl7-text+xml">
+                        <table border="1">
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td ID="ProblemDesc-1">Tooth (broken) (fractured) (due to
+                                        trauma), complicated</td>
+                                    <td ID="ProblemStatus-1">Active</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </text>
+                </section>
+            </component>
+        </structuredBody>
+    </component>
+</ClinicalDocument>

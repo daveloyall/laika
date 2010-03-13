@@ -64,5 +64,14 @@ describe Validation::Validator do
         errors.should be_empty
       end
     end
+
+    it "should validate v2.3 files with medication sections" do
+      record = patients(:joe_smith)
+      document = REXML::Document.new(File.join(RAILS_ROOT,'spec/test_data/joe_c32.xml'))
+      validator = Validation.get_validator(Validation::C32_V2_1_2_3_TYPE)
+      errors = validator.validate(record,document)        
+      errors.should be_empty
+    end
+
   end
 end

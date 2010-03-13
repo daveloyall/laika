@@ -47,14 +47,14 @@
   
   
         def match_required(element,xpath,namespaces,xpath_variables,subsection,error_message,error_location=nil,&block)
-          content = REXML::XPath.first(element,xpath,namespaces,xpath_variables )
+          content = REXML::XPath.first(element,xpath,namespaces,xpath_variables ) if element
           if content
           yield(content) if block_given?
           return nil
           else
-              return ContentError.new(:section =>section_name, 
+              return ContentError.new(:section => section_name, 
                                       :error_message => error_message,
-                                      :type=>'error',
+                                      :type => 'error',
                                       :location => error_location)
           end
         end

@@ -38,17 +38,23 @@ module XmlHelper
         end    
     error
   end
-  
-  def self.dereference(doc)
-    REXML::XPath.each(doc,'//cda:reference[@value]',{'cda' => 'urn:hl7-org:v3'}) do |ref|
-      parent = ref.parent
-      index = parent.elements.index(ref)
-      # find the content that this is pointing to
-      content = REXML::XPath.first(doc,"//[@ID=$id]",{'cda' => 'urn:hl7-org:v3'},{"id"=>ref.attributes['value'].gsub('#','')})
-     if content
-        text = content.get_text().clone()
-        parent.elements[index]=text
+ 
+  # Extracts all the given sections from a passed REXML doc and return them as a hash
+  # keyed by an internal reference@value
+  #
+  # For example, if the section is substanceAdministration, this will produce a hash of
+  # all the medication component's substanceAdministration element's keyed by their own
+  # consumable/manufacturedProduct/manufacturedMaterial/code/reference@value's (which 
+  # should key to the medication names in the free text table for a v2.5 C32 doc...
+  def self.dereference(section_name, document)
+    reference_hash = {}
+    REXML::XPath.each(document,"//cda:#{section_name}", MatchHelper::DEFAULT_NAMESPACES) do |section|
+      if (reference = REXML::XPath.first(section, './/cda:reference[@value]', MatchHelper::DEFAULT_NAMESPACES))
+        if (name = REXML::XPath.first(document,"//[@ID=$id]/text()", MatchHelper::DEFAULT_NAMESPACES, {"id"=>reference.attributes['value'].gsub("#",'')}))
+          reference_hash[name.value] = section
+        end
       end
     end
+    return reference_hash
   end
 end
