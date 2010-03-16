@@ -1,11 +1,7 @@
 # Be sure to restart your server when you modify this file
 
-# Uncomment below to force Rails into production mode when
-# you don't control web/app server and can't set it the proper way
-# ENV['RAILS_ENV'] ||= 'production'
-
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '2.3.4' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '2.3.5' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -18,7 +14,7 @@ java.lang.System.setProperty("javax.xml.parsers.DocumentBuilderFactory","net.sf.
 # XXX ActiveRecord extensions need to be loaded first, otherwise some
 # operations that utilize AR during init will fail. There's probably a
 # better way to do this.
-require 'activerecord'
+require 'active_record'
 require_dependency 'has_select_options'
 require_dependency 'has_c32_component'
 class ActiveRecord::Base
@@ -48,20 +44,6 @@ Rails::Initializer.run do |config|
   # Force all environments to use the same logger level
   # (by default production uses :info, the others :debug)
   # config.log_level = :debug
-
-  # Your secret key for verifying cookie session data integrity.
-  # If you change this key, all old sessions will become invalid!
-  # Make sure the secret is at least 30 characters and all random, 
-  # no regular words or you'll be exposed to dictionary attacks.
-  # config.action_controller.session = {
-  #  :session_key => '_laika_session',
-  #  :secret      => '451d52461398c0186576b60fc40b9c8304fb1b38a8f6dce0e6ec564fc7c16687db8d468681bc7053901c56c6ae2e2e394a7631e9f95ea52b4fc69d0e6e5a58a2'
-  # }
-
-  # Use the database for sessions instead of the cookie-based default,
-  # which shouldn't be used to store highly confidential information
-  # (create the session table with 'rake db:sessions:create')
-  config.action_controller.session_store = :active_record_store
 
   # Use SQL instead of Active Record's schema dumper when creating the test
   # database.  This is necessary if your schema can't be completely dumped by
@@ -99,6 +81,10 @@ Rails::Initializer.run do |config|
   # Setting a default timezone, please change this to where ever you are
   # deployed
   config.time_zone = "Eastern Time (US & Canada)"
+
+  # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
+  # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
+  # config.i18n.default_locale = :de
 end
 
 ENV['HOST_URL'] = 'http://demo.cchit.org/laika'

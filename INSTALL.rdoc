@@ -2,7 +2,7 @@ Laika is a Ruby on Rails application that targets JRuby/Glassfish for deployment
 
 = Dependencies
 
-* JRuby >= 1.3.1
+* JRuby >= 1.4.0
 * Sun Java >= 1.5 (1.6 required for the Glassfish gem)
 * MySQL >= 5.0 (for UMLS)
 * PostgreSQL >= 8.1 (for XDS)
@@ -40,7 +40,7 @@ NOTE: For installing gems, you need to decide whether you are installing them lo
 You will need to install Rails for JRuby:
 
  $ sudo jruby -S gem sources -a http://gems.github.com
- $ sudo jruby -S gem install rails -v=2.3.4 --no-rdoc --no-ri
+ $ sudo jruby -S gem install rails -v=2.3.5 --no-rdoc --no-ri
 
 == Database Adapters
 
