@@ -233,8 +233,9 @@ ActiveRecord::Schema.define(:version => 20091118191432) do
 
   create_table "insurance_provider_subscribers", :force => true do |t|
     t.date    "date_of_birth"
-    t.integer "insurance_provider_id", :null => false
+    t.integer "insurance_provider_id",    :null => false
     t.string  "subscriber_id"
+    t.string  "assigning_authority_guid"
   end
 
   add_index "insurance_provider_subscribers", ["insurance_provider_id"], :name => "index_insurance_provider_subscribers_on_insurance_provider_id"
@@ -322,7 +323,7 @@ ActiveRecord::Schema.define(:version => 20091118191432) do
     t.string  "free_text_brand_name"
     t.integer "medication_type_id"
     t.string  "status"
-    t.float   "quantity_ordered_value"
+    t.decimal "quantity_ordered_value"
     t.string  "quantity_ordered_unit"
     t.date    "expiration_time"
     t.integer "patient_id",                 :null => false
