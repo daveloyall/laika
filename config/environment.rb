@@ -77,6 +77,7 @@ Rails::Initializer.run do |config|
   config.gem 'rspec',       :lib => false, :version => '>= 1.2.2'
   config.gem 'rspec-rails', :lib => false, :version => '>= 1.2.2'
   config.gem 'selenium-client', :lib => false
+  config.gem 'laika-medical-document'
 
   # Setting a default timezone, please change this to where ever you are
   # deployed

@@ -1,0 +1,15 @@
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |gemspec|
+    gemspec.name = "laika-medical-document"
+    gemspec.summary = "A library for handling import/export/validation of xml medical documents according to various standards such as CCD and CCR"
+    gemspec.description = "Import/export/validation to and from xml representations of medical documents based on standards such as CCD and CCR"
+    gemspec.email = "jpartlow@opensourcery.com"
+    gemspec.homepage = "http://github.com/opensourcery/laika-medical-document"
+    gemspec.authors = ["Laika Project"]
+    gemspec.executables = []
+    gemspec.test_files = 'spec/**/*'
+  end
+rescue LoadError
+  puts "Jeweler not available. Install it with: gem install jeweler"
+end

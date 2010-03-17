@@ -1,0 +1,161 @@
+--- !ruby/object:Gem::Specification 
+name: laika-medical-document
+version: !ruby/object:Gem::Version 
+  version: 0.0.1
+platform: ruby
+authors: 
+- Laika Project
+autorequire: 
+bindir: bin
+cert_chain: []
+
+date: 2010-03-16 00:00:00 -07:00
+default_executable: 
+dependencies: []
+
+description: Import/export/validation to and from xml representations of medical documents based on standards such as CCD and CCR
+email: jpartlow@opensourcery.com
+executables: []
+
+extensions: []
+
+extra_rdoc_files: []
+
+files: 
+- lib/import_helper.rb
+- lib/importers/c32/address_c32_importer.rb
+- lib/importers/c32/advance_directive_c32_importer.rb
+- lib/importers/c32/allergy_c32_importer.rb
+- lib/importers/c32/condition_c32_importer.rb
+- lib/importers/c32/encounter_c32_importer.rb
+- lib/importers/c32/healthcare_provider_c32_importer.rb
+- lib/importers/c32/immunization_c32_importer.rb
+- lib/importers/c32/insurance_provider_c32_importer.rb
+- lib/importers/c32/medication_c32_importer.rb
+- lib/importers/c32/patient_c32_importer.rb
+- lib/importers/c32/person_name_c32_importer.rb
+- lib/importers/c32/procedure_c32_importer.rb
+- lib/importers/c32/registration_information_c32_importer.rb
+- lib/importers/c32/result_c32_importer.rb
+- lib/importers/c32/support_c32_importer.rb
+- lib/importers/c32/telecom_c32_importer.rb
+- lib/importers/c32/vital_sign_c32_importer.rb
+- lib/match_helper.rb
+- lib/validation.rb
+- lib/validators/c32/abstract_result_c32_validation.rb
+- lib/validators/c32/act_status_code_c32_validation.rb
+- lib/validators/c32/address_c32_validation.rb
+- lib/validators/c32/advance_directive_c32_validation.rb
+- lib/validators/c32/advance_directive_status_code_c32_validation.rb
+- lib/validators/c32/advance_directive_type_c32_validation.rb
+- lib/validators/c32/allergy_c32_validation.rb
+- lib/validators/c32/allergy_status_code_c32_validation.rb
+- lib/validators/c32/allergy_type_c32_validation.rb
+- lib/validators/c32/comment_c32_validation.rb
+- lib/validators/c32/condition_c32_validation.rb
+- lib/validators/c32/encounter_c32_validation.rb
+- lib/validators/c32/encounter_location_code_c32_validation.rb
+- lib/validators/c32/encounter_type_c32_validation.rb
+- lib/validators/c32/immunization_c32_validation.rb
+- lib/validators/c32/information_source_c32_validation.rb
+- lib/validators/c32/insurance_provider_c32_validation.rb
+- lib/validators/c32/insurance_provider_guarantor_c32_validation.rb
+- lib/validators/c32/insurance_provider_patient_c32_validation.rb
+- lib/validators/c32/insurance_provider_subscriber_c32_validation.rb
+- lib/validators/c32/insurance_type_c32_validation.rb
+- lib/validators/c32/language_c32_validation.rb
+- lib/validators/c32/medical_equipment_c32_validation.rb
+- lib/validators/c32/medication_c32_validation.rb
+- lib/validators/c32/patient_c32_validation.rb
+- lib/validators/c32/person_name_c32_validation.rb
+- lib/validators/c32/problem_type_c32_validation.rb
+- lib/validators/c32/procedure_c32_validation.rb
+- lib/validators/c32/provider_c32_validation.rb
+- lib/validators/c32/provider_role_c32_validation.rb
+- lib/validators/c32/provider_type_c32_validation.rb
+- lib/validators/c32/registration_information_c32_validation.rb
+- lib/validators/c32/result_c32_validation.rb
+- lib/validators/c32/result_type_code_c32_validation.rb
+- lib/validators/c32/severity_c32_validation.rb
+- lib/validators/c32/support_c32_validation.rb
+- lib/validators/c32/telecom_c32_validation.rb
+- lib/validators/c32/vaccine_c32_validation.rb
+- lib/validators/c32/vital_sign_c32_validation.rb
+- lib/validators/c32_validator.rb
+- lib/validators/c62.rb
+- lib/validators/schema_validator.rb
+- lib/validators/schematron_validator.rb
+- lib/validators/umls_validator.rb
+- lib/xml_helper.rb
+- spec/c62_validator_spec.rb
+- spec/import_helper_spec.rb
+- spec/importers/c32/address_c32_importer_spec.rb
+- spec/importers/c32/advance_directive_c32_importer_spec.rb
+- spec/importers/c32/allergy_c32_importer_spec.rb
+- spec/importers/c32/condition_c32_importer_spec.rb
+- spec/importers/c32/encounter_c32_importer_spec.rb
+- spec/importers/c32/healthcare_provider_c32_importer_spec.rb
+- spec/importers/c32/immunization_c32_importer_spec.rb
+- spec/importers/c32/insurance_provider_c32_importer_spec.rb
+- spec/importers/c32/medication_c32_importer_spec.rb
+- spec/importers/c32/patient_c32_importer_spec.rb
+- spec/importers/c32/registration_information_c32_importer_spec.rb
+- spec/importers/c32/result_c32_importer_spec.rb
+- spec/importers/c32/support_c32_importer_spec.rb
+- spec/importers/c32/telecom_c32_importer_spec.rb
+- spec/importers/c32/vital_sign_c32_importer_spec.rb
+- spec/schema_validator_spec.rb
+- spec/schematron_validator_spec.rb
+- spec/umls_validator_spec.rb
+- spec/xml_helper_spec.rb
+has_rdoc: true
+homepage: http://github.com/opensourcery/laika-medical-document
+licenses: []
+
+post_install_message: 
+rdoc_options: 
+- --charset=UTF-8
+require_paths: 
+- lib
+required_ruby_version: !ruby/object:Gem::Requirement 
+  requirements: 
+  - - ">="
+    - !ruby/object:Gem::Version 
+      version: "0"
+  version: 
+required_rubygems_version: !ruby/object:Gem::Requirement 
+  requirements: 
+  - - ">="
+    - !ruby/object:Gem::Version 
+      version: "0"
+  version: 
+requirements: []
+
+rubyforge_project: 
+rubygems_version: 1.3.5
+signing_key: 
+specification_version: 3
+summary: A library for handling import/export/validation of xml medical documents according to various standards such as CCD and CCR
+test_files: 
+- spec/c62_validator_spec.rb
+- spec/importers/c32/immunization_c32_importer_spec.rb
+- spec/importers/c32/address_c32_importer_spec.rb
+- spec/importers/c32/encounter_c32_importer_spec.rb
+- spec/importers/c32/medication_c32_importer_spec.rb
+- spec/importers/c32/support_c32_importer_spec.rb
+- spec/importers/c32/vital_sign_c32_importer_spec.rb
+- spec/importers/c32/healthcare_provider_c32_importer_spec.rb
+- spec/importers/c32/advance_directive_c32_importer_spec.rb
+- spec/importers/c32/insurance_provider_c32_importer_spec.rb
+- spec/importers/c32/result_c32_importer_spec.rb
+- spec/importers/c32/allergy_c32_importer_spec.rb
+- spec/importers/c32/patient_c32_importer_spec.rb
+- spec/importers/c32/condition_c32_importer_spec.rb
+- spec/importers/c32/telecom_c32_importer_spec.rb
+- spec/importers/c32/registration_information_c32_importer_spec.rb
+- spec/schema_validator_spec.rb
+- spec/umls_validator_spec.rb
+- spec/xml_helper_spec.rb
+- spec/import_helper_spec.rb
+- spec/schematron_validator_spec.rb
+
