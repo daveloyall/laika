@@ -1,3 +1,5 @@
+require 'singleton'
+
 module Validation
 
   C32_V2_1_2_3_TYPE = 'C32 v2.1/v2.3'
