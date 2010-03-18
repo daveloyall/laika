@@ -1,13 +1,15 @@
 # default settings
 login: &login
-  adapter: jdbcmysql
   encoding: UTF8
   username: laika
   password: laika
  
 # laika development settings
 development:
-  database: laika_development
+  database: laika_dev
+  adapter: jdbcpostgresql
+  host: localhost
+  port: 5432
   <<: *login
  
 # laika production settings
@@ -39,22 +41,24 @@ umls_production:
 
 umls_development:
   adapter: jdbcmysql
+  host: umls.cchit.org
   database: umls
   username: umls
-  password: umls
+  password: cchitreadonly
  
 umls_test:
   adapter: jdbcmysql
+  host: umls.cchit.org
   database: umls
   username: umls
-  password: umls
+  password: cchitreadonly
 
 # NIST XDS local repository
 # Comment this out if you will not be doing XDS testing (see INSTALL.rdoc)
-nist_xds_registry:
-  adapter: jdbcpostgresql
-  database: registry
-  host: localhost
-  username: postgres
-  password:
-  port: 5432
+#nist_xds_registry:
+#  adapter: jdbcpostgresql
+#  database: registry
+#  host: localhost
+#  username: postgres
+#  password:
+#  port: 5432
