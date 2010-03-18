@@ -1,0 +1,100 @@
+.module_inspection_result {
+  padding: 5px;
+  margin: 0 0 20px 0;
+	background: #FFF;
+}
+
+.first {
+	padding-left: 5px;
+}
+
+.row {
+	padding: 12px 0px 0px;
+	clear: left;
+	border-bottom: 1px solid #e0e0e0;
+}
+
+.data_field {
+	overflow: hidden;
+}
+
+#review_controls {
+	width: 790px;
+	height: 150px;
+}
+
+.inspection_table_headers {
+  color: #e0e0e0;
+  background: #333;
+}
+
+.inspection_result_header {
+  padding: 5px;
+  text-align: left;
+  overflow: hidden;
+  margin: 0 0 8px 0;
+  background: #FFF;
+}
+
+.module_name {
+  float: left;
+}
+
+.module_name h2 {
+  margin: 0 0 0 0;
+  color: #000;
+}
+
+.overall_inspection_status {
+  float: right;
+  background: #FFF;
+  text-align: center;
+  padding: 5px 0;
+  margin: 0 0px 0 0;
+}
+
+.overall_inspection_status p {
+  margin: 0 0 0 0;
+  color: #FFF;
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
+.pending {
+  background: #ff9933;
+}
+
+.passed {
+  background: #339933;
+}
+
+.failed {
+  background: #ff3333;
+}
+
+.pass  {
+	background: #FFF url('/images/passed.png') top right no-repeat;
+} 
+
+.fail  {
+	border-top: 2px solid #ff3333;
+	border-bottom: 2px solid #ff3333;
+	background: #fab7a4 url('/images/failed.png') top right no-repeat;;
+}
+
+.review  {
+	border-top: 2px solid #ff9933;
+	border-bottom: 2px solid #ff9933;
+	background: #fed6ae url('/images/review.png') top right no-repeat;;
+}
+
+.not-tested {
+	border-top: 2px solid #888;
+	border-bottom: 2px solid #888;
+	background: #e0e0e0;
+}
+
+.inspection_controls {
+  width: 300px;
+  float: right;
+}

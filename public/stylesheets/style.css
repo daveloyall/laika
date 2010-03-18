@@ -153,6 +153,13 @@ ul.vendor-actions > li {
     margin-right: 1em;
 }
 
+#inspection_results_details {
+	background: #FFF;
+	border: 1px solid #d8d8d8;
+	padding: 0 0 0 20px;
+	margin: 25px 0 0 0;
+}
+
 .inspection-results h3 > a {
   color: black;
 }
@@ -492,9 +499,23 @@ table#dashboard a {
 }
 
 #results {
-	width:255px;
-	margin-left:-15px;
-	margin-bottom:15px;
+	background: #FFF;
+	overflow: hidden;
+}
+
+#test_results_header {
+	padding: 0 0 0 20px;
+	margin: 0 0 25px 0;
+}
+
+#summary {
+	border-right: 1px solid #e0e0e0;
+	border-left: 1px solid #e0e0e0;
+	padding: 0 0 0 15px;
+}
+
+#override {
+	padding: 0 0 0 5px;
 }
 
 #results .fail, #results .pass {
@@ -518,6 +539,7 @@ table#dashboard a {
 	padding:15px;
 	margin-top:-2px;
 	background:#FFF;
+	overflow: hidden;
 }
 
 #results h5, #results p, #modules h5 {
@@ -604,7 +626,6 @@ h3 > a {
 #results table {
 	margin-bottom:0px;
 	padding-top:5px;
-	border-top:1px solid #ccc;
 }
 
 #results .info ul {
@@ -614,17 +635,15 @@ h3 > a {
 
 .printer-friendly-affordance {
   margin-top:10px;
-  border-top: 1px solid black;
 }
 
 #assign_test_state_manually {
   padding:3px 0 7px 0;
-  border-top:1px solid #ccc;
 }
 
 #assign_test_state_manually textarea{
-  height: 150px;
-  width: 205px 
+  height: 80px;
+  width: 185px 
 }
 
 #modules table, #modules td, #modules th {

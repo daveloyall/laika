@@ -1,65 +1,83 @@
-<div class="column span-6 append-1">
+<div id="test_results_header" class="column span-21">
   <div id="results">
+      
     <div class="<%= test_plan_results_class(@test_plan) %>">
       <%= test_plan_results_heading(@test_plan) %>
     </div>
+
     <div class="info">
-      <h5>Inspection ID: <%= @test_plan.vendor %></h5>
-      <h5>Document Type: <%= @test_plan.clinical_document.doc_type %></h5>
-      <h6>Test Result Summary</h6>
-      <div class="widget"><div class="left on">
-        <span class="number">
-          <%= @test_plan.xml_validation_errors.count %>
-        </span> <a href="#xml_validation">XML Validation Errors</a>
-      </div></div>
-      <div class="widget"><div class="left on">
-        <span class="number">
-          <%= @test_plan.content_inspection_errors.count %>
-        </span> <a href="#content_inspection">Content Inspection Warnings</a>
-      </div></div>
-    <% if @test_plan.umls_enabled? -%>
-      <div class="widget"><div class="left on">
-        <span class="number">
-          <%= @test_plan.umls_codesystem_errors.count %>
-        </span> <a href="#umls_validation">UMLS Code Warnings</a>
-      </div></div>
-    <% end -%>
-      <%= render :partial => 'assign_test_state_manually' %>
-      <table id="details">
-        <tr>
-          <td class="lighttext">Test Date</td>
-          <td><%= @test_plan.updated_at %></td>
-        </tr>
-      <% if @test_plan.proctor -%>
-        <tr>
-          <td class="lighttext">Test Proctor</td>
-          <td><%= link_to h(@test_plan.proctor), @test_plan.proctor %></td>
-        </tr>
+      
+      <!--BEGIN INSPECTION DETAILS-->
+      <div class="column span-7 first">
+        <h5>Inspection ID: <%= @test_plan.vendor %></h5>
+        <h5>Document Type: <%= @test_plan.clinical_document.doc_type %></h5>
+        <p class="lighttext">Test Date</p>
+        <p><%= @test_plan.updated_at %></p>
+        <%= render :partial => 'print_preview' %>
+      </div>
+      
+      <!--BEGIN TEST RESULTS SUMMARY-->
+      <div id="summary" class="column span-6">
+        <h5>Test Result Summary</h5>
+        <div class="widget"><div class="left on">
+          <span class="number">
+            <%= @test_plan.xml_validation_errors.count %>
+          </span> <a href="#xml_validation">XML Validation Errors</a>
+        </div></div>
+        <div class="widget"><div class="left on">
+          <span class="number">
+            <%= @test_plan.content_inspection_errors.count %>
+          </span> <a href="#content_inspection">Content Inspection Warnings</a>
+        </div></div>
+        <% if @test_plan.umls_enabled? -%>
+          <div class="widget"><div class="left on">
+            <span class="number">
+              <%= @test_plan.umls_codesystem_errors.count %>
+            </span> <a href="#umls_validation">UMLS Code Warnings</a>
+          </div></div>
+        <% end -%>
+      </div>
+      
+      <!--BEGIN MANUALLY TEST STATUS OVERRIDE-->
+      <div id="override" class="column span-6 last">
+        <%= render :partial => 'assign_test_state_manually' %>
+        <table id="details">
+        <% if @test_plan.proctor -%>
+          <tr>
+            <td class="lighttext">Test Proctor</td>
+            <td><%= link_to h(@test_plan.proctor), @test_plan.proctor %></td>
+          </tr>
+        <% end -%>
+        <% unless @test_plan.umls_enabled? %>
+          <tr>
+            <td class="lighttext">UMLS Coded Value Testing</td>
+            <td>Disabled</td>
+          </tr>
+        <% end -%>
+        </table>
+      </div>
+        
+    </div><!-- End Info-->
+  </div><!-- End Results-->
+</div><!--End column span-20 (results summary container)-->
+
+
+<!-- BEGIN NONFUNCTIONAL MOCKUP UP TEST FEEDBACK -->
+<div id="inspection_results_details">
+  <div class="inspection-results column span-21">
+    <h3><a name="xml_validation">XML Validation Results</a></h3>
+    <%= render :partial => "xml_error_response",
+      :locals => { :errors => @test_plan.xml_validation_errors } %>
+    <h3><a name="content_inspection">Content Inspection &amp; UMLS Validation Results</a></h3>
+    <%= render :partial => "error_list",
+      :locals => { :errors => @test_plan.content_inspection_errors } %>
+      <% if @test_plan.umls_enabled? -%>
+        <%= render :locals => { :errors => @test_plan.umls_codesystem_errors } %>
       <% end -%>
-      <% unless @test_plan.umls_enabled? %>
-        <tr>
-          <td class="lighttext">UMLS Coded Value Testing</td>
-          <td>Disabled</td>
-        </tr>
-      <% end -%>
-      </table>
-      <%= render :partial => 'print_preview' %>
-    </div>
   </div>
 </div>
-<div class="inspection-results column span-13 last">
-  <h3><a name="xml_validation">XML Validation Results</a></h3>
-  <%= render :partial => "error_list",
-    :locals => { :errors => @test_plan.xml_validation_errors } %>
-  <h3><a name="content_inspection">Content Inspection Results</a></h3>
-  <%= render :partial => "error_list",
-    :locals => { :errors => @test_plan.content_inspection_errors } %>
-  <% if @test_plan.umls_enabled? -%>
-    <h3><a name="umls_validation">UMLS Validation Results</a></h3>
-    <%= render :partial => "error_list",
-      :locals => { :errors => @test_plan.umls_codesystem_errors } %>
-  <% end -%>
-</div>
+
+
 <!-- Start Pretty XML -->
 <div class="column span-20 last pretty-xml">
   <h3>Vendor Generated XML</h3>
