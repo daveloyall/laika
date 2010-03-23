@@ -1,3 +1,26 @@
+#xml_window {
+	height: 220px; 
+	position: fixed; 
+	bottom: 0; 
+	left: 0; 
+	width: 100%; 
+	z-index: 1000; 
+	background: #446671 url('/images/xml_controls_bg.png') top left repeat-x; 
+	padding: 25px 0;
+}
+
+#xml_controls {
+	height: 50px; 
+	position: fixed; 
+	bottom: 0; 
+	left: 0; 
+	width: 100%; 
+	z-index: 1000; 
+	background: #333; 
+	padding: 5px 2px; 
+	text-align: center;
+}
+
 .module_inspection_result {
   padding: 5px;
   margin: 0 0 20px 0;
@@ -97,4 +120,62 @@
 .inspection_controls {
   width: 300px;
   float: right;
+}
+
+ol#error_report_toc {
+    height: 2em;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+ol#error_report_toc li {
+    float: left;
+    margin: 0 1px 0 0;
+}
+
+ol#error_report_toc a {
+    background: #8cd7f6 url('/images/tab.png');
+    color: #000;
+    display: block;
+    float: left;
+    height: 2.75em;
+    padding: 12px 10px 0;
+    text-decoration: none;
+}
+
+ol#error_report_toc a:hover {
+	  color: #FFF;
+    background-color: #5e828c;
+    background-position: 0 -45px;
+}
+
+ol#error_report_toc a:hover span {
+    background-position: 100% -45px;
+}
+
+ol#error_report_toc li.current a {
+    background-color: #48f;
+    background-position: 0 -90px;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+ol#error_report_toc li.current span {
+    background-position: 100% -90px;
+}
+
+ol#error_report_toc span {
+    background: url('/images/tab.png') 100% 0;
+    display: block;
+    line-height: 2em;
+    padding-right: 10px;
+}
+
+div.test_results {
+    border-top: #000 solid 3px;
+    clear: left;
+    padding: 1em;
+		overflow: hidden;
+		background: #fff;
 }

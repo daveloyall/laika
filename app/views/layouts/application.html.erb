@@ -14,7 +14,7 @@ print_stylesheet_media = @print_preview ? 'all' : 'print'
   <%= stylesheet_link_tag 'blueprint/screen', 'style', 'progressbar', :media => "all", :cache => 'blueprint/core_styles_bundle' %>
   <%= stylesheet_link_tag 'blueprint/print', 'print', :media => print_stylesheet_media, :cache => 'blueprint/print_styles_bundle' %>
   <%= stylesheet_link_tag 'inspection_styles' %>
-  <%= javascript_include_tag 'prototype', 'common', 'effects', 'application', :cache => 'core_scripts_bundle' %>
+  <%= javascript_include_tag 'prototype', 'common', 'effects', 'application', 'tabs', :cache => 'core_scripts_bundle' %>
   <%= calendar_date_select_includes "silver" %><%# patient %>
   <%= javascript_include_if_exists controller_name %>
 
@@ -24,27 +24,21 @@ print_stylesheet_media = @print_preview ? 'all' : 'print'
   <!--[if IE]>
     <%= stylesheet_link_tag 'blueprint/lib/ie', :media => 'screen, projection' %>
   <![endif]-->
-
   <!-- Show the grid and baseline -->
-  <style type="text/css">
-    /*<![CDATA[*/
-    /*.container {background: url(<%= stylesheet_path 'blueprint/lib/grid.png' %>) repeat;}*/
-    /*]]>*/
-  </style>
 
  </head>
 <body>
 
-  <div id="top" class="level1">
-    <div class="level2">
-      <div class="level3">
-  
-        <!-- Start Global Header -->
-        <%= render :partial => 'layouts/header' %>
-        <!-- End Global Header -->
+<div class="container">
       
-        <div class="content">
-          <div class="container">
+   <div class="column span-24 last">
+       <!-- Start Global Header -->
+       <%= render :partial => 'layouts/header' %>
+       <!-- End Global Header -->
+   </div>
+   
+   <div class="column span-24 content">
+       <div class="column span-22 prepend-1">
             <% if flash[:notice] %> 
               <div class="notice"><%= flash[:notice] %></div>
             <% end %>
@@ -55,18 +49,14 @@ print_stylesheet_media = @print_preview ? 'all' : 'print'
               <h3><%= @page_header %></h3>
             <% end %>
             <%= yield  %>
-          </div>
         </div>
-        
-        <div class="footer"></div>
-         
-      </div>
-    </div>
-  </div>
-  
-</body>
-
-
-
+   </div>
+   
+   <!--<div class="footer">
+    
+   </div>Close Footer-->
+      
+</div>
+</body><!--Close Container-->
 </html>
 
