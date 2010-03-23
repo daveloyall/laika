@@ -3,67 +3,60 @@
 print_stylesheet_media = @print_preview ? 'all' : 'print'
 %>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <meta http-equiv="Cache-Control" content="no-cache" />
-  
-    <link rel="icon" type="image/png" href="<%= controller.relative_url_root %>/images/favicon.png" />
-  
-    <title><%=h @page_title %></title>
-  
-    <%= stylesheet_link_tag 'blueprint/screen', 'style', 'progressbar', :media => "all", :cache => 'blueprint/core_styles_bundle' %>
-    <%= stylesheet_link_tag 'blueprint/print', 'print', :media => print_stylesheet_media, :cache => 'blueprint/print_styles_bundle' %>
-    <%= stylesheet_link_tag 'inspection_styles' %>
-    <%= javascript_include_tag 'prototype', 'common', 'effects', 'application', :cache => 'core_scripts_bundle' %>
-    <%= calendar_date_select_includes "silver" %><%# patient %>
-    <%= javascript_include_if_exists controller_name %>
-  
-    <!--[if IE 7]>
-      <%= stylesheet_link_tag 'ie7master' %>
-    <![endif]-->
-    <!--[if IE]>
-      <%= stylesheet_link_tag 'blueprint/lib/ie', :media => 'screen, projection' %>
-    <![endif]-->
-  
-    <!-- Show the grid and baseline -->
-    <style type="text/css">
-      /*<![CDATA[*/
-      /*.container {background: url(<%= stylesheet_path 'blueprint/lib/grid.png' %>) repeat;}*/
-      /*]]>*/
-    </style>
-  </head>
-  <body>
-  
-    <div id="top" class="level1">
-      <div class="level2">
-        <div class="level3">
-    
-          <!-- Start Global Header -->
-          <%= render :partial => 'layouts/header' %>
-          <!-- End Global Header -->
-        
-          <div class="content">
-            <div class="container">
-              <% if flash[:notice] %> 
-                <div class="notice"><%= flash[:notice] %></div>
-              <% end %>
-              <% if flash[:error] %> 
-                <div class="error"><%= flash[:error] %></div>
-              <% end %>
-              <% if @page_header %>
-                <h3><%= @page_header %></h3>
-              <% end %>
-              <%= yield  %>
-            </div>
-          </div>
-          
-          <div class="footer"></div>
-           
-        </div><!-- level3 -->
-      </div><!-- level2 -->
-    </div><!-- top -->
-    
-  </body>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Cache-Control" content="no-cache" />
 
+  <link rel="icon" type="image/png" href="<%= controller.relative_url_root %>/images/favicon.png" />
+
+  <title><%=h @page_title %></title>
+
+  <%= stylesheet_link_tag 'blueprint/screen', 'style', 'progressbar', :media => "all", :cache => 'blueprint/core_styles_bundle' %>
+  <%= stylesheet_link_tag 'blueprint/print', 'print', :media => print_stylesheet_media, :cache => 'blueprint/print_styles_bundle' %>
+  <%= stylesheet_link_tag 'inspection_styles' %>
+  <%= javascript_include_tag 'prototype', 'common', 'effects', 'application', 'tabs', :cache => 'core_scripts_bundle' %>
+  <%= calendar_date_select_includes "silver" %><%# patient %>
+  <%= javascript_include_if_exists controller_name %>
+
+  <!--[if IE 7]>
+    <%= stylesheet_link_tag 'ie7master' %>
+  <![endif]-->
+  <!--[if IE]>
+    <%= stylesheet_link_tag 'blueprint/lib/ie', :media => 'screen, projection' %>
+  <![endif]-->
+  <!-- Show the grid and baseline -->
+
+ </head>
+<body>
+
+<div class="container">
+      
+   <div class="column span-24 last">
+       <!-- Start Global Header -->
+       <%= render :partial => 'layouts/header' %>
+       <!-- End Global Header -->
+   </div>
+   
+   <div class="column span-24 content">
+       <div class="column span-22 prepend-1">
+            <% if flash[:notice] %> 
+              <div class="notice"><%= flash[:notice] %></div>
+            <% end %>
+            <% if flash[:error] %> 
+              <div class="error"><%= flash[:error] %></div>
+            <% end %>
+            <% if @page_header %>
+              <h3><%= @page_header %></h3>
+            <% end %>
+            <%= yield  %>
+        </div>
+   </div>
+   
+   <!--<div class="footer">
+    
+   </div>Close Footer-->
+      
+</div>
+</body><!--Close Container-->
 </html>
 

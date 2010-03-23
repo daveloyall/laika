@@ -1,47 +1,39 @@
-<div id="test_results_header" class="column span-21">
-  <div id="results">
-      
-    <div class="<%= test_plan_results_class(@test_plan) %>">
-      <%= test_plan_results_heading(@test_plan) %>
-    </div>
+<ol id="error_report_toc">
+    <li class="current"><a href="#test_summary">Summary</a></li>
+    <li><a href="#xml_validation">XML Validation</a></li>
+    <li><a href="#content_inspection">Content Inspection</a></li>
+    <li><a href="#umls_validation">UMLS Validation</a></li>
+</ol>
 
-    <div class="info">
+<div id="test_summary" class="test_results">
       
-      <!--BEGIN INSPECTION DETAILS-->
-      <div class="column span-7 first">
-        <h5>Inspection ID: <%= @test_plan.vendor %></h5>
-        <h5>Document Type: <%= @test_plan.clinical_document.doc_type %></h5>
-        <p class="lighttext">Test Date</p>
-        <p><%= @test_plan.updated_at %></p>
-        <%= render :partial => 'print_preview' %>
-      </div>
-      
-      <!--BEGIN TEST RESULTS SUMMARY-->
-      <div id="summary" class="column span-6">
-        <h5>Test Result Summary</h5>
-        <div class="widget"><div class="left on">
-          <span class="number">
-            <%= @test_plan.xml_validation_errors.count %>
-          </span> <a href="#xml_validation">XML Validation Errors</a>
-        </div></div>
-        <div class="widget"><div class="left on">
-          <span class="number">
-            <%= @test_plan.content_inspection_errors.count %>
-          </span> <a href="#content_inspection">Content Inspection Warnings</a>
-        </div></div>
+      <div class="column span-11 first">
+        <div class="<%= test_plan_results_class(@test_plan) %>">
+          <%= test_plan_results_heading(@test_plan) %>
+        </div>
+        <h3>Inspection ID: <%= @test_plan.vendor %></h5>
+        <h3>Document Type: <%= @test_plan.clinical_document.doc_type %></h5>      
+
+        <h3>Test Result Summary</h3>
+        <div class="widget">
+          <span class="number"><%= @test_plan.xml_validation_errors.count %></span> <a href="#xml_validation">XML Validation Errors</a>
+        </div>
+        <div class="widget">
+          <span class="number"><%= @test_plan.content_inspection_errors.count %></span> <a href="#content_inspection">Content Inspection Warnings</a>
+        </div>
         <% if @test_plan.umls_enabled? -%>
-          <div class="widget"><div class="left on">
-            <span class="number">
-              <%= @test_plan.umls_codesystem_errors.count %>
-            </span> <a href="#umls_validation">UMLS Code Warnings</a>
-          </div></div>
+        <div class="widget">
+          <span class="number"><%= @test_plan.umls_codesystem_errors.count %></span> <a href="#umls_validation">UMLS Code Warnings</a>
+        </div>
         <% end -%>
       </div>
-      
-      <!--BEGIN MANUALLY TEST STATUS OVERRIDE-->
-      <div id="override" class="column span-6 last">
+      <div class="column span-10 last">
         <%= render :partial => 'assign_test_state_manually' %>
         <table id="details">
+          <tr>
+            <td class="lighttext">Test Date</td>
+            <td><%= @test_plan.updated_at %></td>
+          </tr>
         <% if @test_plan.proctor -%>
           <tr>
             <td class="lighttext">Test Proctor</td>
@@ -55,33 +47,41 @@
           </tr>
         <% end -%>
         </table>
+        <%= render :partial => 'print_preview' %>
       </div>
-        
-    </div><!-- End Info-->
-  </div><!-- End Results-->
-</div><!--End column span-20 (results summary container)-->
+</div>
 
-
-<!-- BEGIN NONFUNCTIONAL MOCKUP UP TEST FEEDBACK -->
-<div id="inspection_results_details">
-  <div class="inspection-results column span-21">
-    <h3><a name="xml_validation">XML Validation Results</a></h3>
-    <%= render :partial => "xml_error_response",
+<div id="xml_validation" class="test_results">
+    <h2>XML Validation Results:</h2>
+    <%= render :partial => "error_list",
       :locals => { :errors => @test_plan.xml_validation_errors } %>
-    <h3><a name="content_inspection">Content Inspection &amp; UMLS Validation Results</a></h3>
+</div>
+
+<div id="content_inspection"class="test_results">
+    <h2>Content Inspection:</h2>
     <%= render :partial => "error_list",
       :locals => { :errors => @test_plan.content_inspection_errors } %>
-      <% if @test_plan.umls_enabled? -%>
-        <%= render :locals => { :errors => @test_plan.umls_codesystem_errors } %>
-      <% end -%>
+</div>
+
+<div id="umls_validation" class="test_results">
+    <h2>UMLS Validation:</h2>
+    <% if @test_plan.umls_enabled? -%>
+      <%= render :partial => "error_list",
+        :locals => { :errors => @test_plan.umls_codesystem_errors } %>
+    <% end -%>
+</div>    
+
+<div id="xml_controls" class="column">
+    <a href="#" onclick="Effect.SlideDown('xml_window', { duration: 0.325 }); return false;">VIEW XML</a>
+</div>
+
+<div id="xml_window" style="display: none;">
+  <!-- Start Pretty XML -->
+  <div class="column pretty-xml" style="background: #FFF; overflow: auto; width: 70%; height: 200px; padding: 10px; margin: 0 14%; position: relative;">
+    <p><a href="#" onclick="$('xml_window').hide(); return false;">CLOSE</a></p>
+    <h3>Vendor Generated XML</h3>
+    <hr/>
+    <%= render :partial => "node" , :locals => {:doc => @xml_document} %>
   </div>
+  <!-- End Pretty XML -->
 </div>
-
-
-<!-- Start Pretty XML -->
-<div class="column span-20 last pretty-xml">
-  <h3>Vendor Generated XML</h3>
-  <hr/>
-  <%= render :partial => "node" , :locals => {:doc => @xml_document} %>
-</div>
-<!-- End Pretty XML -->
