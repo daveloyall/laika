@@ -8,32 +8,34 @@
 <div id="test_summary" class="test_results">
       
       <div class="column span-11 first">
-        <div class="<%= test_plan_results_class(@test_plan) %>">
-          <%= test_plan_results_heading(@test_plan) %>
-        </div>
-        <h3>Inspection ID: <%= @test_plan.vendor %></h5>
-        <h3>Document Type: <%= @test_plan.clinical_document.doc_type %></h5>      
-
-        <h3>Test Result Summary</h3>
-        <div class="widget">
-          <span class="number"><%= @test_plan.xml_validation_errors.count %></span> <a href="#xml_validation">XML Validation Errors</a>
-        </div>
-        <div class="widget">
-          <span class="number"><%= @test_plan.content_inspection_errors.count %></span> <a href="#content_inspection">Content Inspection Warnings</a>
-        </div>
-        <% if @test_plan.umls_enabled? -%>
-        <div class="widget">
-          <span class="number"><%= @test_plan.umls_codesystem_errors.count %></span> <a href="#umls_validation">UMLS Code Warnings</a>
-        </div>
-        <% end -%>
+        <div id="test_summary_meta">
+          <p><strong>Test Date:</strong> <%= @test_plan.updated_at %></p>
+          <h3>Inspection ID: <%= @test_plan.vendor %></h3>
+          <h3>Document Type: <%= @test_plan.clinical_document.doc_type %></h3>
+        </div>     
+        <div id="test_summary_breakdown">
+          <div class="inspection_result_header <%= test_plan_results_class(@test_plan) %>">
+            <h3>Test Result Summary: <span><%= test_plan_results_heading(@test_plan) %></span></h3>
+          </div>
+          <div class="widget">
+            <span class="number"><%= @test_plan.xml_validation_errors.count %></span> <a href="#xml_validation">XML Validation Errors</a>
+          </div>
+          <div class="widget">
+            <span class="number"><%= @test_plan.content_inspection_errors.count %></span> <a href="#content_inspection">Content Inspection Warnings</a>
+          </div>
+          <% if @test_plan.umls_enabled? -%>
+          <div class="widget">
+            <span class="number"><%= @test_plan.umls_codesystem_errors.count %></span> <a href="#umls_validation">UMLS Code Warnings</a>
+          </div>
+          <% end -%>
+        </div><!-- End test summary breakdown-->
       </div>
-      <div class="column span-10 last">
+      <div class="column span-8 prepend-2 last">
+        <div style="float: right;">
+          <%= render :partial => 'print_preview' %>
+        </div>
         <%= render :partial => 'assign_test_state_manually' %>
         <table id="details">
-          <tr>
-            <td class="lighttext">Test Date</td>
-            <td><%= @test_plan.updated_at %></td>
-          </tr>
         <% if @test_plan.proctor -%>
           <tr>
             <td class="lighttext">Test Proctor</td>
@@ -47,7 +49,6 @@
           </tr>
         <% end -%>
         </table>
-        <%= render :partial => 'print_preview' %>
       </div>
 </div>
 
@@ -72,7 +73,7 @@
 </div>    
 
 <div id="xml_controls" class="column">
-    <a href="#" onclick="Effect.SlideDown('xml_window', { duration: 0.325 }); return false;">VIEW XML</a>
+    <a id="launch_xml_window" href="#" onclick="Effect.SlideDown('xml_window', { duration: 0.325 }); return false;">VIEW XML</a>
 </div>
 
 <div id="xml_window" style="display: none;">

@@ -651,11 +651,14 @@ h3 > a {
 }
 
 .printer-friendly-affordance {
-  margin-top:10px;
+  margin-bottom:10px;
 }
 
 #assign_test_state_manually {
-  padding:3px 0 7px 0;
+  padding: 10px;
+	border: 1px solid #a0a0a0;
+	background: #e0e0e0;
+	clear: both;
 }
 
 #assign_test_state_manually textarea{
