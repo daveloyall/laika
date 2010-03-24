@@ -55,7 +55,7 @@
   padding: 5px;
   text-align: left;
   overflow: hidden;
-  margin: 0 0 8px 0;
+  margin: 15px 0 8px 0;
   background: #FFF;
 }
 
@@ -81,6 +81,7 @@
   color: #FFF;
   font-weight: bold;
   font-size: 1.5em;
+	padding: 10px 3px;
 }
 
 .pending {
@@ -96,19 +97,17 @@
 }
 
 .pass  {
-	background: #FFF url('/images/passed.png') top right no-repeat;
+	background: #FFF url('/images/passed.png') center right no-repeat;
 } 
 
 .fail  {
-	border-top: 2px solid #ff3333;
-	border-bottom: 2px solid #ff3333;
-	background: #fab7a4 url('/images/failed.png') top right no-repeat;;
+	background: #fab7a4 url('/images/failed.png') center right no-repeat;;
 }
 
 .review  {
 	border-top: 2px solid #ff9933;
 	border-bottom: 2px solid #ff9933;
-	background: #fed6ae url('/images/review.png') top right no-repeat;;
+	background: #fed6ae url('/images/review.png') center right no-repeat;;
 }
 
 .not-tested {
@@ -178,4 +177,30 @@ div.test_results {
     padding: 1em;
 		overflow: hidden;
 		background: #fff;
+}
+
+#test_summary_meta h3 {
+	padding: 0 0 5px 0;
+	border-bottom: 1px solid #e0e0e0;
+	margin: 5px 0 3px 0;
+}
+
+.inspection_result_header h3 {
+	padding: 0 0 0px 0;
+	margin: 0px 0 0px 0;
+}
+
+.inspection_result_header span {
+	float: right;
+	padding: 3px 20px 0 0;
+}
+
+#launch_xml_window {
+	font-size: 1.3em;
+	color: #99e4fd;
+	text-decoration: none;
+}
+
+#launch_xml_window:hover {
+	color: #FFF;
 }
