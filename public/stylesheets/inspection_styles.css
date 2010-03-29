@@ -41,9 +41,8 @@
 	overflow: hidden;
 }
 
-#review_controls {
-	width: 790px;
-	height: 150px;
+.field_review_controls {
+	overflow: hidden;
 }
 
 .inspection_table_headers {

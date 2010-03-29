@@ -1,156 +1,242 @@
-<div id="template">
-  <div class="column span-20 module_inspection_result">
-  	    <div class="column span-19 inspection_result_header">
-  	        <div class="column span-15 module_name">
-  	            <h2>Person Information</h2>
-  	        </div>
-  	        <div class="overall_inspection_status column span-3 pending">
-  	            <p>PENDING</p>
-  	        </div>
-  	    </div>
-  	    <div class="column span-20">
-  	        <div class="row column span-20 inspection_table_headers">
-  	            <div class="column span-5 first">
-  	                <p>Field</p>
-  	            </div>
-  	            <div class="column span-5">
-  	                <p>Expected</p>
-  	            </div>
-  	            <div class="column span-5">
-  	                <p>Provided</p>
-  	            </div>
-  	            <div class="column span-4">
-  	                <p>Result</p>
-  	            </div>    
-              </div>
-              <div class="row column span-20 module_field pass">
-                  <div class="column span-5 first">
-                      <p>Affinity Domain Identifier</p>
+    <div id="filter" class="column span-8">
+        <h3>Filter warnings by severity:</h3>
+        <input name="pass" type="checkbox" id="fieldPass" value="0" class="" checked="checked" /><label for="passed">Passed</label>
+        <input name="review" type="checkbox" id="fieldReview" value="0" class="" checked="checked" /><label for="passed">Review</label>
+        <input name="fail" type="checkbox" id="fieldFailed" value="0" class="" checked="checked" /><label for="passed">Failed</label>
+        <input name="notest" type="checkbox" id="fieldNotTested" value="0" class="" checked="checked" /><label for="passed">Not Tested</label> 
+    </div><!-- END FILTER-->
+    
+    
+    <div id="template">
+        <div class="column span-20 module_inspection_result">
+        	 <div class="column span-20 inspection_result_header">
+        	     <div class="column span-15 module_name">
+        	         <h2>Person Information</h2>
+        	     </div>
+        	     <div class="overall_inspection_status column span-3 pending">
+        	         <p>PENDING</p>
+        	     </div>
+        	 </div>
+        	 <div class="row column span-20 inspection_table_headers">
+        	     <div class="column span-5 first">
+        	         <p>Field</p>
+        	     </div>
+        	     <div class="column span-5">
+        	         <p>Expected</p>
+        	     </div>
+        	     <div class="column span-5">
+        	         <p>Provided</p>
+        	     </div>
+        	     <div class="column span-4">
+        	         <p>Result</p>
+        	     </div>    
+           </div>
+           
+           <!-- BEGIN FIELD -->
+           <div class="row column span-20 module_field review">
+               <div class="column span-5 first">
+                   <p>Affinity Domain Identifier</p>
+               </div>
+               <div class="column span-5 data_field">
+                   <!-- EXPECTED RESULT NUMBER 1 -->
+                   <p>234322t3^^^^CCHIT234324234234</p>
+               </div>
+               <div class="column span-5 data_field">
+                   <!-- PROVIDED NUMBER 1 -->
+                   <p>234322t3^^^^CCHIT234324234234</p>
+               </div>
+               <div class="column span-4">
+                   <a class="manual-review" href="#">OPEN</a>
+               </div>
+               <div class="row field_review_controls">
+                  <div class="column span-14 prepend-1">
+                      <h5>Status override</h5>
+                      <% form_for(:test_plan, :url => mark_test_plan_url(@test_plan)) do |f| %>
+                        <%= f.select :state, { 'PASS' => 'passed', 'FAIL' => 'failed' } %><br />
+                        <%= f.label :status_override_reason %><br />
+                        <%= f.text_area :status_override_reason %><br />
+                        <%= f.submit "Assign" %>
+                      <% end %> 
                   </div>
-                  <div class="column span-5 data_field">
-                      <!-- EXPECTED RESULT NUMBER 1 -->
-                      <p>234322t3^^^^CCHIT234324234234</p>
-                  </div>
-                  <div class="column span-5 data_field">
-                      <!-- PROVIDED NUMBER 1 -->
-                      <p>234322t3^^^^CCHIT234324234234</p>
-                  </div>
-                  <div class="column span-4">
-                      <!-- STATUS (?) -->
-                  </div>
-              </div>
-              <div class="row column span-20 module_field review">
-                  <div class="column span-5 first">
-                      <p>Name Prefix</p>
-                  </div>
-                  <div class="column span-5">
-                      <!-- EXPECTED RESULT NUMBER 1 -->
-                      <p>Mr.</p>
-                  </div>
-                  <div class="column span-5">
-                      <!-- PROVIDED NUMBER 1 -->
-                      <p>Mr</p>
-                  </div>
-                  <div class="column span-4">
-                      <a href="#" onclick="Effect.SlideDown('review_controls', { duration: 0.325 }); return false;">REVIEW</a>
-                  </div>
-                  <div id="review_controls" class="row" style="display:none;">
-                      <div class="column span-14 prepend-1">
-                          <h5>Status override</h5>
+               </div>
+           </div>
+           <!-- END FIELD -->
+           
+           <!-- BEGIN FIELD -->
+           <div class="row column span-20 module_field review">
+               <div class="column span-5 first">
+                   <p>Name Prefix</p>
+               </div>
+               <div class="column span-5">
+                   <!-- EXPECTED RESULT NUMBER 1 -->
+                   <p>Mr.</p>
+               </div>
+               <div class="column span-5">
+                   <!-- PROVIDED NUMBER 1 -->
+                   <p>Mr</p>
+               </div>
+               <div class="column span-4">
+                   <a class="manual-review" href="#">OPEN</a>
+               </div>
+               <div class="row field_review_controls">
+                   <div class="column span-14 prepend-1">
+                       <h5>Status override</h5>
+                       <% form_for(:test_plan, :url => mark_test_plan_url(@test_plan)) do |f| %>
+                         <%= f.select :state, { 'PASS' => 'passed', 'FAIL' => 'failed' } %><br />
+                         <%= f.label :status_override_reason %><br />
+                         <%= f.text_area :status_override_reason %><br />
+                         <%= f.submit "Assign" %>
+                       <% end %> 
+                   </div>
+               </div>
+           </div>
+           <!-- END FIELD -->
+           
+           <!-- BEGIN FIELD-->
+           <div class="row column span-20 module_field pass">
+               <div class="column span-5 first">
+                   <p>First Name</p>
+               </div>
+               <div class="column span-5">
+                   <!-- EXPECTED RESULT NUMBER 1 -->
+                   <p>Bob</p>
+               </div>
+               <div class="column span-5">
+                   <!-- PROVIDED NUMBER 1 -->
+                   <p>Bob</p>
+               </div>
+               <div class="column span-4">
+                   <!-- STATUS (?) -->
+               </div>
+           </div>
+           <!-- END FIELD-->
+           
+           <!-- BEGIN FIELD-->
+           <div class="row column span-20 module_field review">
+               <div class="column span-5 first">
+                   <p>Name Prefix</p>
+               </div>
+               <div class="column span-5">
+                   <!-- EXPECTED RESULT NUMBER 1 -->
+                   <p>Mr.</p>
+               </div>
+               <div class="column span-5">
+                   <!-- PROVIDED NUMBER 1 -->
+                   <p>Mr</p>
+               </div>
+               <div class="column span-4">
+                   <a class="manual-review" href="#">OPEN</a>
+               </div>
+               <div class="row field_review_controls">
+                   <div class="column span-14 prepend-1">
+                       <h5>Status override</h5>
+                       <% form_for(:test_plan, :url => mark_test_plan_url(@test_plan)) do |f| %>
+                         <%= f.select :state, { 'PASS' => 'passed', 'FAIL' => 'failed' } %><br />
+                         <%= f.label :status_override_reason %><br />
+                         <%= f.text_area :status_override_reason %><br />
+                         <%= f.submit "Assign" %>
+                       <% end %> 
+                   </div>
+               </div>
+           </div>
+           <!-- END FIELD-->
+           
+           <!-- BEGIN FIELD-->
+           <div class="row column span-20 module_field review">
+                 <div class="column span-5 first">
+                     <p>Name Prefix</p>
+                 </div>
+                 <div class="column span-5">
+                     <p>Mr.</p>
+                 </div>
+                 <div class="column span-5">
+                     <p>Mr</p>
+                 </div>
+                 <div class="column span-4">
+                     <a class="manual-review" href="#">OPEN</a>
+                 </div>
+                 <div class="row field_review_controls">
+                     <div class="column span-14 prepend-1">
+                        <h5>Status override</h5>
                           <% form_for(:test_plan, :url => mark_test_plan_url(@test_plan)) do |f| %>
-                            <%= f.select :state, { 'PASS' => 'passed', 'FAIL' => 'failed' } %><br />
-                            <%= f.label :status_override_reason %><br />
-                            <%= f.text_area :status_override_reason %><br />
-                            <%= f.submit "Assign" %>
-                          <% end %> 
-                      </div>
-                      <div class="column span-2">
-                          <p><a href="#" onclick="$('review_controls').hide(); return false;">CLOSE</a></p>
-                      </div>
-                  </div>
-              </div>
-              <div class="row column span-20 module_field pass">
-                  <div class="column span-5 first">
-                      <p>First Name</p>
-                  </div>
-                  <div class="column span-5">
-                      <!-- EXPECTED RESULT NUMBER 1 -->
-                      <p>Bob</p>
-                  </div>
-                  <div class="column span-5">
-                      <!-- PROVIDED NUMBER 1 -->
-                      <p>Bob</p>
-                  </div>
-                  <div class="column span-4">
-                      <!-- STATUS (?) -->
-                  </div>
-              </div>
-              <div class="row column span-20 module_field pass">
-                  <div class="column span-5 first">
-                      <p>Last Name</p>
-                  </div>
-                  <div class="column span-5">
-                      <!-- EXPECTED RESULT NUMBER 1 -->
-                      <p>Miller</p>
-                  </div>
-                  <div class="column span-5">
-                      <!-- PROVIDED NUMBER 1 -->
-                      <p>Miller</p>
-                  </div>
-                  <div class="column span-4">
-                      <!-- STATUS (?) -->
-                  </div>
-              </div>
-              <div class="row column span-20 module_field pass">
-                  <div class="column span-5 first">
-                      <p>Name Suffix</p>
-                  </div>
-                  <div class="column span-5">
-                      <!-- EXPECTED RESULT NUMBER 1 -->
-                      <p> </p>
-                  </div>
-                  <div class="column span-5">
-                      <!-- PROVIDED NUMBER 1 -->
-                      <p> </p>
-                  </div>
-                  <div class="column span-4">
-                      <!-- STATUS (?) -->
-                  </div>
-              </div>
-              <div class="row column span-20 module_field pass">
-                  <div class="column span-5 first">
-                      <p>Gender</p>
-                  </div>
-                  <div class="column span-5">
-                      <!-- EXPECTED RESULT NUMBER 1 -->
-                      <p>Male</p>
-                  </div>
-                  <div class="column span-5">
-                      <!-- PROVIDED NUMBER 1 -->
-                      <p>Male</p>
-                  </div>
-                  <div class="column span-4">
-                      <!-- STATUS (?) -->
-                  </div>
-              </div>
-              <div class="row column span-20 module_field fail">
-                  <div class="column span-5 first">
-                      <p>Marital Status</p>
-                  </div>
-                  <div class="column span-5">
-                      <!-- EXPECTED RESULT NUMBER 1 -->
-                      <p>Single</p>
-                  </div>
-                  <div class="column span-5">
-                      <!-- PROVIDED NUMBER 1 -->
-                      <p>Married</p>
-                  </div>
-                  <div class="column span-4">
-                      <!-- STATUS (?) -->
-                  </div>
-              </div>
-          </div>
-  	</div><!--CLOSE MODULE INSPECTION RESULT -->
+                          <%= f.select :state, { 'PASS' => 'passed', 'FAIL' => 'failed' } %><br />
+                          <%= f.label :status_override_reason %><br />
+                          <%= f.text_area :status_override_reason %><br />
+                          <%= f.submit "Assign" %>
+                        <% end %> 
+                    </div>
+                </div>
+           </div>
+           <!-- END FIELD-->
+           
+           
+                    <div class="row column span-20 module_field pass">
+                        <div class="column span-5 first">
+                            <p>Last Name</p>
+                        </div>
+                        <div class="column span-5">
+                            <!-- EXPECTED RESULT NUMBER 1 -->
+                            <p>Miller</p>
+                        </div>
+                        <div class="column span-5">
+                            <!-- PROVIDED NUMBER 1 -->
+                            <p>Miller</p>
+                        </div>
+                        <div class="column span-4">
+                            <!-- STATUS (?) -->
+                        </div>
+                    </div>
+                    <div class="row column span-20 module_field fail">
+                        <div class="column span-5 first">
+                            <p>Name Suffix</p>
+                        </div>
+                        <div class="column span-5">
+                            <!-- EXPECTED RESULT NUMBER 1 -->
+                            <p> </p>
+                        </div>
+                        <div class="column span-5">
+                            <!-- PROVIDED NUMBER 1 -->
+                            <p> </p>
+                        </div>
+                        <div class="column span-4">
+                            <!-- STATUS (?) -->
+                        </div>
+                    </div>
+                    <div class="row column span-20 module_field pass">
+                        <div class="column span-5 first">
+                            <p>Gender</p>
+                        </div>
+                        <div class="column span-5">
+                            <!-- EXPECTED RESULT NUMBER 1 -->
+                            <p>Male</p>
+                        </div>
+                        <div class="column span-5">
+                            <!-- PROVIDED NUMBER 1 -->
+                            <p>Male</p>
+                        </div>
+                        <div class="column span-4">
+                            <!-- STATUS (?) -->
+                        </div>
+                    </div>
+                    <div class="row column span-20 module_field fail">
+                        <div class="column span-5 first">
+                            <p>Marital Status</p>
+                        </div>
+                        <div class="column span-5">
+                            <!-- EXPECTED RESULT NUMBER 1 -->
+                            <p>Single</p>
+                        </div>
+                        <div class="column span-5">
+                            <!-- PROVIDED NUMBER 1 -->
+                            <p>Married</p>
+                        </div>
+                        <div class="column span-4">
+                            <!-- STATUS (?) -->
+                        </div>
+                    </div>
+                </div>
+        	</div><!--CLOSE MODULE INSPECTION RESULT -->
+      </div>
   
   <!--><table id="dashboard">
     <tr valign="top">
@@ -187,4 +273,3 @@
     </tr>  
     <%end %> 
   </table>-->
-</div>
