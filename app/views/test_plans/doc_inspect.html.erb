@@ -6,13 +6,12 @@
 </ol>
 
 <div id="test_summary" class="test_results">
-      
       <div class="column span-11 first">
         <div id="test_summary_meta">
           <p><strong>Test Date:</strong> <%= @test_plan.updated_at %></p>
           <h3>Inspection ID: <%= @test_plan.vendor %></h3>
           <h3>Document Type: <%= @test_plan.clinical_document.doc_type %></h3>
-        </div>     
+        </div><!--END TEST SUMMARY META--> 
         <div id="test_summary_breakdown">
           <div class="inspection_result_header <%= test_plan_results_class(@test_plan) %>">
             <h3>Test Result Summary: <span><%= test_plan_results_heading(@test_plan) %></span></h3>
@@ -28,6 +27,9 @@
             <span class="number"><%= @test_plan.umls_codesystem_errors.count %></span> <a href="#umls_validation">UMLS Code Warnings</a>
           </div>
           <% end -%>
+          <small><strong>Validation Notes:</strong><br />
+          Content discrepancies between patient record assigned to test and C32 under validation will be flagged as warnings. Patient summary content will be validated by visual inspection of the xml and using a stylesheet. UMLS validation errors will be visually inspected and verified. Neither content inspection warnings nor UMLS validation errors automatically determine PASS/FAIL status.
+          </small>
         </div><!-- End test summary breakdown-->
       </div>
       <div class="column span-8 prepend-2 last">
@@ -54,20 +56,20 @@
 
 <div id="xml_validation" class="test_results">
     <h2>XML Validation Results:</h2>
-    <%= render :partial => "error_list",
+    <%= render :partial => "xml_error_response",
       :locals => { :errors => @test_plan.xml_validation_errors } %>
 </div>
 
 <div id="content_inspection"class="test_results">
     <h2>Content Inspection:</h2>
-    <%= render :partial => "error_list",
+    <%= render :partial => "content_inspection_results",
       :locals => { :errors => @test_plan.content_inspection_errors } %>
 </div>
 
 <div id="umls_validation" class="test_results">
     <h2>UMLS Validation:</h2>
     <% if @test_plan.umls_enabled? -%>
-      <%= render :partial => "error_list",
+      <%= render :partial => "umls_error_response",
         :locals => { :errors => @test_plan.umls_codesystem_errors } %>
     <% end -%>
 </div>    
