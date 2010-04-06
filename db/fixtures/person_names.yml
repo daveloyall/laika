@@ -106,7 +106,7 @@ larry_mullen:
   name_prefix: Mr.
   first_name: Larry
   last_name: Mullen   
-  name_suffix: Jr.
+#  name_suffix: Jr.
   nameable: will_haynes_information_source (InformationSource)
 
 david_carter_comment:

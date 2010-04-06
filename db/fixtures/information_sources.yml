@@ -10,11 +10,11 @@ jim_grayson_information_source:
   organization_name: CCHIT Testing Labs
   patient: jim_grayson
                                
-patrick_mcsorley_information_source:
+patrick_mcsorely_information_source:
   time: 2008-04-19
   document_id: ABC-1234567-CC
   organization_name: CCHIT Testing Labs
-  patient: patrick_mcsorley
+  patient: patrick_mcsorely
                                
 suzanne_smith_information_source:
   time: 2009-05-20
