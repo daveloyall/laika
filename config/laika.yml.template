@@ -17,6 +17,6 @@ exception_notifier:
 # Set these only if you need to mail through an SMTP server that is
 # not localhost (or you need to customize some other ActionMailer setting)
 action_mailer:
-#  :address => "localhost"
-#  :port => 25
-#  :domain => ""
+#  address: "localhost"
+#  port: 25
+#  domain: ""
