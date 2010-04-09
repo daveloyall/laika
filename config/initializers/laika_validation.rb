@@ -156,7 +156,10 @@ if ccr_schema_exists || ccr_rules_validator_exists
   ccr_validators = [
     Validators::Umls::UmlsValidator.new("warning"),
   ]
-  ccr_validators.unshift Validators::CCR::WaldrenRulesValidator.new("CCR Rules Validator") if ccr_rules_validator_exists
+  if ccr_rules_validator_exists
+    require 'validators/ccr/waldren_rules_validator'
+    ccr_validators.unshift Validators::CCR::WaldrenRulesValidator.new("CCR Rules Validator")
+  end
   ccr_validators.unshift Validators::Schema::Validator.new("CCR Schema Validator", ccr_schema_path) if ccr_schema_exists
   validator_config[Validation::CCR_TYPE] = ccr_validators
 end

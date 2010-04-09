@@ -114,6 +114,11 @@ resources/schemas/infrastructure/ccr/CCR.xsd
 
 To use Steven Waldren's CCR ValidationService, you will need to obtain a copy and place it in vendor/ccr-validation-service (see vendor/ccr-validation-service/README.txt).
 
+You can unpack the ValidationService.war using the 'jar' utility.
+
+ $ cd vendor/ccr-validation-service
+ $ jar -xf ValidationService.war # assuming you have copied ValidationService.war into this directory from SourceForge
+
 You will also need to place a copy of the CCR xsd in vendor/ccr-validation-service/WEB-INF/classes/org/openhealthdata/validation/
 
 Finally, there is an adjustment to the source code for the paths in three getResource calls.  You will need to checkout the source code and change the following two files:

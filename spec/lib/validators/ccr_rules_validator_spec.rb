@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 describe Validators::CCR::WaldrenRulesValidator do
 
   before do
-    puts java.lang.System.getProperty("java.class.path")
+#    puts java.lang.System.getProperty("java.class.path")
     @validator = Validators::CCR::WaldrenRulesValidator.new("Waldren Rules CCR Validator")
   end
 
@@ -11,13 +11,13 @@ describe Validators::CCR::WaldrenRulesValidator do
     puts @validator
     xml = "/../spec/test_data/ccr/trivial_ccr.xml"
     results = @validator.validate(nil, xml)
-    puts results
+    puts results.inspect
   end
 
   it "should test against non-trivial xml" do
     xml = "/../spec/test_data/ccr/ccrsample_Allscripts.xml"
     results = @validator.validate(nil, xml)
-    puts results
+    puts results.inspect
   end
 
   it "should run against all the available ccrs" do
