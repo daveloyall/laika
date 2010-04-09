@@ -1,15 +1,13 @@
 # default settings
 login: &login
+  adapter: jdbcmysql
   encoding: UTF8
   username: laika
   password: laika
  
 # laika development settings
 development:
-  database: laika_dev
-  adapter: jdbcpostgresql
-  host: localhost
-  port: 5432
+  database: laika_development
   <<: *login
  
 # laika production settings
@@ -34,17 +32,15 @@ umls_production:
 
 umls_development:
   adapter: jdbcmysql
-  host: umls.cchit.org
   database: umls
   username: umls
-  password: cchitreadonly
+  password: umls
  
 umls_test:
   adapter: jdbcmysql
-  host: umls.cchit.org
   database: umls
   username: umls
-  password: cchitreadonly
+  password: umls
 
 # ATNA message log
 # Uncomment if you will be setting up the ATNA logging (see INSTALL.rdoc) 
