@@ -48,15 +48,43 @@ class Untitled < Test::Unit::TestCase
     assert_equal [], @verification_errors
   end
   
-  def test_untitled
+#  def test_generate_and_format_failure
+#    @selenium.open "/account/login"
+#    @selenium.type "email", "jpartlow@opensourcery.com"
+#    @selenium.type "password", "password"
+#    @selenium.click "link=Login"
+#    @selenium.wait_for_page_to_load "300000"
+#    30.times do |i|
+#      puts "Attempting Generate and Format: #{i}"
+#      generate_and_format
+#    end
+#  end
+
+#  def test_index_failure_with_404
+#    @selenium.open "/account/login"
+#    @selenium.type "email", "jpartlow@opensourcery.com"
+#    @selenium.type "password", "password"
+#    @selenium.click "link=Login"
+#    @selenium.wait_for_page_to_load "300000"
+#    25000.times do |i|
+#      puts "404: #{i}"
+#      @selenium.open '/foo.php'
+#      if i % 50 == 0
+#        puts "Attempting index: #{i/50}"
+#        @selenium.open '/test_plans'
+#      end
+#    end
+#  end
+
+  def test_index_failure
     @selenium.open "/account/login"
     @selenium.type "email", "jpartlow@opensourcery.com"
     @selenium.type "password", "password"
     @selenium.click "link=Login"
     @selenium.wait_for_page_to_load "300000"
-    30.times do |i|
-      puts "Attempting Generate and Format: #{i}"
-      generate_and_format
+    500.times do |i|
+      puts "Attempting index: i"
+      @selenium.open '/test_plans'
     end
   end
 
