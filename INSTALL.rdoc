@@ -98,70 +98,6 @@ If you will be running the test suite, also perform
 
  $ sudo jruby -S rake gems:install RAILS_ENV=test
 
-== CCR Validation
-
-The CCR XSD is proprietary and can be obtained through ASTM for a fee:
-
-http://www.astm.org/BOOKSTORE/ADJUNCT/734.htm
-
-If you wish to test CCR documents, you will need to obtain the XSD and place
-it in resources/schemas/infrastructure/ccr as CCR.xsd.  The relative path to
-the XSD resource should be:
-
-resources/schemas/infrastructure/ccr/CCR.xsd
-
-=== Waldren CCR Validator
-
-To use Steven Waldren's CCR ValidationService, you will need to obtain a copy and place it in vendor/ccr-validation-service (see vendor/ccr-validation-service/README.txt).
-
-You can unpack the ValidationService.war using the 'jar' utility.
-
- $ cd vendor/ccr-validation-service
- $ jar -xf ValidationService.war # assuming you have copied ValidationService.war into this directory from SourceForge
-
-You will also need to place a copy of the CCR xsd in vendor/ccr-validation-service/WEB-INF/classes/org/openhealthdata/validation/
-
-Finally, there is an adjustment to the source code for the paths in three getResource calls.  You will need to checkout the source code and change the following two files:
-
-jpartlow@fook:~/dev/osourcery/elbe/ccrvalidator/ValidationService$ svn diff
-Index: src/org/openhealthdata/validator/ValidationManager.java
-===================================================================
---- src/org/openhealthdata/validator/ValidationManager.java	(revision 3)
-+++ src/org/openhealthdata/validator/ValidationManager.java	(working copy)
-@@ -77,8 +77,8 @@
- 		KnowledgeBuilder builder = KnowledgeBuilderFactory
- 				.newKnowledgeBuilder();
- 		// Get Rule directory
--		URL c = this.getClass().getClassLoader().getResource("/org/astm/ccr/rules/core");
--		URL v1 = this.getClass().getClassLoader().getResource("/org/astm/ccr/rules/v1");
-+		URL c = this.getClass().getClassLoader().getResource("org/astm/ccr/rules/core");
-+		URL v1 = this.getClass().getClassLoader().getResource("org/astm/ccr/rules/v1");
- 
- 		File coreDir = new File(c.toURI());
- 		File v1Dir = new File(v1.toURI());
-Index: src/org/openhealthdata/validation/CCRV1SchemaValidator.java
-===================================================================
---- src/org/openhealthdata/validation/CCRV1SchemaValidator.java	(revision 3)
-+++ src/org/openhealthdata/validation/CCRV1SchemaValidator.java	(working copy)
-@@ -88,7 +88,7 @@
- 		// create Validator
- 		// create a SchemaFactory capable of understanding WXS schemas
- 	    SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
--	    URL xsdURL = this.getClass().getClassLoader().getResource("/org/openhealthdata/validation/CCRV1.xsd");
-+	    URL xsdURL = this.getClass().getClassLoader().getResource("org/openhealthdata/validation/CCRV1.xsd");
- 	    File xsdFile = null;
- 		try {
- 			xsdFile = new File(xsdURL.toURI());
-
-And then compile them with javac into your vendor/ccr-validation-service binaries.  The following command assumes the following structure:
-
-./laika/vendor/ccr-validation-service/
-./ccrvalidator/ValidationService/
-
-and assumes that the command is being run from the ccrvalidator/ValidationService/ directory.  Modify the pathing as needed for your layout.  The key point is that the binary packages lib jars and classes dir must be in the class path.  The destination directory must the binary classes dir, and you need to compile the indicated files after making the changes noted above.
-
-jpartlow@fook:~/dev/osourcery/elbe/ccrvalidator/ValidationService$ javac -verbose -cp '../../laika/vendor/ccr-validation-service/WEB-INF/lib/*:../../laika/vendor/ccr-validation-service/WEB-INF/classes' -d ../../laika/vendor/ccr-validation-service/WEB-INF/classes/ src/org/openhealthdata/validation/CCRV1SchemaValidator.java src/org/openhealthdata/validator/ValidationManager.java
-
 == Database initialization
 
 Make sure your local database server is running and create a new user *laika* with password *laika*.  You will need to ensure that this user will have access to the laika database.  MySQL and PostgreSQL have different authentication and authorization methods; check their manuals.  Make sure that your database.yml settings reflect your choice of user/password/database, for example:
@@ -193,6 +129,29 @@ You will be prompted for information about the administrator account.
 NOTE: this only  prepares the Laika Rail's databases.  Prepation of UMLS, XDS or ATNA databases is a separate installation process not covered in this document.  See the above notes for pointers.
 
 NOTE: You must have your classpath set so that Laika can find the Saxon libraries in order to run rake.  See 'Environment' above.
+
+== CCR Validation
+
+The CCR XSD is proprietary and can be obtained through ASTM for a fee:
+
+http://www.astm.org/BOOKSTORE/ADJUNCT/734.htm
+
+If you wish to test CCR documents, you will need to obtain the XSD and place
+it in resources/schemas/infrastructure/ccr as CCR.xsd.  The relative path to
+the XSD resource should be:
+
+resources/schemas/infrastructure/ccr/CCR.xsd
+
+=== Waldren CCR Validator
+
+To use Steven Waldren's CCR ValidationService, you will need to obtain a copy and place it in vendor/ccr-validation-service (see vendor/ccr-validation-service/README.txt).
+
+You can unpack the ValidationService.war using the 'jar' utility.
+
+ $ cd vendor/ccr-validation-service
+ $ jar -xf ValidationService.war # assuming you have copied ValidationService.war into this directory from SourceForge
+
+You will also need to place a copy of the CCR xsd in vendor/ccr-validation-service/WEB-INF/classes/org/openhealthdata/validation/
 
 == Mail Settings
 

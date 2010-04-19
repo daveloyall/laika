@@ -1,0 +1,1021 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml-stylesheet type="text/xsl" href="http://chit.dyndns.org/CCRValidation/XSLT/ccr.xsl"?>
+<ContinuityOfCareRecord xmlns="urn:astm-org:CCR"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="urn:astm-org:CCR C:\MedCommons\svn.medcommons.net\router\demo\etc\schema\ccr\CCR_20051109.xsd">
+
+  <CCRDocumentObjectID>AA1885692678104412200</CCRDocumentObjectID>
+  <Language>
+    <Text>English</Text>
+  </Language>
+  <Version>V1.0</Version>
+  <DateTime>
+    <ExactDateTime>2006-05-03T20:04:03.0Z</ExactDateTime>
+  </DateTime>
+  <Patient>
+    <ActorID>28DCD162-A4FA-8A12-176A-97A341B410B6</ActorID>
+  </Patient>
+  <From>
+    <ActorLink>
+      <ActorID>A000000</ActorID>
+    </ActorLink>
+  </From>
+  <To>
+    <ActorLink>
+      <ActorID>AA2470618798</ActorID>
+      <ActorRole>
+        <Text>Notification</Text>
+      </ActorRole>
+    </ActorLink>
+  </To>
+  <Body>
+    <Payers>
+      <Payer>
+        <CCRDataObjectID>
+        49617D0B-9DC4-373F-758B-6D20C2033D0C</CCRDataObjectID>
+        <Type>
+          <Text>Unknown</Text>
+        </Type>
+        <Status>
+          <Text>Unknown</Text>
+        </Status>
+        <Source>
+          <Actor>
+            <ActorID>1956A253-5D97-0C30-3136-E1AECB113D9A</ActorID>
+          </Actor>
+        </Source>
+        <PaymentProvider>
+          <ActorID>1956A253-5D97-0C30-3136-E1AECB113D9A</ActorID>
+        </PaymentProvider>
+      </Payer>
+    </Payers>
+    <Problems>
+      <Problem>
+        <CCRDataObjectID>
+        96E69AD9-6A8C-6616-1DBB-7161D1516CCD</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Date Of Service</Text>
+          </Type>
+          <ExactDateTime>
+          2006-01-05T00:00:00.000-06:00</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Diagnosis</Text>
+        </Type>
+        <Description>
+          <Text>Lateral epicondylitis</Text>
+          <Code>
+            <Value>726.32</Value>
+            <CodingSystem>ICD9CM</CodingSystem>
+          </Code>
+        </Description>
+        <Status>
+          <Text>Unknown</Text>
+        </Status>
+        <Source>
+          <Actor>
+            <ActorID>A000000</ActorID>
+            <ActorRole>
+              <Text>Healthcare Claims data source</Text>
+            </ActorRole>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>
+        80441C85-893D-B12D-DA91-87ABE5A0849B</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Date Of Service</Text>
+          </Type>
+          <ExactDateTime>
+          2006-01-05T00:00:00.000-06:00</ExactDateTime>
+        </DateTime>
+        <DateTime>
+          <Type>
+            <Text>Date Of Service</Text>
+          </Type>
+          <ExactDateTime>
+          2005-09-13T00:00:00.000-05:00</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Diagnosis</Text>
+        </Type>
+        <Description>
+          <Text>Unspecified essential hypertension</Text>
+          <Code>
+            <Value>401.9</Value>
+            <CodingSystem>ICD9CM</CodingSystem>
+          </Code>
+        </Description>
+        <Status>
+          <Text>Unknown</Text>
+        </Status>
+        <Source>
+          <Actor>
+            <ActorID>A000000</ActorID>
+            <ActorRole>
+              <Text>Healthcare Claims data source</Text>
+            </ActorRole>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>
+        B6FF61A3-C52E-9848-2D0A-CB2BAF7E2887</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Date Of Service</Text>
+          </Type>
+          <ExactDateTime>
+          2006-01-05T00:00:00.000-06:00</ExactDateTime>
+        </DateTime>
+        <DateTime>
+          <Type>
+            <Text>Date Of Service</Text>
+          </Type>
+          <ExactDateTime>
+          2005-09-13T00:00:00.000-05:00</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Diagnosis</Text>
+        </Type>
+        <Description>
+          <Text>Congestive heart failure, unspecified</Text>
+          <Code>
+            <Value>428.0</Value>
+            <CodingSystem>ICD9CM</CodingSystem>
+          </Code>
+        </Description>
+        <Status>
+          <Text>Unknown</Text>
+        </Status>
+        <Source>
+          <Actor>
+            <ActorID>A000000</ActorID>
+            <ActorRole>
+              <Text>Healthcare Claims data source</Text>
+            </ActorRole>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>
+        6681503E-0D8C-7875-71EA-5FBDD9D5238A</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Date Of Service</Text>
+          </Type>
+          <ExactDateTime>
+          2006-01-05T00:00:00.000-06:00</ExactDateTime>
+        </DateTime>
+        <DateTime>
+          <Type>
+            <Text>Date Of Service</Text>
+          </Type>
+          <ExactDateTime>
+          2005-09-13T00:00:00.000-05:00</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Diagnosis</Text>
+        </Type>
+        <Description>
+          <Text>Unspecified hypothyroidism</Text>
+          <Code>
+            <Value>244.9</Value>
+            <CodingSystem>ICD9CM</CodingSystem>
+          </Code>
+        </Description>
+        <Status>
+          <Text>Unknown</Text>
+        </Status>
+        <Source>
+          <Actor>
+            <ActorID>A000000</ActorID>
+            <ActorRole>
+              <Text>Healthcare Claims data source</Text>
+            </ActorRole>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>
+        ACD0314B-B0EC-E17B-D4CD-A96832C7BA3D</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Date Of Service</Text>
+          </Type>
+          <ExactDateTime>
+          2005-09-13T00:00:00.000-05:00</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Diagnosis</Text>
+        </Type>
+        <Description>
+          <Text>Urinary tract infection, site not specified</Text>
+          <Code>
+            <Value>599.0</Value>
+            <CodingSystem>ICD9CM</CodingSystem>
+          </Code>
+        </Description>
+        <Status>
+          <Text>Unknown</Text>
+        </Status>
+        <Source>
+          <Actor>
+            <ActorID>A000000</ActorID>
+            <ActorRole>
+              <Text>Healthcare Claims data source</Text>
+            </ActorRole>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>
+        F237FB9A-0B7B-7357-7488-1BA852DA7729</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Date Of Service</Text>
+          </Type>
+          <ExactDateTime>
+          2005-01-09T00:00:00.000-06:00</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Diagnosis</Text>
+        </Type>
+        <Description>
+          <Text>Breast screening, unspecified</Text>
+          <Code>
+            <Value>V76.10</Value>
+            <CodingSystem>ICD9CM</CodingSystem>
+          </Code>
+        </Description>
+        <Status>
+          <Text>Unknown</Text>
+        </Status>
+        <Source>
+          <Actor>
+            <ActorID>A000000</ActorID>
+            <ActorRole>
+              <Text>Healthcare Claims data source</Text>
+            </ActorRole>
+          </Actor>
+        </Source>
+      </Problem>
+    </Problems>
+    <Medications>
+      <Medication>
+        <CCRDataObjectID>2206053156980</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Date of Service</Text>
+          </Type>
+          <ExactDateTime>
+          2006-02-01T00:00:00.000-06:00</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>THYROXINE</Text>
+          <Code>
+            <Value>00048105003</Value>
+            <CodingSystem>NDC</CodingSystem>
+          </Code>
+        </Description>
+        <Status>
+          <Text>Unknown</Text>
+        </Status>
+        <Source>
+          <Actor>
+            <ActorID>A000000</ActorID>
+            <ActorRole>
+              <Text>Healthcare Claims data source</Text>
+            </ActorRole>
+          </Actor>
+        </Source>
+        <Product>
+          <ProductName>
+            <Text>THYROXINE</Text>
+            <Code>
+              <Value>00048105003</Value>
+              <CodingSystem>NDC</CodingSystem>
+            </Code>
+          </ProductName>
+          <Strength>
+            <Value>0.075</Value>
+            <Units>
+              <Unit>MG</Unit>
+            </Units>
+          </Strength>
+          <Form>
+            <Text>TABLET</Text>
+          </Form>
+        </Product>
+        <Quantity>
+          <Value>30</Value>
+        </Quantity>
+        <Refills>
+          <Refill>
+            <Number>3</Number>
+          </Refill>
+        </Refills>
+      </Medication>
+      <Medication>
+        <CCRDataObjectID>2206053156981</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Date of Service</Text>
+          </Type>
+          <ExactDateTime>
+          2006-02-01T00:00:00.000-06:00</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>SPIROLACTONE</Text>
+          <Code>
+            <Value>00025100131</Value>
+            <CodingSystem>NDC</CodingSystem>
+          </Code>
+        </Description>
+        <Status>
+          <Text>Unknown</Text>
+        </Status>
+        <Source>
+          <Actor>
+            <ActorID>A000000</ActorID>
+            <ActorRole>
+              <Text>Healthcare Claims data source</Text>
+            </ActorRole>
+          </Actor>
+        </Source>
+        <Product>
+          <ProductName>
+            <Text>SPIROLACTONE</Text>
+            <Code>
+              <Value>00025100131</Value>
+              <CodingSystem>NDC</CodingSystem>
+            </Code>
+          </ProductName>
+          <Strength>
+            <Value>25</Value>
+            <Units>
+              <Unit>MG</Unit>
+            </Units>
+          </Strength>
+          <Form>
+            <Text>TABLET, FILM COATED</Text>
+          </Form>
+        </Product>
+        <Quantity>
+          <Value>30</Value>
+        </Quantity>
+        <Refills>
+          <Refill>
+            <Number>3</Number>
+          </Refill>
+        </Refills>
+      </Medication>
+      <Medication>
+        <CCRDataObjectID>2206053156982</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Date of Service</Text>
+          </Type>
+          <ExactDateTime>
+          2006-02-01T00:00:00.000-06:00</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>COREG</Text>
+          <Code>
+            <Value>00007414220</Value>
+            <CodingSystem>NDC</CodingSystem>
+          </Code>
+        </Description>
+        <Status>
+          <Text>Unknown</Text>
+        </Status>
+        <Source>
+          <Actor>
+            <ActorID>A000000</ActorID>
+            <ActorRole>
+              <Text>Healthcare Claims data source</Text>
+            </ActorRole>
+          </Actor>
+        </Source>
+        <Product>
+          <ProductName>
+            <Text>COREG</Text>
+            <Code>
+              <Value>00007414220</Value>
+              <CodingSystem>NDC</CodingSystem>
+            </Code>
+          </ProductName>
+          <Strength>
+            <Value>25</Value>
+            <Units>
+              <Unit>MG</Unit>
+            </Units>
+          </Strength>
+          <Form>
+            <Text>TABLET, FILM COATED</Text>
+          </Form>
+        </Product>
+        <Quantity>
+          <Value>30</Value>
+        </Quantity>
+        <Refills>
+          <Refill>
+            <Number>3</Number>
+          </Refill>
+        </Refills>
+      </Medication>
+      <Medication>
+        <CCRDataObjectID>2206053156983</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Date of Service</Text>
+          </Type>
+          <ExactDateTime>
+          2006-02-01T00:00:00.000-06:00</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>LASIX</Text>
+          <Code>
+            <Value>58056013510</Value>
+            <CodingSystem>NDC</CodingSystem>
+          </Code>
+        </Description>
+        <Status>
+          <Text>Unknown</Text>
+        </Status>
+        <Source>
+          <Actor>
+            <ActorID>A000000</ActorID>
+            <ActorRole>
+              <Text>Healthcare Claims data source</Text>
+            </ActorRole>
+          </Actor>
+        </Source>
+        <Product>
+          <ProductName>
+            <Text>LASIX</Text>
+            <Code>
+              <Value>58056013510</Value>
+              <CodingSystem>NDC</CodingSystem>
+            </Code>
+          </ProductName>
+          <Strength>
+            <Value>20</Value>
+            <Units>
+              <Unit>MG</Unit>
+            </Units>
+          </Strength>
+          <Form>
+            <Text>TABLET</Text>
+          </Form>
+        </Product>
+        <Quantity>
+          <Value>30</Value>
+        </Quantity>
+        <Refills>
+          <Refill>
+            <Number>0</Number>
+          </Refill>
+        </Refills>
+      </Medication>
+      <Medication>
+        <CCRDataObjectID>2206053156984</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Date of Service</Text>
+          </Type>
+          <ExactDateTime>
+          2006-02-01T00:00:00.000-06:00</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>ENALAPRIL</Text>
+          <Code>
+            <Value>64455014390</Value>
+            <CodingSystem>NDC</CodingSystem>
+          </Code>
+        </Description>
+        <Status>
+          <Text>Unknown</Text>
+        </Status>
+        <Source>
+          <Actor>
+            <ActorID>A000000</ActorID>
+            <ActorRole>
+              <Text>Healthcare Claims data source</Text>
+            </ActorRole>
+          </Actor>
+        </Source>
+        <Product>
+          <ProductName>
+            <Text>ENALAPRIL</Text>
+            <Code>
+              <Value>64455014390</Value>
+              <CodingSystem>NDC</CodingSystem>
+            </Code>
+          </ProductName>
+          <Strength>
+            <Value>20</Value>
+            <Units>
+              <Unit>MG</Unit>
+            </Units>
+          </Strength>
+          <Form>
+            <Text>TABLET</Text>
+          </Form>
+        </Product>
+        <Quantity>
+          <Value>30</Value>
+        </Quantity>
+        <Refills>
+          <Refill>
+            <Number>3</Number>
+          </Refill>
+        </Refills>
+      </Medication>
+    </Medications>
+    <Procedures>
+      <Procedure>
+        <CCRDataObjectID>
+        D85D534E-CAC0-7A2B-F170-15CE1F00ABD6</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Date Of Service</Text>
+          </Type>
+          <ExactDateTime>
+          2006-01-05T00:00:00.000-06:00</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Unknown</Text>
+        </Type>
+        <Description>
+          <Text>Arthrocentesis, aspiration and/or injection;
+          intermediate joint or bursa (eg, temporomandibular,
+          acromioclavicular, wrist, elbow or ankle, olecranon
+          bursa)</Text>
+          <Code>
+            <Value>20605</Value>
+            <CodingSystem>CPT</CodingSystem>
+          </Code>
+        </Description>
+        <Status>
+          <Text>Unknown</Text>
+        </Status>
+        <Source>
+          <Actor>
+            <ActorID>A000000</ActorID>
+            <ActorRole>
+              <Text>Healthcare Claims data source</Text>
+            </ActorRole>
+          </Actor>
+        </Source>
+      </Procedure>
+      <Procedure>
+        <CCRDataObjectID>
+        A116C912-A95F-BD4F-33B9-812058BE41C3</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Date Of Service</Text>
+          </Type>
+          <ExactDateTime>
+          2005-09-13T00:00:00.000-05:00</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Unknown</Text>
+        </Type>
+        <Description>
+          <Text>Electrocardiogram, routine ECG with at least 12
+          leads; with interpretation and report</Text>
+          <Code>
+            <Value>93000</Value>
+            <CodingSystem>CPT</CodingSystem>
+          </Code>
+        </Description>
+        <Status>
+          <Text>Unknown</Text>
+        </Status>
+        <Source>
+          <Actor>
+            <ActorID>A000000</ActorID>
+            <ActorRole>
+              <Text>Healthcare Claims data source</Text>
+            </ActorRole>
+          </Actor>
+        </Source>
+      </Procedure>
+      <Procedure>
+        <CCRDataObjectID>
+        F6762DC2-F85B-CDC8-5E4E-21D1104BA0C7</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Date Of Service</Text>
+          </Type>
+          <ExactDateTime>
+          2005-09-13T00:00:00.000-05:00</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Unknown</Text>
+        </Type>
+        <Description>
+          <Text>Urinalysis, by dip stick or tablet reagent for
+          bilirubin, glucose, hemoglobin, ketones, leukocytes,
+          nitrite, pH, protein, specific gravity, urobilinogen, any
+          number of these constituents; automated, without
+          microscopy</Text>
+          <Code>
+            <Value>81003</Value>
+            <CodingSystem>CPT</CodingSystem>
+          </Code>
+        </Description>
+        <Status>
+          <Text>Unknown</Text>
+        </Status>
+        <Source>
+          <Actor>
+            <ActorID>A000000</ActorID>
+            <ActorRole>
+              <Text>Healthcare Claims data source</Text>
+            </ActorRole>
+          </Actor>
+        </Source>
+      </Procedure>
+      <Procedure>
+        <CCRDataObjectID>
+        CAE19613-559D-CDE2-7653-7142B404D6BC</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Date Of Service</Text>
+          </Type>
+          <ExactDateTime>
+          2005-01-09T00:00:00.000-06:00</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Unknown</Text>
+        </Type>
+        <Description>
+          <Text>Screening mammography, bilateral (two view film
+          study of each breast)</Text>
+          <Code>
+            <Value>76092</Value>
+            <CodingSystem>CPT</CodingSystem>
+          </Code>
+        </Description>
+        <Status>
+          <Text>Unknown</Text>
+        </Status>
+        <Source>
+          <Actor>
+            <ActorID>A000000</ActorID>
+            <ActorRole>
+              <Text>Healthcare Claims data source</Text>
+            </ActorRole>
+          </Actor>
+        </Source>
+      </Procedure>
+    </Procedures>
+    <Encounters>
+      <Encounter>
+        <CCRDataObjectID>2405348012000</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Date of Service</Text>
+          </Type>
+          <ExactDateTime>
+          2006-01-05T00:00:00.000-06:00</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Unknown</Text>
+        </Type>
+        <Description>
+          <Text>Office or other outpatient visit for the evaluation
+          and management of an established patient, which requires
+          at least two of these three key components: an expanded
+          problem focused history; an expanded problem focused
+          examination; medical decision making of low complexity.
+          Counseling and coordination of care with other providers
+          or agencies are provided consistent with the nature of
+          the problem(s) and the patient's and/or family's needs.
+          Usually, the presenting problem(s) are of low to moderate
+          severity. Physicians typically spend 15 minutes
+          face-to-face with the patient and/or family.</Text>
+          <Code>
+            <Value>99213</Value>
+            <CodingSystem>CPT</CodingSystem>
+          </Code>
+        </Description>
+        <Status>
+          <Text>Unknown</Text>
+        </Status>
+        <Source>
+          <Actor>
+            <ActorID>A000000</ActorID>
+            <ActorRole>
+              <Text>Healthcare Claims data source</Text>
+            </ActorRole>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>110000002</ActorID>
+            <ActorRole>
+              <Text>Billing Provider</Text>
+            </ActorRole>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+      <Encounter>
+        <CCRDataObjectID>2405348014343</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Date of Service</Text>
+          </Type>
+          <ExactDateTime>
+          2005-09-13T00:00:00.000-05:00</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Unknown</Text>
+        </Type>
+        <Description>
+          <Text>Office or other outpatient visit for the evaluation
+          and management of an established patient, which requires
+          at least two of these three key components: an expanded
+          problem focused history; an expanded problem focused
+          examination; medical decision making of low complexity.
+          Counseling and coordination of care with other providers
+          or agencies are provided consistent with the nature of
+          the problem(s) and the patient's and/or family's needs.
+          Usually, the presenting problem(s) are of low to moderate
+          severity. Physicians typically spend 15 minutes
+          face-to-face with the patient and/or family.</Text>
+          <Code>
+            <Value>99213</Value>
+            <CodingSystem>CPT</CodingSystem>
+          </Code>
+        </Description>
+        <Status>
+          <Text>Unknown</Text>
+        </Status>
+        <Source>
+          <Actor>
+            <ActorID>A000000</ActorID>
+            <ActorRole>
+              <Text>Healthcare Claims data source</Text>
+            </ActorRole>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>110000009</ActorID>
+            <ActorRole>
+              <Text>Billing Provider</Text>
+            </ActorRole>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+    </Encounters>
+    <HealthCareProviders>
+      <Provider>
+        <ActorID>110000002</ActorID>
+        <ActorRole>
+          <Text>Physician</Text>
+        </ActorRole>
+      </Provider>
+      <Provider>
+        <ActorID>110000003</ActorID>
+        <ActorRole>
+          <Text>Physician</Text>
+        </ActorRole>
+      </Provider>
+      <Provider>
+        <ActorID>110000009</ActorID>
+        <ActorRole>
+          <Text>Physician</Text>
+        </ActorRole>
+      </Provider>
+    </HealthCareProviders>
+  </Body>
+  <Actors>
+    <Actor>
+      <ActorObjectID>A000000</ActorObjectID>
+      <Organization>
+        <Name>Shared Health</Name>
+      </Organization>
+      <Source>
+        <Actor>
+          <ActorID>A000000</ActorID>
+          <ActorRole>
+            <Text>Healthcare Claims data source</Text>
+          </ActorRole>
+        </Actor>
+      </Source>
+    </Actor>
+    <Actor>
+      <ActorObjectID>
+      28DCD162-A4FA-8A12-176A-97A341B410B6</ActorObjectID>
+      <Person>
+        <Name>
+          <CurrentName>
+            <Given>Continuity</Given>
+            <Middle>O</Middle>
+            <Family>Care</Family>
+          </CurrentName>
+        </Name>
+        <DateOfBirth>
+          <ExactDateTime>
+          1950-04-27T00:00:00.000-06:00</ExactDateTime>
+        </DateOfBirth>
+        <Gender>
+          <Text>F</Text>
+        </Gender>
+      </Person>
+      <IDs>
+        <Type>
+          <Text>SSN</Text>
+        </Type>
+        <ID>555555555</ID>
+        <IssuedBy>
+          <ActorID>A000000</ActorID>
+        </IssuedBy>
+        <Source>
+          <Actor>
+            <ActorID>A000000</ActorID>
+            <ActorRole>
+              <Text>Healthcare Claims data source</Text>
+            </ActorRole>
+          </Actor>
+        </Source>
+      </IDs>
+      <Address>
+        <Line1>100 High Quality Lane</Line1>
+        <City>CHARLOTTE</City>
+        <County>22</County>
+        <State>TN</State>
+        <PostalCode>37036-6210</PostalCode>
+      </Address>
+      <Telephone>
+        <Value>6155551212</Value>
+        <Type>
+          <Text>Phone #1</Text>
+        </Type>
+      </Telephone>
+      <Source>
+        <Actor>
+          <ActorID>A000000</ActorID>
+          <ActorRole>
+            <Text>Healthcare Claims data source</Text>
+          </ActorRole>
+        </Actor>
+      </Source>
+    </Actor>
+    <Actor>
+      <ActorObjectID>110000002</ActorObjectID>
+      <Person>
+        <Name>
+          <CurrentName>
+            <Given>KAREN</Given>
+            <Middle>C</Middle>
+            <Family>BLOCH</Family>
+          </CurrentName>
+        </Name>
+      </Person>
+      <Address>
+        <Type>
+          <Text>Main</Text>
+        </Type>
+        <Line1>3601 THE VANDERBILT CLINIC</Line1>
+        <City>NASHVILLE</City>
+        <State>TN</State>
+        <PostalCode>37232</PostalCode>
+      </Address>
+      <Source>
+        <Actor>
+          <ActorID>A000000</ActorID>
+          <ActorRole>
+            <Text>Healthcare Claims data source</Text>
+          </ActorRole>
+        </Actor>
+      </Source>
+    </Actor>
+    <Actor>
+      <ActorObjectID>110000003</ActorObjectID>
+      <Person>
+        <Name>
+          <CurrentName>
+            <Given>JAMES</Given>
+            <Middle>R</Middle>
+            <Family>SNAPPER</Family>
+          </CurrentName>
+        </Name>
+      </Person>
+      <Address>
+        <Type>
+          <Text>Main</Text>
+        </Type>
+        <Line1>P.O. BOX 30082</Line1>
+        <City>NASHVILLE</City>
+        <State>TN</State>
+        <PostalCode>37241</PostalCode>
+      </Address>
+      <Source>
+        <Actor>
+          <ActorID>A000000</ActorID>
+          <ActorRole>
+            <Text>Healthcare Claims data source</Text>
+          </ActorRole>
+        </Actor>
+      </Source>
+    </Actor>
+    <Actor>
+      <ActorObjectID>110000009</ActorObjectID>
+      <Person>
+        <Name>
+          <CurrentName>
+            <Given>PETER</Given>
+            <Middle>F</Middle>
+            <Family>WRIGHT</Family>
+          </CurrentName>
+        </Name>
+      </Person>
+      <IDs>
+        <Type>
+          <Text>UPIN</Text>
+        </Type>
+        <ID>2jf323p</ID>
+        <Source>
+          <Actor>
+            <ActorID>A000000</ActorID>
+            <ActorRole>
+              <Text>Healthcare Claims data source</Text>
+            </ActorRole>
+          </Actor>
+        </Source>
+      </IDs>
+      <Address>
+        <Type>
+          <Text>Main</Text>
+        </Type>
+        <Line1>1211 22ND AVENUE SOUTH</Line1>
+        <City>NASHVILLE</City>
+        <State>TN</State>
+        <PostalCode>37241</PostalCode>
+      </Address>
+      <Telephone>
+        <Value>6159360486</Value>
+        <Type>
+          <Text>Main</Text>
+        </Type>
+      </Telephone>
+      <Source>
+        <Actor>
+          <ActorID>A000000</ActorID>
+          <ActorRole>
+            <Text>Healthcare Claims data source</Text>
+          </ActorRole>
+        </Actor>
+      </Source>
+    </Actor>
+    <Actor>
+      <ActorObjectID>
+      1956A253-5D97-0C30-3136-E1AECB113D9A</ActorObjectID>
+      <Organization>
+        <Name>Memphis Managed Care</Name>
+      </Organization>
+      <Address>
+        <Type>
+          <Text>Main</Text>
+        </Type>
+        <Line1>1407 Union Av</Line1>
+        <Line2>Suite 100</Line2>
+        <City>Memphis</City>
+        <State>TN</State>
+        <PostalCode>38104</PostalCode>
+      </Address>
+      <Source>
+        <Actor>
+          <ActorID>A000000</ActorID>
+          <ActorRole>
+            <Text>Healthcare Claims data source</Text>
+          </ActorRole>
+        </Actor>
+      </Source>
+    </Actor>
+    <Actor>
+      <ActorObjectID>AA2470618798</ActorObjectID>
+      <InformationSystem>
+        <Name>MedCommons Notification</Name>
+        <Type>Repository</Type>
+        <Version>0.9.35</Version>
+      </InformationSystem>
+      <EMail>
+        <Value>sdoyle@gmail.com</Value>
+      </EMail>
+      <Source>
+        <Actor>
+          <ActorID>AA2470618798</ActorID>
+        </Actor>
+      </Source>
+    </Actor>
+  </Actors>
+</ContinuityOfCareRecord>

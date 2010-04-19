@@ -1,65 +1,53 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 
-describe Validators::CCR::WaldrenRulesValidator do
+if File.exists?("#{RAILS_ROOT}/#{CCR_RULES_VALIDATOR_XSD_LOCATION}")
 
-  before do
-#    puts java.lang.System.getProperty("java.class.path")
-    @validator = Validators::CCR::WaldrenRulesValidator.new("Waldren Rules CCR Validator")
-  end
+  # Note: CCR Validator log output.  java.util.logging is used by the ccr
+  # validator and there are some println's to system out buried in the rules
+  # files as well.  silence_stream(STDOUT) doesn't seem to catch the println's.
+  # So we're turning off logging manually and then pointing java.lang.System.out
+  # to a null stream sink.
 
-  it "should load the waldren validator" do
-    puts @validator
-    xml = "/../spec/test_data/ccr/trivial_ccr.xml"
-    results = @validator.validate(nil, xml)
-    puts results.inspect
-  end
+  ccr_logger = java.util.logging.Logger.get_logger('org.openhealthdata.validation.CCRV1SchemaValidator')
+  ccr_logger.set_level(java.util.logging.Level::OFF)
 
-  it "should test against non-trivial xml" do
-    xml = "/../spec/test_data/ccr/ccrsample_Allscripts.xml"
-    results = @validator.validate(nil, xml)
-    puts results.inspect
-  end
-
-  it "should run against all the available ccrs" do
-    errors = {}
-    results = {}
-    Dir[File.dirname(__FILE__) + "/../../test_data/ccr/*.xml"].each do |f|
-      result = nil
-      puts f
-      begin
-        result = @validator.validate(nil, "../#{f}")
-        results[f.to_s] = result
-      rescue RuntimeError => e
-        errors[f.to_s] = e
-      end 
+  describe Validators::CCR::WaldrenRulesValidator do
+ 
+    before(:all) do 
+      @old_out = java.lang.System.out
+      java.lang.System.set_out(java.io.PrintStream.new(org.apache.commons.io.output.NullOutputStream.new,true))
     end
-    results.keys.sort.each do |k|
-      puts "File: #{k}"
-      puts "  result: #{ results[k].to_s[0..150] }"
+
+    before do
+#      puts java.lang.System.getProperty("java.class.path")
+      @validator = Validators::CCR::WaldrenRulesValidator.new("Waldren Rules CCR Validator")
     end
-    puts "------"
-    errors.keys.sort.each do |k|
-      puts "File: #{k} - error: #{ errors[k] }"
+  
+    it "should load the waldren validator" do
+      xml = "/../spec/test_data/ccr/trivial_ccr.xml"
+      results = @validator.validate(nil, xml)
+      results.empty?.should be_true
     end
-  end
-
-  it "should run against available ccrs that do not fail" do
-    [
-      'ccrsample_CapMed.xml',
-      'ccrsample_Emdeon.xml',
-      'ccrsample_MedCommons.xml',
-      'ccrsample_emds.xml',
-      'ccrsample_obeverywhere.xml',
-      'ccrsample_recordsforliving.xml',
-    ].each do |f|
-
-      xml = "/../spec/test_data/ccr/#{f}"
-      result = @validator.validate(nil, xml)
-      puts "File: #{f}"
-      puts result.inspect
-      puts "\n"
-
+  
+    it "should test against non-trivial xml" do
+      xml = "/../spec/test_data/ccr/ccrsample_Allscripts.xml"
+      results = @validator.validate(nil, xml)
+      results.empty?.should be_false
     end
-  end
+  
+    it "should run against all the available ccrs" do
+      Dir[File.dirname(__FILE__) + "/../../test_data/ccr/ccr*.xml"].each do |f|
+        results = nil
+        results = @validator.validate(nil, "../#{f}")
+        results.empty?.should be_false 
+      end
+    end
+  
+    after(:all) do 
+      java.lang.System.set_out(@old_out)
+    end
 
-end
+  end # spec
+
+
+end # if ccr validator exists

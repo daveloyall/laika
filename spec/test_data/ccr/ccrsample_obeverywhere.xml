@@ -1,0 +1,4302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ContinuityOfCareRecord xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="urn:astm-org:CCR CCR_20051109.xsd"
+xmlns="urn:astm-org:CCR">
+  <CCRDocumentObjectID>
+  2006-04-12T15:10:57.246000</CCRDocumentObjectID>
+  <Language>
+    <Text>English</Text>
+  </Language>
+  <Version>V1.0</Version>
+  <DateTime>
+    <ExactDateTime>2006-04-12T15:10:57.246000</ExactDateTime>
+  </DateTime>
+  <Patient>
+    <ActorID>ACT0001</ActorID>
+  </Patient>
+  <From>
+    <ActorLink>
+      <ActorID>ACT0002</ActorID>
+      <ActorRole>
+        <Text>Physician</Text>
+      </ActorRole>
+    </ActorLink>
+  </From>
+  <To>
+    <ActorLink>
+      <ActorID>ACT0003</ActorID>
+      <ActorRole>
+        <Text>Refer To Physician</Text>
+      </ActorRole>
+    </ActorLink>
+  </To>
+  <Purpose>
+    <DateTime>
+      <ExactDateTime>2006-04-12T15:10:57.246000</ExactDateTime>
+    </DateTime>
+    <Description>
+      <Text>Data Transfer</Text>
+    </Description>
+  </Purpose>
+  <Body>
+    <Payers>
+      <Payer>
+        <CCRDataObjectID>BB0001</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Effective Date</Text>
+          </Type>
+          <ExactDateTime>2006-01-04T10:30:08.000000</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Primary Health Insurance</Text>
+        </Type>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <PaymentProvider>
+          <ActorID>ACT0007</ActorID>
+          <ActorRole>
+            <Text>Payer</Text>
+          </ActorRole>
+        </PaymentProvider>
+      </Payer>
+    </Payers>
+    <Problems>
+      <Problem>
+        <CCRDataObjectID>BB0002</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-06-22T23:27:35.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Hx LTC/S; subsequent VBAC; desires VBAC</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0003</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-06-07T15:32:42.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Active cocaine use; in on going counselling</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0004</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T17:03:23.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Hx abnl pap, wnl colpo, wnl paps since, nl pap this
+          preg, Resolution Date: 04/01/2005</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0005</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T17:02:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Hx IUFD, abruption, cocaine use. All w/u neg ex
+          +UDS</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0006</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T17:01:52.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Anemia Hgb 8.7 at IOB labs, taking Fe TID and
+          colace--rpt H/H 4/6/05 9.3; rpt h/h 5/23--10.6, continue
+          FE bid w/ colace, Resolution Date: 05/23/2005</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0007</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T17:00:55.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Desires HIV testing; test Non reactive, Resolution
+          Date: 04/11/2005</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0034</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:56:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Diabetes: N</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0033</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:56:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Hypertension: N</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0032</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:56:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Heart Disease: N</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0031</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:56:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Autoimmune Disorder: N</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0030</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:56:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Kidney Disease UTI: Y</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0029</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:56:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Neurologic Epilepsy: N</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0028</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:56:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Psychiatric: Y</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0027</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:56:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Hepatitis/Liver Disease: N</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0026</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:56:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Varicosities/Phlebitis: N</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0025</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:56:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Thyroid Dysfunction: N</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0024</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:56:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Trauma: N</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0023</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:56:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Domestic Violence: N</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0022</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:56:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>History of Blood Transfusion: N</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0021</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:56:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>D (Rh) Sensitized: N</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0020</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:56:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Pulmonary (TB. Asthma): N</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0019</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:56:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Breast: N</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0018</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:56:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Gyn Surgery: N</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0017</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:56:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Operations/Hospitalizations: Y</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0016</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:56:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Gyn Surgery: N</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0015</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:56:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Anesthetic Complications: N</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0014</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:56:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>History of Abnormal PAP: Y</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0013</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:56:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Uterine Anomaly/DES: N</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0012</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:56:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Infertility: N</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0011</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:56:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Family History: N</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0010</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:56:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Other Illness: N</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0009</CCRDataObjectID>
+        <DateTime>
+          <ExactDateTime>2005-04-11T16:56:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Hx UTI w/ pregnancy 1999. Hx depression and cocaine
+          use. In counseling at BMT. No current meds. Stat c/s,
+          operative note on chart, low transverse cesarean section
+          double layer closure Hx abnormal pap; Had normal
+          colposcopy, normal paps since &gt; 2 years</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+      <Problem>
+        <CCRDataObjectID>BB0008</CCRDataObjectID>
+        <DateTime>
+          <ExactDateTime>2005-04-11T16:56:39.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>History obtained from patient Review of systems
+          otherwise negative</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </Problem>
+    </Problems>
+    <FamilyHistory>
+      <FamilyProblemHistory>
+        <CCRDataObjectID>BB0053</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:58:16.000000</ExactDateTime>
+        </DateTime>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <FamilyMember>
+          <ActorID>ACT0006</ActorID>
+          <ActorRole>
+            <Text>Patient, babys father, or anyone in either
+            family</Text>
+          </ActorRole>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </FamilyMember>
+        <Problem>
+          <Description>
+            <Text>Age&gt;35 years: N</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </Problem>
+      </FamilyProblemHistory>
+      <FamilyProblemHistory>
+        <CCRDataObjectID>BB0052</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:58:16.000000</ExactDateTime>
+        </DateTime>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <FamilyMember>
+          <ActorID>ACT0006</ActorID>
+          <ActorRole>
+            <Text>Patient, babys father, or anyone in either
+            family</Text>
+          </ActorRole>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </FamilyMember>
+        <Problem>
+          <Description>
+            <Text>Thalassemia: N</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </Problem>
+      </FamilyProblemHistory>
+      <FamilyProblemHistory>
+        <CCRDataObjectID>BB0051</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:58:16.000000</ExactDateTime>
+        </DateTime>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <FamilyMember>
+          <ActorID>ACT0006</ActorID>
+          <ActorRole>
+            <Text>Patient, babys father, or anyone in either
+            family</Text>
+          </ActorRole>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </FamilyMember>
+        <Problem>
+          <Description>
+            <Text>Neural tube defect: N</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </Problem>
+      </FamilyProblemHistory>
+      <FamilyProblemHistory>
+        <CCRDataObjectID>BB0050</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:58:16.000000</ExactDateTime>
+        </DateTime>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <FamilyMember>
+          <ActorID>ACT0006</ActorID>
+          <ActorRole>
+            <Text>Patient, babys father, or anyone in either
+            family</Text>
+          </ActorRole>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </FamilyMember>
+        <Problem>
+          <Description>
+            <Text>Congenital Heart Defect: N</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </Problem>
+      </FamilyProblemHistory>
+      <FamilyProblemHistory>
+        <CCRDataObjectID>BB0054</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:58:16.000000</ExactDateTime>
+        </DateTime>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <FamilyMember>
+          <ActorID>ACT0006</ActorID>
+          <ActorRole>
+            <Text>Patient, babys father, or anyone in either
+            family</Text>
+          </ActorRole>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </FamilyMember>
+        <Problem>
+          <Description>
+            <Text>Down Syndrome: N</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </Problem>
+      </FamilyProblemHistory>
+      <FamilyProblemHistory>
+        <CCRDataObjectID>BB0055</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:58:16.000000</ExactDateTime>
+        </DateTime>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <FamilyMember>
+          <ActorID>ACT0006</ActorID>
+          <ActorRole>
+            <Text>Patient, babys father, or anyone in either
+            family</Text>
+          </ActorRole>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </FamilyMember>
+        <Problem>
+          <Description>
+            <Text>Tay-Sachs: N</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </Problem>
+      </FamilyProblemHistory>
+      <FamilyProblemHistory>
+        <CCRDataObjectID>BB0049</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:58:16.000000</ExactDateTime>
+        </DateTime>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <FamilyMember>
+          <ActorID>ACT0006</ActorID>
+          <ActorRole>
+            <Text>Patient, babys father, or anyone in either
+            family</Text>
+          </ActorRole>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </FamilyMember>
+        <Problem>
+          <Description>
+            <Text>Sickle cell disease or trait: N</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </Problem>
+      </FamilyProblemHistory>
+      <FamilyProblemHistory>
+        <CCRDataObjectID>BB0048</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:58:16.000000</ExactDateTime>
+        </DateTime>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <FamilyMember>
+          <ActorID>ACT0006</ActorID>
+          <ActorRole>
+            <Text>Patient, babys father, or anyone in either
+            family</Text>
+          </ActorRole>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </FamilyMember>
+        <Problem>
+          <Description>
+            <Text>Hemophilia: N</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </Problem>
+      </FamilyProblemHistory>
+      <FamilyProblemHistory>
+        <CCRDataObjectID>BB0047</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:58:16.000000</ExactDateTime>
+        </DateTime>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <FamilyMember>
+          <ActorID>ACT0006</ActorID>
+          <ActorRole>
+            <Text>Patient, babys father, or anyone in either
+            family</Text>
+          </ActorRole>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </FamilyMember>
+        <Problem>
+          <Description>
+            <Text>Muscular Dystrophy: N</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </Problem>
+      </FamilyProblemHistory>
+      <FamilyProblemHistory>
+        <CCRDataObjectID>BB0046</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:58:16.000000</ExactDateTime>
+        </DateTime>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <FamilyMember>
+          <ActorID>ACT0006</ActorID>
+          <ActorRole>
+            <Text>Patient, babys father, or anyone in either
+            family</Text>
+          </ActorRole>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </FamilyMember>
+        <Problem>
+          <Description>
+            <Text>Huntington Chorea: N</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </Problem>
+      </FamilyProblemHistory>
+      <FamilyProblemHistory>
+        <CCRDataObjectID>BB0045</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:58:16.000000</ExactDateTime>
+        </DateTime>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <FamilyMember>
+          <ActorID>ACT0006</ActorID>
+          <ActorRole>
+            <Text>Patient, babys father, or anyone in either
+            family</Text>
+          </ActorRole>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </FamilyMember>
+        <Problem>
+          <Description>
+            <Text>Cystic Fibrosis: N</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </Problem>
+      </FamilyProblemHistory>
+      <FamilyProblemHistory>
+        <CCRDataObjectID>BB0044</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:58:16.000000</ExactDateTime>
+        </DateTime>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <FamilyMember>
+          <ActorID>ACT0006</ActorID>
+          <ActorRole>
+            <Text>Patient, babys father, or anyone in either
+            family</Text>
+          </ActorRole>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </FamilyMember>
+        <Problem>
+          <Description>
+            <Text>Mental Retardation: N</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </Problem>
+      </FamilyProblemHistory>
+      <FamilyProblemHistory>
+        <CCRDataObjectID>BB0042</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:58:16.000000</ExactDateTime>
+        </DateTime>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <FamilyMember>
+          <ActorID>ACT0006</ActorID>
+          <ActorRole>
+            <Text>Patient, babys father, or anyone in either
+            family</Text>
+          </ActorRole>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </FamilyMember>
+        <Problem>
+          <Description>
+            <Text>Inherited genetic or chromosomal disorder:
+            N</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </Problem>
+      </FamilyProblemHistory>
+      <FamilyProblemHistory>
+        <CCRDataObjectID>BB0041</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:58:16.000000</ExactDateTime>
+        </DateTime>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <FamilyMember>
+          <ActorID>ACT0006</ActorID>
+          <ActorRole>
+            <Text>Patient, babys father, or anyone in either
+            family</Text>
+          </ActorRole>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </FamilyMember>
+        <Problem>
+          <Description>
+            <Text>Maternal Metabolic Disorder: N</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </Problem>
+      </FamilyProblemHistory>
+      <FamilyProblemHistory>
+        <CCRDataObjectID>BB0040</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:58:16.000000</ExactDateTime>
+        </DateTime>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <FamilyMember>
+          <ActorID>ACT0006</ActorID>
+          <ActorRole>
+            <Text>Patient, babys father, or anyone in either
+            family</Text>
+          </ActorRole>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </FamilyMember>
+        <Problem>
+          <Description>
+            <Text>Birth defects: N</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </Problem>
+      </FamilyProblemHistory>
+      <FamilyProblemHistory>
+        <CCRDataObjectID>BB0039</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:58:16.000000</ExactDateTime>
+        </DateTime>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <FamilyMember>
+          <ActorID>ACT0006</ActorID>
+          <ActorRole>
+            <Text>Patient, babys father, or anyone in either
+            family</Text>
+          </ActorRole>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </FamilyMember>
+        <Problem>
+          <Description>
+            <Text>Recurrent Pregnancy Loss or Stillbirth: Y</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </Problem>
+      </FamilyProblemHistory>
+      <FamilyProblemHistory>
+        <CCRDataObjectID>BB0038</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:58:16.000000</ExactDateTime>
+        </DateTime>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <FamilyMember>
+          <ActorID>ACT0006</ActorID>
+          <ActorRole>
+            <Text>Patient, babys father, or anyone in either
+            family</Text>
+          </ActorRole>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </FamilyMember>
+        <Problem>
+          <Description>
+            <Text>Drugs since LMP: Y</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </Problem>
+      </FamilyProblemHistory>
+      <FamilyProblemHistory>
+        <CCRDataObjectID>BB0035</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Onset</Text>
+          </Type>
+          <ExactDateTime>2005-04-11T16:58:16.000000</ExactDateTime>
+        </DateTime>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <FamilyMember>
+          <ActorID>ACT0006</ActorID>
+          <ActorRole>
+            <Text>Patient, babys father, or anyone in either
+            family</Text>
+          </ActorRole>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </FamilyMember>
+        <Problem>
+          <Description>
+            <Text>Hx IUFD, abruption, cocaine use. Currently using
+            cocaine. In counseling at BMT.</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+        </Problem>
+      </FamilyProblemHistory>
+    </FamilyHistory>
+    <SocialHistory>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0060</CCRDataObjectID>
+        <Type>
+          <Text>Religious Preference</Text>
+        </Type>
+        <Description>
+          <Text>Other</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0058</CCRDataObjectID>
+        <Type>
+          <Text>Race</Text>
+        </Type>
+        <Description>
+          <Text>White</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0057</CCRDataObjectID>
+        <Type>
+          <Text>Marital Status</Text>
+        </Type>
+        <Description>
+          <Text>Single</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0056</CCRDataObjectID>
+        <Type>
+          <Text>Occupation</Text>
+        </Type>
+        <Description>
+          <Text>unemployed</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0075</CCRDataObjectID>
+        <Type>
+          <Text>Delivery Hospital</Text>
+        </Type>
+        <Description>
+          <Text>HUH</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0074</CCRDataObjectID>
+        <Type>
+          <Text>Pediatrician</Text>
+        </Type>
+        <Description>
+          <Text>Marcus Welby</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0073</CCRDataObjectID>
+        <Type>
+          <Text>Refered By</Text>
+        </Type>
+        <Description>
+          <Text>Hawkeye Pierce</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0072</CCRDataObjectID>
+        <Type>
+          <Text>Primary Provider</Text>
+        </Type>
+        <Description>
+          <Text>DBP</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0071</CCRDataObjectID>
+        <Type>
+          <Text>High Risk</Text>
+        </Type>
+        <Description>
+          <Text>Y</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0070</CCRDataObjectID>
+        <Type>
+          <Text>Active Patient</Text>
+        </Type>
+        <Description>
+          <Text>Y</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0069</CCRDataObjectID>
+        <Type>
+          <Text>Pregnancies</Text>
+        </Type>
+        <Description>
+          <Text>4</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0068</CCRDataObjectID>
+        <Type>
+          <Text>Term Pregnancies</Text>
+        </Type>
+        <Description>
+          <Text>2</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0067</CCRDataObjectID>
+        <Type>
+          <Text>Pre-term Pregnancies</Text>
+        </Type>
+        <Description>
+          <Text>1</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0066</CCRDataObjectID>
+        <Type>
+          <Text>Ab. Induced</Text>
+        </Type>
+        <Description>
+          <Text>0</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0065</CCRDataObjectID>
+        <Type>
+          <Text>Ab. Spontaneous</Text>
+        </Type>
+        <Description>
+          <Text>0</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0064</CCRDataObjectID>
+        <Type>
+          <Text>Ectopics</Text>
+        </Type>
+        <Description>
+          <Text>0</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0063</CCRDataObjectID>
+        <Type>
+          <Text>Multiple Births</Text>
+        </Type>
+        <Description>
+          <Text>0</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0062</CCRDataObjectID>
+        <Type>
+          <Text>Living Children</Text>
+        </Type>
+        <Description>
+          <Text>2</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0098</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Recorded Date</Text>
+          </Type>
+          <ExactDateTime>2005-04-11</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Tobacco Use</Text>
+        </Type>
+        <Description>
+          <Text>Tobacco Prepreg Amount/Day: 0</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0090</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Recorded Date</Text>
+          </Type>
+          <ExactDateTime>2005-04-11</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Tobacco Use</Text>
+        </Type>
+        <Description>
+          <Text>Tobacco Preg Amount/Day: 0</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0091</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Recorded Date</Text>
+          </Type>
+          <ExactDateTime>2005-04-11</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Tobacco Use</Text>
+        </Type>
+        <Description>
+          <Text>Tobacco Years: 0</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0092</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Recorded Date</Text>
+          </Type>
+          <ExactDateTime>2005-04-11</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>ETOH Use</Text>
+        </Type>
+        <Description>
+          <Text>Alcohol Prepreg Amount/Day: 0</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0093</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Recorded Date</Text>
+          </Type>
+          <ExactDateTime>2005-04-11</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>ETOH Use</Text>
+        </Type>
+        <Description>
+          <Text>Alcohol Preg Amount/Day: 0</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0094</CCRDataObjectID>
+        <DateTime>
+          <ExactDateTime>2005-04-11</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>ETOH Use</Text>
+        </Type>
+        <Description>
+          <Text>Alcohol Years: 0</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0095</CCRDataObjectID>
+        <DateTime>
+          <ExactDateTime>2005-04-11</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Recreational Drug Use</Text>
+        </Type>
+        <Description>
+          <Text>Drugs Prepreg Amount/Day: Cocaine</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0096</CCRDataObjectID>
+        <DateTime>
+          <ExactDateTime>2005-04-11</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Recreational Drug Use</Text>
+        </Type>
+        <Description>
+          <Text>Drugs Preg Amount/Day:every other day</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0097</CCRDataObjectID>
+        <DateTime>
+          <ExactDateTime>2005-04-11</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Recreational Drug Use</Text>
+        </Type>
+        <Description>
+          <Text>Drugs Years:5</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0076</CCRDataObjectID>
+        <Type>
+          <Text>EDD</Text>
+        </Type>
+        <Description>
+          <Text>Quickening Date: 02/16/2005, Fundal HT at UMB Date:
+          03/02/2005, Ultrasound 18-20 Date: 02/25/2005, Ultrasound
+          18-20 Gest. Weeks: 18 /4 , Final EDD: 07/25/2005</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0005</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0077</CCRDataObjectID>
+        <Type>
+          <Text>Past Pregnancy</Text>
+        </Type>
+        <Description>
+          <Text>Date of delivery: 9/9/99 , Child Name: Ami, GA
+          Weeks: 38 , Anesthesia Type: None, Labor Hours: 16 , Sex:
+          Male, Birth Weight: 7 / 1 , Type Delivery: VAG, Place of
+          Delivery: HUH, Preterm Labor: No, No complications
+          AP/IP/PP. Mom and baby home together. Bottle fed. "A few
+          stitches"</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0078</CCRDataObjectID>
+        <Type>
+          <Text>Past Pregnancy</Text>
+        </Type>
+        <Description>
+          <Text>Date of delivery: 3/24/01 , Child Name: Angel, GA
+          Weeks: 32 , Anesthesia Type: General, Labor Hours: 6 ,
+          Sex: Female, Birth Weight: 4 / 8 , Type Delivery: C/S,
+          Place of Delivery: HUH, Preterm Labor: Yes, Intrauterine
+          fetal demise. Abruption. Pt reports cocaine use before
+          delivery. Stat c/s. Records on the chart, primary low
+          transverse, double layer closure.</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0079</CCRDataObjectID>
+        <Type>
+          <Text>Past Pregnancy</Text>
+        </Type>
+        <Description>
+          <Text>Date of delivery: 10/2/03 , Child Name: Huli, GA
+          Weeks: 40 , Anesthesia Type: Epidural, Labor Hours: 12 ,
+          Sex: Female, Birth Weight: 7 / 10 , Type Delivery: VBC,
+          Place of Delivery: HUH, Preterm Labor: No, No
+          complications. Successful VBAC. Spont Labor.</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0080</CCRDataObjectID>
+        <Type>
+          <Text>Past Medical History</Text>
+        </Type>
+        <Description>
+          <Text>Allergies (Drugs): N</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0081</CCRDataObjectID>
+        <Type>
+          <Text>Infection Screening</Text>
+        </Type>
+        <Description>
+          <Text>High Risk Hepatitis B: N</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0082</CCRDataObjectID>
+        <Type>
+          <Text>Infection Screening</Text>
+        </Type>
+        <Description>
+          <Text>Immunized Against Hepatitis: Y</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0083</CCRDataObjectID>
+        <Type>
+          <Text>Infection Screening</Text>
+        </Type>
+        <Description>
+          <Text>Live with someone with TB or exposed to TB:
+          N</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0084</CCRDataObjectID>
+        <Type>
+          <Text>Infection Screening</Text>
+        </Type>
+        <Description>
+          <Text>Live with someone with HIV or exposed to HIV:
+          Y</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0085</CCRDataObjectID>
+        <Type>
+          <Text>Infection Screening</Text>
+        </Type>
+        <Description>
+          <Text>Patient or Partner has history of Genital Herpes:
+          N</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0086</CCRDataObjectID>
+        <Type>
+          <Text>Infection Screening</Text>
+        </Type>
+        <Description>
+          <Text>Rash or Viral Illness since LMP: N</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0087</CCRDataObjectID>
+        <Type>
+          <Text>Infection Screening</Text>
+        </Type>
+        <Description>
+          <Text>History of STD, GC, Chlamydia, HPV, Syphilis:
+          Y</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0088</CCRDataObjectID>
+        <Type>
+          <Text>Infection Screening</Text>
+        </Type>
+        <Description>
+          <Text>Other (See Comments): N</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+      <SocialHistoryElement>
+        <CCRDataObjectID>BB0089</CCRDataObjectID>
+        <Type>
+          <Text>Infection Screening Comments</Text>
+        </Type>
+        <Description>
+          <Text>Has had multiple sexual partners, Requested HIV
+          testing, testing Negative. Hx Chlamydia and GC
+          2001,</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+      </SocialHistoryElement>
+    </SocialHistory>
+    <Medications>
+      <Medication>
+        <CCRDataObjectID>BB0099</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Prescription Date</Text>
+          </Type>
+          <ExactDateTime>2005-02-18</ExactDateTime>
+        </DateTime>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Product>
+          <ProductName>
+            <Text>Iron Sulfate (FeSO4)</Text>
+          </ProductName>
+        </Product>
+        <Directions>
+          <Direction>
+            <Dose>
+              <Value>325 mg po three times daily</Value>
+            </Dose>
+          </Direction>
+        </Directions>
+      </Medication>
+      <Medication>
+        <CCRDataObjectID>BB0100</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Prescription Date</Text>
+          </Type>
+          <ExactDateTime>2005-02-18</ExactDateTime>
+        </DateTime>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Product>
+          <ProductName>
+            <Text>Colace 100 mg</Text>
+          </ProductName>
+        </Product>
+        <Directions>
+          <Direction>
+            <Dose>
+              <Value>one capsule po at bedtime</Value>
+            </Dose>
+          </Direction>
+        </Directions>
+      </Medication>
+      <Medication>
+        <CCRDataObjectID>BB0101</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Prescription Date</Text>
+          </Type>
+          <ExactDateTime>2005-02-16</ExactDateTime>
+        </DateTime>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Product>
+          <ProductName>
+            <Text>Prenatal Vitamin</Text>
+          </ProductName>
+        </Product>
+        <Directions>
+          <Direction>
+            <Dose>
+              <Value>one po daily</Value>
+            </Dose>
+          </Direction>
+        </Directions>
+        <PatientInstructions>
+          <Instruction>
+            <Text>Stop Date: 03/16/2005</Text>
+          </Instruction>
+        </PatientInstructions>
+      </Medication>
+    </Medications>
+    <Results>
+      <Result>
+        <CCRDataObjectID>BB0102</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-02-16T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0103</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>*Urine drug screen</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>+ cocaine all else neg. Pt in counseling at
+            BMT.</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0104</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-02-19T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0105</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>Blood Type</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>A</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0106</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-02-19T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0107</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>D(Rh) Type</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>Positive</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0108</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-02-19T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0109</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>Antibody Screen</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>Negative</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0110</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-02-19T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0111</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>Initial HCT</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>28.0</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0112</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-02-19T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0113</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>Initial HGB</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>8.7</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0114</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-02-19T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0115</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>Initial Chlamydia</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>Negative</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0116</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-02-19T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0117</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>Initial GC</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>Negative</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0118</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-02-19T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0119</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>PAP Test</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>Normal</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0120</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-02-19T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0121</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>Rubella</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>Immune</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0122</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-02-19T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0123</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>Initial VDRL</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>Non-Reactive</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0124</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-02-19T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0125</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>Urine culture</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>Negative &lt;10,000 mixed org</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0126</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-02-19T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0127</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>HBsAg</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>Negative</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0128</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-02-19T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0129</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>HIV</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>Negative</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0130</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-02-19T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0131</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>Thyroid</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>Normal 1.25</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0132</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-02-25T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0133</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>8-18 Ultrasound</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>wnl, s=d, 17 wks normal anatomic survey,
+            anterior placenta, no previa</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0134</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-02-25T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0135</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>MSAFP</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>Declined</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0136</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-03-09T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0137</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>PPD</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>Negative</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0138</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-03-09T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0139</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>CF (Cystic Fibrosis)</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>Negative</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0140</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-03-09T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0141</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>*HgbA1c</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>4.3%</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0142</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-03-09T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0143</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>*ACA, ANA, LAC, etc.</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>all neg</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0144</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-04-06T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0145</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>24-28 HGB</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>9.3 improving</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0146</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-04-06T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0147</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>24-28 HCT</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>29.4 improving</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0148</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-04-06T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0149</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>Diabetes Screen</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>112</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0150</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-05-23T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0151</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>32-36 HGB</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>10.6 Trending up.</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0152</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-06-07T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0153</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>*UDS</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>Negative</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0154</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-07-07T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0155</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>*Ashkenasi Jewish Panel.</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>All neg</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0156</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-07-07T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0157</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>Group B Strep</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>Negative</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0158</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-07-07T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0159</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>Other</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>GBS Neg</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0160</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-07-07T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0161</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>Tay-Sachs</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>Negative complete ashkenazi screen
+            negative</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0162</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-07-07T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0163</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>32-36 GC</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>Negative</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0164</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Assessment Time</Text>
+          </Type>
+          <ExactDateTime>2005-07-07T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Description>
+          <Text>Ob/Gyn Labs</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0165</CCRDataObjectID>
+          <Type>
+            <Text>Result</Text>
+          </Type>
+          <Description>
+            <Text>32-36 Chlamydia</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>Negative</Value>
+          </TestResult>
+        </Test>
+      </Result>
+      <Result>
+        <CCRDataObjectID>BB0174</CCRDataObjectID>
+        <Description>
+          <Text>Menstrual History</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Test>
+          <CCRDataObjectID>BB0173</CCRDataObjectID>
+          <Type>
+            <Text>Menstrual History</Text>
+          </Type>
+          <Description>
+            <Text>Last Menstrual Period</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>2004-10-18</Value>
+          </TestResult>
+        </Test>
+        <Test>
+          <CCRDataObjectID>BB0172</CCRDataObjectID>
+          <Type>
+            <Text>Menstrual History</Text>
+          </Type>
+          <Description>
+            <Text>Prior Menses Date</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>2004-09-08</Value>
+          </TestResult>
+        </Test>
+        <Test>
+          <CCRDataObjectID>BB0171</CCRDataObjectID>
+          <Type>
+            <Text>Menstrual History</Text>
+          </Type>
+          <Description>
+            <Text>Menstrual Frequency</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>28</Value>
+            <Units>
+              <Unit>Days</Unit>
+            </Units>
+          </TestResult>
+        </Test>
+        <Test>
+          <CCRDataObjectID>BB0170</CCRDataObjectID>
+          <Type>
+            <Text>Menstrual History</Text>
+          </Type>
+          <Description>
+            <Text>Menarche</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>14</Value>
+            <Units>
+              <Unit>Years</Unit>
+            </Units>
+          </TestResult>
+        </Test>
+        <Test>
+          <CCRDataObjectID>BB0167</CCRDataObjectID>
+          <Type>
+            <Text>Menstrual History</Text>
+          </Type>
+          <Description>
+            <Text>Menses Regular</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>Yes</Value>
+          </TestResult>
+        </Test>
+        <Test>
+          <CCRDataObjectID>BB0168</CCRDataObjectID>
+          <Type>
+            <Text>Menstrual History</Text>
+          </Type>
+          <Description>
+            <Text>On BCP at Conception</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>No</Value>
+          </TestResult>
+        </Test>
+        <Test>
+          <CCRDataObjectID>BB0169</CCRDataObjectID>
+          <Type>
+            <Text>Menstrual History</Text>
+          </Type>
+          <Description>
+            <Text>Symptoms Since LMP</Text>
+          </Description>
+          <Source>
+            <Actor>
+              <ActorID>ACT0004</ActorID>
+            </Actor>
+          </Source>
+          <TestResult>
+            <Value>Breast tenderness, severe nausea</Value>
+          </TestResult>
+        </Test>
+      </Result>
+    </Results>
+    <Encounters>
+      <Encounter>
+        <CCRDataObjectID>BB0200</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Encounter Date</Text>
+          </Type>
+          <ExactDateTime>2005-02-16</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Initial Visit</Text>
+        </Type>
+        <Description>
+          <Text>Gest Weeks: 17 , Gest Days: 0 , Ultrasound Gest
+          Weeks: 0 , Ultrasound Gest Days: 0 , Initial EDD Est.
+          Date: 07/25/2005, Pre-Pregnant weight: 205 , Height: 5 ,
+          BP SYSTOLIC: 130 , BP DIASTOLIC: 80 , Heent: Normal,
+          Teeth: Normal, Thyroid: Normal, Breasts: Normal, Lungs:
+          Normal, Heart: Normal, Abdomen: Normal, Extremities:
+          Normal, Skin: Normal, Lymph Nodes: Normal, Vulva: Normal,
+          Vagina: Normal, Cervix: Normal, Uterus Size: 17 ,
+          Diagonal Conjugate: No, Spines: Blunt, Sacrum: Concave,
+          Subpubic Arch: NO, Gynecoid Pelvic Type: Yes, Defer
+          adnexa and rectal exam as not indicated by history,
+          symptoms and impossible at current gestational age.
+          Cervix 3 cm long, firm, closed &amp; posterior.</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>ACT0004</ActorID>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+      <Encounter>
+        <CCRDataObjectID>BB0184</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Encounter Date</Text>
+          </Type>
+          <ExactDateTime>2005-07-07</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Visits</Text>
+        </Type>
+        <Description>
+          <Text>Weight (LBS): 225 , Fundal Height (CM): 37 , Fetal
+          Movement: Present, Preterm Labor: No, EGA Weeks: 37 , EGA
+          Days: 3 , Presentation: Cephali, FHR Code: Doppler, FHR:
+          144 , Cervix Dilation: 1 , Cervix Effaced: LONG, Cervix
+          Sation: -2 , BP SYSTOLIC: 126 , BP DIASTOLIC: 56 , Edema:
+          no, Glucose: NEG , Protein: TRC , Active fetus. Gbs done
+          today. GC and chlamydia also done today. Random urine
+          drug screen done today; continues in counseling. Taking
+          iron &amp; colace. Has transportation. Warning s/sx
+          reviewed; knows how to reach CNM, Next Appointment:
+          1Weeks 0Days</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>ACT0004</ActorID>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+      <Encounter>
+        <CCRDataObjectID>BB0185</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Encounter Date</Text>
+          </Type>
+          <ExactDateTime>2005-06-20</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Visits</Text>
+        </Type>
+        <Description>
+          <Text>Weight (LBS): 225 , Fundal Height (CM): 35 , Fetal
+          Movement: Present, Preterm Labor: No, EGA Weeks: 35 ,
+          Presentation: Cephali, FHR Code: Doppler, FHR: 144 , BP
+          SYSTOLIC: 124 , BP DIASTOLIC: 68 , Edema: no, Glucose:
+          NEG , Protein: TRC , No c/o. Active fetus. Negative Urine
+          Drug Screen last visit, feeling very proud of her
+          efforts. Continues in counseling. Feeling very ready;
+          ready at home. Has transportaion arranged. Plans
+          Condoms/minipill for contraception. Taught Fetal Movement
+          Count, see education. GBS, GC, Chlamydia at next visit.,
+          Next Appointment: 1Weeks 0Days</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>ACT0004</ActorID>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+      <Encounter>
+        <CCRDataObjectID>BB0186</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Encounter Date</Text>
+          </Type>
+          <ExactDateTime>2005-06-07</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Visits</Text>
+        </Type>
+        <Description>
+          <Text>Weight (LBS): 230 , Fundal Height (CM): 34 , Fetal
+          Movement: Present, Preterm Labor: No, EGA Weeks: 33 , EGA
+          Days: 1 , Presentation: Cephali, FHR Code: Doppler, FHR:
+          144 , BP SYSTOLIC: 122 , BP DIASTOLIC: 64 , Edema: no,
+          Glucose: NEG , Protein: TRC , Active fetus. No c/o.
+          Prepared for urine drug screen today. Met with Medical
+          Case Manager for labor/contraception review. Anemia
+          resolving. 5/23-10.6, Next Appointment: 2Weeks
+          0Days</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>ACT0004</ActorID>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+      <Encounter>
+        <CCRDataObjectID>BB0187</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Encounter Date</Text>
+          </Type>
+          <ExactDateTime>2005-05-23</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Visits</Text>
+        </Type>
+        <Description>
+          <Text>Weight (LBS): 225 , Fundal Height (CM): 32 , Fetal
+          Movement: Present, Preterm Labor: No, EGA Weeks: 31 , EGA
+          Days: 0 , Presentation: Cephali, FHR Code: Doppler, FHR:
+          136 , Cervix Dilation: CLSD, Cervix Effaced: LONG, Cervix
+          Sation: HIGH, BP SYSTOLIC: 124 , BP DIASTOLIC: 62 ,
+          Edema: no, Glucose: NEG , Protein: TRC , Active fetus. No
+          c/o. Repeat h/h today., Next Appointment: 2Weeks
+          0Days</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>ACT0004</ActorID>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+      <Encounter>
+        <CCRDataObjectID>BB0188</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Encounter Date</Text>
+          </Type>
+          <ExactDateTime>2005-05-13</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Visits</Text>
+        </Type>
+        <Description>
+          <Text>Weight (LBS): 223 , Fundal Height (CM): 29 , Fetal
+          Movement: Present, Preterm Labor: No, EGA Weeks: 29 , EGA
+          Days: 4 , Presentation: Cephali, FHR Code: Doppler, FHR:
+          124 , BP SYSTOLIC: 122 , BP DIASTOLIC: 62 , Edema: no,
+          Glucose: NEG , Protein: TRC , Active fetus.No c/o., Next
+          Appointment: 3Weeks 0Days</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>ACT0004</ActorID>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+      <Encounter>
+        <CCRDataObjectID>BB0189</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Encounter Date</Text>
+          </Type>
+          <ExactDateTime>2005-05-13</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Visits</Text>
+        </Type>
+        <Description>
+          <Text>Weight (LBS): 223 , Fundal Height (CM): 29 , Fetal
+          Movement: Present, Preterm Labor: No, EGA Weeks: 29 , EGA
+          Days: 4 , Presentation: Cephali, FHR Code: Doppler, FHR:
+          136 , Cervix Dilation: CLSD, Cervix Effaced: LONG, Cervix
+          Sation: HIGH, BP SYSTOLIC: 130 , BP DIASTOLIC: 68 ,
+          Edema: no, Glucose: NEG , Protein: NEG , Active fetus. No
+          c/o., Next Appointment: 3Weeks 0Days</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>ACT0004</ActorID>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+      <Encounter>
+        <CCRDataObjectID>BB0190</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Encounter Date</Text>
+          </Type>
+          <ExactDateTime>2005-05-09</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Visits</Text>
+        </Type>
+        <Description>
+          <Text>Preterm Labor: No, EGA Weeks: 29 , Tpc-received a
+          mother's day gift of a pregnancy massage. Wanted to make
+          sure ok to use. As long as gentle and no essential oils,
+          not supine, reassured. No bleeding. Will enjoy!, Next
+          Appointment: 0Weeks 0Days</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>ACT0004</ActorID>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+      <Encounter>
+        <CCRDataObjectID>BB0191</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Encounter Date</Text>
+          </Type>
+          <ExactDateTime>2005-05-06</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Visits</Text>
+        </Type>
+        <Description>
+          <Text>Weight (LBS): 222 , Fundal Height (CM): 28 , Fetal
+          Movement: Present, Preterm Labor: No, EGA Weeks: 28 , EGA
+          Days: 4 , Presentation: Cephali, FHR Code: Doppler, FHR:
+          140 , BP SYSTOLIC: 124 , BP DIASTOLIC: 62 , Edema: no,
+          Glucose: NEG , Protein: TRC , Active fetus. Not sleeping
+          well. Reviewed relief measures. Doing daily Fetal
+          Movement Count, gets 10 mvmts/10-min. No bleeding, Next
+          Appointment: 2Weeks 0Days</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>ACT0004</ActorID>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+      <Encounter>
+        <CCRDataObjectID>BB0192</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Encounter Date</Text>
+          </Type>
+          <ExactDateTime>2005-04-29</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Visits</Text>
+        </Type>
+        <Description>
+          <Text>Weight (LBS): 221 , Fundal Height (CM): 28 , Fetal
+          Movement: Present, Preterm Labor: No, EGA Weeks: 27 , EGA
+          Days: 4 , Presentation: Cephali, FHR Code: Doppler, FHR:
+          120 , Cervix Dilation: CLSD, Cervix Effaced: LONG, Cervix
+          Sation: HIGH, BP SYSTOLIC: 130 , BP DIASTOLIC: 62 ,
+          Edema: no, Glucose: NEG , Protein: TRC , Active fetus. No
+          c/o. Discussed healthy food choices, increasing water, no
+          soda. No bleeding or cramping. continues to take Iron.
+          Rpt h/h and urine drug screen @ Next Visit., Next
+          Appointment: 3Weeks 0Days</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>ACT0004</ActorID>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+      <Encounter>
+        <CCRDataObjectID>BB0193</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Encounter Date</Text>
+          </Type>
+          <ExactDateTime>2005-04-22</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Visits</Text>
+        </Type>
+        <Description>
+          <Text>Weight (LBS): 220 , Fundal Height (CM): 28 , Fetal
+          Movement: Present, Preterm Labor: No, EGA Weeks: 26 , EGA
+          Days: 4 , Presentation: Cephali, FHR Code: Doppler, FHR:
+          136 , Cervix Dilation: CLSD, Cervix Effaced: LONG, Cervix
+          Sation: HIGH, BP SYSTOLIC: 130 , BP DIASTOLIC: 64 ,
+          Edema: 1+, Glucose: NEG , Protein: TRC , Active fetus. No
+          c/o. Reviewed relief measures for edema., Next
+          Appointment: 2Weeks 0Days</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>ACT0004</ActorID>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+      <Encounter>
+        <CCRDataObjectID>BB0194</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Encounter Date</Text>
+          </Type>
+          <ExactDateTime>2005-04-19</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Visits</Text>
+        </Type>
+        <Description>
+          <Text>Weight (LBS): 212 , Fundal Height (CM): 27 , Fetal
+          Movement: Present, Preterm Labor: No, EGA Weeks: 26 , EGA
+          Days: 1 , Presentation: Cephali, FHR Code: Doppler, FHR:
+          136 , Cervix Dilation: CLSD, Cervix Effaced: LONG, Cervix
+          Sation: HIGH, BP SYSTOLIC: 132 , BP DIASTOLIC: 64 ,
+          Edema: no, Glucose: NEG , Protein: TRC , No c/o. Active
+          fetus. 1 hr Glucose Test wnl. No further bleeding at all.
+          Has been doing FMC and usually gets 10 movements in about
+          10 minutes. Denies cramping, contraction, Vaginal
+          Bleeding or D/C. Cx unchanged from initial exam. Belly
+          soft, non-tender. Reassured. RTO 2., Next Appointment:
+          2Weeks 0Days</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>ACT0004</ActorID>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+      <Encounter>
+        <CCRDataObjectID>BB0195</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Encounter Date</Text>
+          </Type>
+          <ExactDateTime>2005-04-13</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Visits</Text>
+        </Type>
+        <Description>
+          <Text>Preterm Labor: No, EGA Weeks: 25 , EGA Days: 2 ,
+          Mai called today. Noted light pink spot last evening. No
+          cramping. U/S shows no previa. Active fetus. Denies
+          cocaine use this month. No further bleeding at all. Had
+          had intercourse several hours before noting spot. Will
+          monitor for any more bldg, cramping, &amp; will do Fetal
+          Movement Count (5 movements per 1/2 hr three times/day).
+          Offered office visit in am., Next Appointment: 0Weeks
+          1Days</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>ACT0004</ActorID>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+      <Encounter>
+        <CCRDataObjectID>BB0196</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Encounter Date</Text>
+          </Type>
+          <ExactDateTime>2005-04-12</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Visits</Text>
+        </Type>
+        <Description>
+          <Text>Weight (LBS): 215 , Fundal Height (CM): 25 , Fetal
+          Movement: Present, Preterm Labor: No, EGA Weeks: 25 , EGA
+          Days: 1 , Presentation: Cephali, FHR Code: Doppler, FHR:
+          122 , BP SYSTOLIC: 132 , BP DIASTOLIC: 72 , Edema: no,
+          Glucose: NEG , Protein: TRC , No c/o. 1 hour Glucose
+          Tolerance Test done today.Active fetus. S=d., Next
+          Appointment: 2Weeks 0Days</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>ACT0004</ActorID>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+      <Encounter>
+        <CCRDataObjectID>BB0197</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Encounter Date</Text>
+          </Type>
+          <ExactDateTime>2005-04-11</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Visits</Text>
+        </Type>
+        <Description>
+          <Text>Weight (LBS): 210 , Fundal Height (CM): 24 , Fetal
+          Movement: Present, Preterm Labor: No, EGA Weeks: 25 ,
+          Presentation: Cephali, FHR Code: Doppler, FHR: 136 , BP
+          SYSTOLIC: 126 , BP DIASTOLIC: 62 , Edema: no, Glucose:
+          NEG , Protein: TRC , Telephone call to Mai; see education
+          re anemia. Taking childbirth classes., Next Appointment:
+          3Weeks 0Days</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>ACT0004</ActorID>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+      <Encounter>
+        <CCRDataObjectID>BB0198</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Encounter Date</Text>
+          </Type>
+          <ExactDateTime>2005-03-16</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Visits</Text>
+        </Type>
+        <Description>
+          <Text>Weight (LBS): 202 , Fundal Height (CM): 21 , Fetal
+          Movement: Present, Preterm Labor: No, EGA Weeks: 21 , EGA
+          Days: 2 , FHR Code: Doppler, FHR: 156 , BP SYSTOLIC: 128
+          , BP DIASTOLIC: 68 , Edema: no, Glucose: NEG , Protein:
+          TRC , Active fetus. no c/o. Declines quad screen.
+          Awaiting ultrasound report. Nausea much lmproved.
+          Prepared for l hr Glucose Tolerance Test @ next visit.,
+          Next Appointment: 4Weeks 0Days</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>ACT0004</ActorID>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+      <Encounter>
+        <CCRDataObjectID>BB0199</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Encounter Date</Text>
+          </Type>
+          <ExactDateTime>2005-02-16</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Visits</Text>
+        </Type>
+        <Description>
+          <Text>Weight (LBS): 200 , Fundal Height (CM): 17 , Fetal
+          Movement: Present, Preterm Labor: No, EGA Weeks: 17 , EGA
+          Days: 2 , FHR Code: Doppler, FHR: 144 , Cervix Dilation:
+          CLSD, Cervix Effaced: LONG, Cervix Sation: HIGH, BP
+          SYSTOLIC: 124 , BP DIASTOLIC: 72 , Edema: no, Glucose:
+          NEG , Protein: NEG , Active fetus. No c/o. Reviewed early
+          2nd trimester teaching and warning signs. Introduced quad
+          screen benefits, risks, alternatives. Pt to decide by 20
+          weeks. Reviewed small frequent meals. Scan scheduled. To
+          Medical Case Manager., Next Appointment: 4Weeks
+          0Days</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>ACT0004</ActorID>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+      <Encounter>
+        <CCRDataObjectID>BB0175</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Encounter Date</Text>
+          </Type>
+          <ExactDateTime>2005-07-30T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Counseling</Text>
+        </Type>
+        <Description>
+          <Text>Education: Other - Explained Below, Counseled: Y,
+          Comments: Called today with sore right breast.
+          Breastfeeding exclusively. No fever, chills, redness of
+          any part of breast. No trauma. Nipple intact. Baby with
+          &gt;4 wet diapers and 2 wet/soiled diapers in about 15
+          hours. Alert baby with rhythmic suck and audible swallow.
+          Breast softer after nursing. Will apply hot compress
+          4x/day and get help from Aunt, sister and Mother over
+          next two days to rest. To call back if fever of 100.4 or
+          &gt;, reddness or palpable lump or if soreness persists.
+          If possible, to nurse with baby's chin toward painful
+          area.</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>ACT0004</ActorID>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+      <Encounter>
+        <CCRDataObjectID>BB0176</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Encounter Date</Text>
+          </Type>
+          <ExactDateTime>2005-06-20T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Counseling</Text>
+        </Type>
+        <Description>
+          <Text>Education: Other - Explained Below, Counseled: Y,
+          Comments: FMC taught--to look for 10 movements in 1 hour
+          at the same time each day at a time when the baby is
+          usually active. Aware that baby can sleep for up to two
+          hours at a time, but then should feel movement. Knows
+          when and how to reach CNM 24/7.</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>ACT0004</ActorID>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+      <Encounter>
+        <CCRDataObjectID>BB0177</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Encounter Date</Text>
+          </Type>
+          <ExactDateTime>2005-04-29T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Counseling</Text>
+        </Type>
+        <Description>
+          <Text>Education: Hazards, Counseled: Y, Comments: Re
+          offered in-patient rehabilitation, considering. Reports
+          only rare use. Repeat urine drug screen @ next visit.
+          Urine Drug Screen negative 6/05</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>ACT0004</ActorID>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+      <Encounter>
+        <CCRDataObjectID>BB0178</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Encounter Date</Text>
+          </Type>
+          <ExactDateTime>2005-04-19T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Counseling</Text>
+        </Type>
+        <Description>
+          <Text>Education: Preterm Labor, Counseled: Y, Comments:
+          Aware of warning s/sx of Pre-Term Labor including &gt;4
+          contractions/hour, a change in vaginal discharge,
+          cramping like a period, increased or changed pressure in
+          back, thighs or lower abdomen, loss of fluid from vagina
+          or any pink or red bleeding or spotting. Knows how and
+          when to call CNM 24/7.</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>ACT0004</ActorID>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+      <Encounter>
+        <CCRDataObjectID>BB0179</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Encounter Date</Text>
+          </Type>
+          <ExactDateTime>2005-04-01T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Counseling</Text>
+        </Type>
+        <Description>
+          <Text>Education: VBAC, Counseled: Y, Comments: Reviewed
+          benefits/risks of VBAC, elective repeat C/S and repeat
+          C/S after failed VBAC attempt. Answered all questions. Pt
+          strongly desires to attempt VBAC again.</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>ACT0004</ActorID>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+      <Encounter>
+        <CCRDataObjectID>BB0180</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Encounter Date</Text>
+          </Type>
+          <ExactDateTime>2005-04-01T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Counseling</Text>
+        </Type>
+        <Description>
+          <Text>Education: Other - Explained Below, Counseled: Y,
+          Comments: Reviewed awareness of fetal activity and Fetal
+          Movement Count.</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>ACT0004</ActorID>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+      <Encounter>
+        <CCRDataObjectID>BB0181</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Encounter Date</Text>
+          </Type>
+          <ExactDateTime>2005-03-09T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Counseling</Text>
+        </Type>
+        <Description>
+          <Text>Education: Anemia, Counseled: Y, Comments: Reviewed
+          Iron Rich foods. To take Iron as directed without milk
+          products. Also prescribed colace and increased fluids to
+          prevent constipation. 4/11-con't to take Iron as directed
+          without milk products. Also prescribed colace and
+          increased fluids to prevent constipation.</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>ACT0004</ActorID>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+      <Encounter>
+        <CCRDataObjectID>BB0182</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Encounter Date</Text>
+          </Type>
+          <ExactDateTime>2005-02-16T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Counseling</Text>
+        </Type>
+        <Description>
+          <Text>Education: Hazards, Counseled: Y, Comments: Pt
+          aware of need to continue in counseling to
+          decrease/eliminate cocaine use. Offered inpatient
+          rehabilitation setting, pt declines stating she is not
+          yet ready for that. Met with Medical Case Manager.</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>ACT0004</ActorID>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+      <Encounter>
+        <CCRDataObjectID>BB0183</CCRDataObjectID>
+        <DateTime>
+          <Type>
+            <Text>Encounter Date</Text>
+          </Type>
+          <ExactDateTime>2005-02-16T00:00:00.000000</ExactDateTime>
+        </DateTime>
+        <Type>
+          <Text>Counseling</Text>
+        </Type>
+        <Description>
+          <Text>Education: Initial OB Visit, Counseled: Y,
+          Comments: Understands how to reach CNM on call 24/7.
+          Reviewed how health center functions and how to schedule
+          her appointments. Pt met her Medical Case Manager &amp;
+          Nutritionist.</Text>
+        </Description>
+        <Source>
+          <Actor>
+            <ActorID>ACT0004</ActorID>
+          </Actor>
+        </Source>
+        <Practitioners>
+          <Practitioner>
+            <ActorID>ACT0004</ActorID>
+          </Practitioner>
+        </Practitioners>
+      </Encounter>
+    </Encounters>
+    <HealthCareProviders>
+      <Provider>
+        <ActorID>ACT0002</ActorID>
+      </Provider>
+    </HealthCareProviders>
+  </Body>
+  <Actors>
+    <Actor>
+      <ActorObjectID>ACT0001</ActorObjectID>
+      <Person>
+        <Name>
+          <CurrentName>
+            <Given>Mai</Given>
+            <Family>Smith</Family>
+          </CurrentName>
+        </Name>
+        <DateOfBirth>
+          <ApproximateDateTime>
+            <Text>1980-05-23</Text>
+          </ApproximateDateTime>
+        </DateOfBirth>
+        <Gender>
+          <Text>Female</Text>
+        </Gender>
+      </Person>
+      <IDs>
+        <Type>
+          <Text>SSN</Text>
+        </Type>
+        <ID>555555555</ID>
+        <Source>
+          <Actor>
+            <ActorID>ACT0002</ActorID>
+          </Actor>
+        </Source>
+      </IDs>
+      <IDs>
+        <Type>
+          <Text>OB Secure ID</Text>
+        </Type>
+        <ID>317438144</ID>
+        <Source>
+          <Actor>
+            <ActorID>ACT0002</ActorID>
+          </Actor>
+        </Source>
+      </IDs>
+      <IDs>
+        <Type>
+          <Text>Alternate ID</Text>
+        </Type>
+        <ID>HUH MR # 0534576849776001</ID>
+        <Source>
+          <Actor>
+            <ActorID>ACT0002</ActorID>
+          </Actor>
+        </Source>
+      </IDs>
+      <Address>
+        <Type>
+          <Text>Home</Text>
+        </Type>
+        <Line1>1234 Maple Street</Line1>
+        <City>Hometown</City>
+        <State>NY</State>
+        <Country>USA</Country>
+        <PostalCode>44444</PostalCode>
+      </Address>
+      <Telephone>
+        <Value>111-111-1111</Value>
+        <Type>
+          <Text>Home</Text>
+        </Type>
+      </Telephone>
+      <Telephone>
+        <Value>222-222-2222</Value>
+        <Type>
+          <Text>Alternate</Text>
+        </Type>
+      </Telephone>
+      <Telephone>
+        <Value>267-111-1111</Value>
+        <Type>
+          <Text>Mobile</Text>
+        </Type>
+      </Telephone>
+      <Telephone>
+        <Value>222-222-2222</Value>
+        <Type>
+          <Text>Emergency Aunt One</Text>
+        </Type>
+      </Telephone>
+      <Source>
+        <Actor>
+          <ActorID>ACT0002</ActorID>
+        </Actor>
+      </Source>
+    </Actor>
+    <Actor>
+      <ActorObjectID>ACT0003</ActorObjectID>
+      <Person>
+        <Name>
+          <CurrentName>
+            <Given>Ben</Given>
+            <Family>Casey</Family>
+          </CurrentName>
+          <DisplayName>Ben Casey</DisplayName>
+        </Name>
+      </Person>
+      <Source>
+        <Actor>
+          <ActorID>ACT0002</ActorID>
+        </Actor>
+      </Source>
+    </Actor>
+    <Actor>
+      <ActorObjectID>ACT0004</ActorObjectID>
+      <Person>
+        <Name>
+          <CurrentName>
+            <Family>Dana Perlman CNM</Family>
+          </CurrentName>
+          <DisplayName>Dana Perlman CNM</DisplayName>
+        </Name>
+      </Person>
+      <Source>
+        <Actor>
+          <ActorID>ACT0002</ActorID>
+        </Actor>
+      </Source>
+    </Actor>
+    <Actor>
+      <ActorObjectID>ACT0005</ActorObjectID>
+      <Person>
+        <Name>
+          <CurrentName>
+            <Family>Florence Nightingale</Family>
+          </CurrentName>
+          <DisplayName>Florence Nightingale</DisplayName>
+        </Name>
+      </Person>
+      <Source>
+        <Actor>
+          <ActorID>ACT0002</ActorID>
+        </Actor>
+      </Source>
+    </Actor>
+    <Actor>
+      <ActorObjectID>ACT0006</ActorObjectID>
+      <Person>
+        <Name>
+          <CurrentName>
+            <Family>Patient, babys father, or anyone in either
+            family</Family>
+          </CurrentName>
+          <DisplayName>Patient, babys father, or anyone in either
+          family</DisplayName>
+        </Name>
+      </Person>
+      <Source>
+        <Actor>
+          <ActorID>ACT0002</ActorID>
+        </Actor>
+      </Source>
+    </Actor>
+    <Actor>
+      <ActorObjectID>ACT0002</ActorObjectID>
+      <Person>
+        <Name>
+          <CurrentName>
+            <Given>Marcus</Given>
+            <Family>Welby</Family>
+          </CurrentName>
+          <DisplayName>Marcus Welby</DisplayName>
+        </Name>
+      </Person>
+      <Telephone>
+        <Value>000-000-0000</Value>
+        <Type>
+          <Text>Work</Text>
+        </Type>
+      </Telephone>
+      <EMail>
+        <Value>Marcus@server.com</Value>
+      </EMail>
+      <Source>
+        <Actor>
+          <ActorID>ACT0002</ActorID>
+        </Actor>
+      </Source>
+    </Actor>
+    <Actor>
+      <ActorObjectID>ACT0007</ActorObjectID>
+      <Organization>
+        <Name>Medical Mutual of Ohio Group #373450932</Name>
+      </Organization>
+      <Source>
+        <Actor>
+          <ActorID>ACT0002</ActorID>
+        </Actor>
+      </Source>
+    </Actor>
+    <Actor>
+      <ActorObjectID>ACT0008</ActorObjectID>
+      <InformationSystem>
+        <Name>OB Secure</Name>
+        <Version>1</Version>
+      </InformationSystem>
+      <Source>
+        <Actor>
+          <ActorID>ACT0002</ActorID>
+        </Actor>
+      </Source>
+    </Actor>
+  </Actors>
+  <Comments>
+    <Comment>
+      <CommentObjectID>BB0201</CommentObjectID>
+      <DateTime>
+        <ExactDateTime>2006-01-04T10:30:08.000000</ExactDateTime>
+      </DateTime>
+      <Type>
+        <Text>Special Attention</Text>
+      </Type>
+      <Description>
+        <Text>Hx IUFD @ 32 wks 1999, abruption. Stat LTC/S,
+        subsequent VBAC Current Cocaine Use. Anemia, on Fe</Text>
+      </Description>
+      <Source>
+        <ActorID>ACT0004</ActorID>
+      </Source>
+    </Comment>
+  </Comments>
+</ContinuityOfCareRecord>
