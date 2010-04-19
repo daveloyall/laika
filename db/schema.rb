@@ -323,7 +323,7 @@ ActiveRecord::Schema.define(:version => 20091118191432) do
     t.string  "free_text_brand_name"
     t.integer "medication_type_id"
     t.string  "status"
-    t.decimal "quantity_ordered_value"
+    t.float   "quantity_ordered_value"
     t.string  "quantity_ordered_unit"
     t.date    "expiration_time"
     t.integer "patient_id",                 :null => false
