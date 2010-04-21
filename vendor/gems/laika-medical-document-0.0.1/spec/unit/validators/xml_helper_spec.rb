@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../spec_helper'
+require 'spec_helper'
 
 describe XmlHelper, "can match values in XML" do
   it "should return nil when a value properly matches" do

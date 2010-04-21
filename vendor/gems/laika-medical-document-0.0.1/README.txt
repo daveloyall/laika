@@ -20,7 +20,7 @@ It also should allow us to import a document in C32 format and export it in CCR 
 This library has the following components:
 
 * laika-medical-document
-** document-model
+** document
 ** importers
 *** hash
 *** c32
