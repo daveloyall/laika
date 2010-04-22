@@ -80,8 +80,8 @@ class TestPlan < ActiveRecord::Base
   # or failed, and set a reason.
   #
   # @param [Hash<String => String>] expects a state and a status_override_reason
-  # @return true if changes are successfully saved, otherwise raises an ActiveRecord error
-  #   per save!
+  # @return true if changes are successfully saved, otherwise raises an
+  # ActiveRecord error per save!
   def override_state!(state_options)
     state = state_options['state']
     reason = state_options['status_override_reason']
