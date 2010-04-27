@@ -2,20 +2,15 @@ body {
 	color: #424242;
 	font-family: "Trebuchet MS", "Lucida Grande", Helvetica, Arial, Verdana, sans-serif;
 	margin:0;
-	background:#606164;
+	background:#606164 url('/images/bodyBG.png') top left repeat-x;
 }
 
-.level1 {
-	background:url(/images/back_top.png) repeat-x;
+a:link, a:visited {
+	text-decoration: none;
 }
 
-.level2 {
-	background: url(/images/header_back.png) no-repeat 50% 0px;
-}
-
-.level3 {
-	width:880px;
-	margin:0px auto;
+a:hover {
+	text-decoration: none;
 }
 
 .top {
@@ -34,7 +29,8 @@ body {
 }
 
 .header {
-	background: url(/images/header.png);
+	background: #edf6f5 url('/images/header.png') top left no-repeat;
+	height: 135px;
 }
 
 .header a {
@@ -50,14 +46,22 @@ body {
 }
 
 .header .doggy {
-	height:15px;
+	float: left;
+	width: 200px;
+	background: transparent;
 }
 
 .header .doggy img {
 	margin:0;
 	position:relative;
-	top:-18px;
+	top:5px;
 	left:30px;
+}
+
+.header #primaryNav {
+	float: right;
+	clear: both;
+	padding: 20px 0 0 0;
 }
 
 .header ul#bignav {
@@ -88,6 +92,11 @@ body {
 	background: url(/images/header_hover.png) repeat-x;
 }
 
+.header #upperNav {
+	float: right;
+	clear: both;
+}
+
 .header ul#smallnav {
 	margin: -1px 8px 20px 0;
 	padding-left: 0;
@@ -112,19 +121,27 @@ body {
 	color:#FFF;
 }
 
+#session-controls {
+	width: 250px;
+	float: right;
+	text-align: right;
+	padding: 3px 10px 0 0px;
+}
+
 #session-controls a {
   color:#FFF;
   text-decoration: underline;
 }
 
 .content {
-	background: url(/images/content.png);
-	padding:30px 5px; 
-	min-height:400px;
+	background: url('/images/content.png') top left repeat-y;
+	padding: 30px 5px 250px; 
+	min-height: 400px;
+	overflow: hidden;
 }
 
 .footer {
-	background: url(/images/footer.png);
+	background: url('/images/footer.png');
 	height:40px;
 }
 
@@ -151,6 +168,13 @@ ul.vendor-actions > li {
 	list-style: none;
 	display: inline;
     margin-right: 1em;
+}
+
+#inspection_results_details {
+	background: #FFF;
+	border: 1px solid #d8d8d8;
+	padding: 0 0 0 20px;
+	margin: 25px 0 0 0;
 }
 
 .inspection-results h3 > a {
@@ -492,9 +516,23 @@ table#dashboard a {
 }
 
 #results {
-	width:255px;
-	margin-left:-15px;
-	margin-bottom:15px;
+	background: #FFF;
+	overflow: hidden;
+}
+
+#test_results_header {
+	padding: 0 0 0 20px;
+	margin: 0 0 25px 0;
+}
+
+#summary {
+	border-right: 1px solid #e0e0e0;
+	border-left: 1px solid #e0e0e0;
+	padding: 0 0 0 15px;
+}
+
+#override {
+	padding: 0 0 0 5px;
 }
 
 #results .fail, #results .pass {
@@ -518,6 +556,7 @@ table#dashboard a {
 	padding:15px;
 	margin-top:-2px;
 	background:#FFF;
+	overflow: hidden;
 }
 
 #results h5, #results p, #modules h5 {
@@ -584,10 +623,10 @@ h3 > a {
 	margin:16px 0px 0px 8px;
 }
 
-#results .left .number {
-    font-weight:bold;
-	color:#ff2800;
-	font-size:1.3em;
+.number {
+  font-weight: bold;
+	color: #ff2800;
+	font-size:2.3em;
 }
 
 #results .detailstext {
@@ -604,7 +643,6 @@ h3 > a {
 #results table {
 	margin-bottom:0px;
 	padding-top:5px;
-	border-top:1px solid #ccc;
 }
 
 #results .info ul {
@@ -613,18 +651,19 @@ h3 > a {
 }
 
 .printer-friendly-affordance {
-  margin-top:10px;
-  border-top: 1px solid black;
+  margin-bottom:10px;
 }
 
 #assign_test_state_manually {
-  padding:3px 0 7px 0;
-  border-top:1px solid #ccc;
+  padding: 10px;
+	border: 1px solid #a0a0a0;
+	background: #e0e0e0;
+	clear: both;
 }
 
 #assign_test_state_manually textarea{
-  height: 150px;
-  width: 205px 
+  height: 80px;
+  width: 185px 
 }
 
 #modules table, #modules td, #modules th {
