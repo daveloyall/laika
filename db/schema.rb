@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100427225249) do
+ActiveRecord::Schema.define(:version => 20100428002249) do
 
   create_table "abstract_results", :force => true do |t|
     t.string  "result_id"
@@ -145,11 +145,13 @@ ActiveRecord::Schema.define(:version => 20100427225249) do
     t.string  "inspection_type"
     t.integer "test_plan_id"
     t.integer "parent_id"
-    t.text    "expected"
-    t.text    "provided"
+    t.string  "expected"
+    t.string  "provided"
     t.string  "state"
     t.string  "status_override_reason"
     t.string  "error_type"
+    t.text    "expected_section"
+    t.text    "provided_sections"
   end
 
   add_index "content_errors", ["msg_type"], :name => "index_content_errors_on_msg_type"
