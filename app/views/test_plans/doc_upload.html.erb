@@ -10,13 +10,22 @@
                   { alert("You must specify a file to upload."); return false }
                 else return true
               ] }) do |f| -%>
-  <label>Document Type &nbsp;&nbsp;&nbsp;&nbsp;
-  <%= f.select :doc_type, Validation.types %>
-  </label>
-  <br/>
-  <label>Clinical Document
-    <%= f.file_field  :uploaded_data, :id => "upload_#{@test_plan.id}" %>
-  </label>
-  <br/>
+  <dl>
+    <dt>
+      <label>Document Type</label>
+    </dt>
+    <dd>
+      <%= f.select :doc_type, Validation.types %>
+      <% if Validation.types.include?(Validation::CCR_TYPE.to_sym) -%>
+      <p class="notice">Note that CCR validation is Beta functionality at present.</p>
+      <% end -%>
+    </dd>
+    <dt>
+      <label>Clinical Document</label>
+    </dt>
+    <dd>
+      <%= f.file_field  :uploaded_data, :id => "upload_#{@test_plan.id}" %>
+    </dd>
+  </dl>
   <%= submit_tag 'Attach' %>
 <% end -%>

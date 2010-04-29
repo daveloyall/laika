@@ -153,6 +153,8 @@ You can unpack the ValidationService.war using the 'jar' utility.
 
 You will also need to place a copy of the CCR xsd in vendor/ccr-validation-service/WEB-INF/classes/org/openhealthdata/validation/
 
+This validation service is beta functionality and is likely to change in the future.
+
 == Mail Settings
 
 Laika sends mail for forgotten passwords, and potentially for error notifications (see below).
@@ -167,6 +169,8 @@ exception_notifier:
   exception_recipients: [ 'foo@bar.com' ]
 
 == GlassFish
+
+NOTE: currently there is a problem with the latest glassfish release (v 1.0+) and the ccr validation service.  If you are installing the ccr validator, make sure and restrict yourself to using glassfish v0.9.5, or you will get Java io errors for too many open files if you try and validate a CCR in a generate and format test.
 
 Install the Glassfish server using the Glassfish gem:
 

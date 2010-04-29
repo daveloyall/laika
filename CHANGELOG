@@ -1,3 +1,27 @@
+=== 2010-04-28 Laika v1.4.2
+
+* Fixed: manual override pass/fail state for pending tests in dashboard. GH-157
+* Marking the import feature as experimental.  GH-164
+* Beta inclusion of Stephen Waldren's Validator Service for CCR validation.
+* Beta CCR schema validation.
+* Beta C32 importer functionality.
+* Laika updated to Rails 2.3.5
+* Fixed: Updated C32 medication section for v2.5 display and file and generate and format tests. GH-160, GH-161, GH-131
+* Production seed fixutres allow override of test fixture data for new production dbs.
+* Many updates to INSTALL.rdoc
+* Removed validator initialization for C32 v2.4 and C62. GH-123
+* Supports limited selenium testing.
+* Fixed: Out of memory issues related to validation. GH-130
+* Fixed: Refactored Support, AbstructResult and the validation library to pull up MatchHelper out of the models. GH-105
+* Fixed: Allows C32 validation to proceed with warnings if UMLS has not been configured or is inaccessible.  GH-124, GH-125
+* Fixed: Namespaces in the CCD Stylesheet so that it's reports will be handled properly. GH-129
+* Fixed: Id reference in javascript used to reset the result/vital-signs divs after creation.  GH-71
+* Fixed: Nil checking for when condition xml does not exist. GH-119
+* Fixed: Bundling breaks scriptaculous loading other files. GH-100
+* Added person_name_fields to supports edit form. GH-117
+* Exception notification. GH-43
+* Bundling some of the javascript and css styles to help with initial load times. GH-88
+
 === 2009-12-07 Laika v1.4.1
 
 * Printer friendly view of test inspections GH-97 

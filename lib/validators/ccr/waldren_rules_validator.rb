@@ -20,7 +20,7 @@ module Validators
           result = @validator.validateToString(java_file_descriptor)
         rescue org.drools.runtime.rule.ConsequenceException => e
           ContentError.logger.info("ERROR DURING WALDREN CCR RULES VALIDATION: #{e.inspect}\n#{e.backtrace.join("\n") if e.respond_to?(:backtrace)}")
-          errors << ContentError.new(:error_message => "CCR rules validation engine threw an exception: #{e} (Plese check the logs).",
+          errors << ContentError.new(:error_message => "CCR rules validation engine threw an exception: '#{e}'\n(Please check the logs).",
                                      :validator => name,
                                      :inspection_type => ::XML_VALIDATION_INSPECTION)
         end
