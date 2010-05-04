@@ -45,17 +45,17 @@ module Laika
   class ValidationError
     include Laika::AttributesHashAccessor
 
-    attr_hash_accessor :section, :subsection, :field_name, :message, :location, :severity, :validator, :inspection_type, :error_type
+    attr_hash_accessor :section, :subsection, :field_name, :message, :location, :severity, :validator, :inspection_type
     attr_accessor :suberrors
 
     def initialize(attributes = {})
       self.suberrors = []
-      self.from_hash(attributes)
+      self.attributes(attributes)
     end
 
-    # Allows you to initialize this instance with a hash.  Any publically accessible attribute
+    # Allows you to set attributes of this instance with a hash.  Any publically accessible attribute
     # writer methods may be set.  Returns self to allow chaining.
-    def from_hash(attributes = {})
+    def attributes(attributes = {})
       attributes.each do |key, value|
         writer = "#{key}="
         send(writer, value) if respond_to?(writer) && self.class.public_method_defined?(writer)

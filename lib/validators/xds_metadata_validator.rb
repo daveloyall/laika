@@ -8,8 +8,12 @@ module Validators
           expected_cv = expected.send(cv)
           actual_cv = actual.send(cv)
           if XdsMetadataValidator.coded_attribute_blank?(actual_cv)
-            errors << ContentError.new(:section => cv.to_s.humanize, :error_message => "Unable to find #{cv.to_s.humanize}",
-                                       :validator => "XDS Metadata Validator", :inspection_type => 'XDS Provide and Register')
+            errors << Laika::ValidationError.new(
+              :section => cv.to_s.humanize,
+              :message => "Unable to find #{cv.to_s.humanize}",
+              :validator => "XDS Metadata Validator",
+              :inspection_type => 'XDS Provide and Register'
+            )
           else
             cvs = [:code, :display_name, :coding_scheme]
             cvs.each do |cv_attribute|
@@ -17,9 +21,15 @@ module Validators
                 expected_value = expected_cv.send(cv_attribute)
                 actual_value = actual_cv.send(cv_attribute)
                 unless expected_value == actual_value
-                  errors << ContentError.new(:section => cv.to_s.humanize, :field_name => cv_attribute.to_s.humanize,
-                                             :error_message => "Expected: #{expected_value}, Found: #{actual_value}",
-                                             :validator => "XDS Metadata Validator", :inspection_type => 'XDS Provide and Register')
+                  errors << Laika::ComparisonError.new(
+                    :section => cv.to_s.humanize,
+                    :field_name => cv_attribute.to_s.humanize,
+                    :message => "Expected: #{expected_value}, Found: #{actual_value}",
+                    :expected => expected_value,
+                    :provided => actual_value,
+                    :validator => "XDS Metadata Validator",
+                    :inspection_type => 'XDS Provide and Register'
+                  )
                 end
               end
             end
@@ -29,17 +39,27 @@ module Validators
       
       unless XdsMetadataValidator.author_blank?(expected.author)
         if XdsMetadataValidator.author_blank?(actual.author)
-          errors << ContentError.new(:section => 'Author', :error_message => "Unable to find Author",
-                                     :validator => "XDS Metadata Validator", :inspection_type => 'XDS Provide and Register')
+          errors << Laika::ValidationError.new(
+            :section => 'Author',
+            :message => "Unable to find Author",
+            :validator => "XDS Metadata Validator",
+            :inspection_type => 'XDS Provide and Register'
+          )
         else
           author_attributes = [:institution, :person, :role, :specialty]
           author_attributes.each do |aa|
             expected_value = expected.author.send(aa)
             actual_value = actual.author.send(aa)
             unless expected_value == actual_value
-              errors << ContentError.new(:section => 'Author', :field_name => aa.to_s.humanize,
-                                         :error_message => "Expected: #{expected_value}, Found: #{actual_value}",
-                                         :validator => "XDS Metadata Validator", :inspection_type => 'XDS Provide and Register')
+              errors << Laika::ComparisonError.new(
+                :section => 'Author',
+                :field_name => aa.to_s.humanize,
+                :message => "Expected: #{expected_value}, Found: #{actual_value}",
+                :expected => expected_value,
+                :provided => actual_value,
+                :validator => "XDS Metadata Validator",
+                :inspection_type => 'XDS Provide and Register'
+              )
             end            
           end
         end
@@ -47,17 +67,27 @@ module Validators
       
       unless XdsMetadataValidator.source_patient_info_blank?(expected.source_patient_info)
         if XdsMetadataValidator.source_patient_info_blank?(actual.source_patient_info)
-          errors << ContentError.new(:section => 'Source Patient Info', :error_message => "Unable to find Source Patient Info",
-                                     :validator => "XDS Metadata Validator", :inspection_type => 'XDS Provide and Register')
+          errors << Laika::ValidationError.new(
+            :section => 'Source Patient Info',
+            :message => "Unable to find Source Patient Info",
+            :validator => "XDS Metadata Validator",
+            :inspection_type => 'XDS Provide and Register'
+          )
         else
           source_patient_info_attributes = [:source_patient_identifier, :name, :gender, :date_of_birth, :address]
           source_patient_info_attributes.each do |spia|
             expected_value = expected.source_patient_info.send(spia).to_s
             actual_value = actual.source_patient_info.send(spia).to_s
             unless expected_value == actual_value
-              errors << ContentError.new(:section => 'Source Patient Info', :field_name => spia.to_s.humanize,
-                                         :error_message => "Expected: `#{expected_value}', Found: `#{actual_value}'",
-                                         :validator => "XDS Metadata Validator", :inspection_type => 'XDS Provide and Register')
+              errors << Laika::ComparisonError.new(
+                :section => 'Source Patient Info',
+                :field_name => spia.to_s.humanize,
+                :message => "Expected: `#{expected_value}', Found: `#{actual_value}'",
+                :expected => expected_value,
+                :provided => actual_value,
+                :validator => "XDS Metadata Validator",
+                :inspection_type => 'XDS Provide and Register'
+              )
             end            
           end
         end

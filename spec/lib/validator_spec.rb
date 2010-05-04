@@ -75,3 +75,21 @@ describe Validation::Validator do
 
   end
 end
+
+describe Validation::BaseValidator do
+
+  it "should provide a logger" do
+    validator = Validation::BaseValidator.new
+    validator.logger.should be_kind_of Logger
+  end
+
+end
+
+describe Validation::FileValidator do
+
+  it "should provide a logger" do
+    validator = Validation::FileValidator.new
+    validator.logger.should be_kind_of Logger
+  end
+
+end

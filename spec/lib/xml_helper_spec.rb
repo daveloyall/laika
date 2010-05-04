@@ -13,7 +13,11 @@ describe XmlHelper, "can match values in XML" do
     patient_element = REXML::XPath.first(document, '/cda:ClinicalDocument/cda:recordTarget/cda:patientRole', {'cda' => 'urn:hl7-org:v3'})
     error = XmlHelper.match_value(patient_element, 'cda:patient/cda:name/cda:given', 'Billy')
     error.should_not be_nil
-    error.should == "Expected Billy got Joe"
+    error.should be_kind_of Laika::ComparisonError
+    error.message.should == "Expected Billy got Joe"
+    error.expected.should == 'Billy'
+    error.provided.should == 'Joe'
+    error.location.should == patient_element.xpath
   end
   
   it "should return an error string when it can't find the XML it is looking for and the expected value is not nil" do
@@ -21,7 +25,9 @@ describe XmlHelper, "can match values in XML" do
     patient_element = REXML::XPath.first(document, '/cda:ClinicalDocument/cda:recordTarget/cda:patientRole', {'cda' => 'urn:hl7-org:v3'})
     error = XmlHelper.match_value(patient_element, 'cda:patient/cda:foo', 'Billy')
     error.should_not be_nil
-    error.should == "Expected Billy got nil"
+    error.should be_kind_of Laika::ValidationError
+    error.message.should match /Unable to locate node/
+    error.location.should == patient_element.xpath
   end
   
   it "should return nil when the expected value is nil and the expression does not match anything" do
@@ -36,6 +42,11 @@ describe XmlHelper, "can match values in XML" do
     patient_element = REXML::XPath.first(document, '/cda:ClinicalDocument/cda:recordTarget/cda:patientRole', {'cda' => 'urn:hl7-org:v3'})
     error = XmlHelper.match_value(patient_element, '/', nil)
     error.should_not be_nil
+    error.should be_kind_of Laika::ComparisonError
+    error.message.should == "Expected nil got \n"
+    error.expected.should be_nil
+    error.provided.should == "\n"
+    error.location.should == patient_element.xpath
   end 
   
   it "should return be able to match boolean return values correctly" do

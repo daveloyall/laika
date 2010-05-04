@@ -1,5 +1,4 @@
 require File.dirname(__FILE__) + '/../spec_helper'
-require 'validation_error'
 
 module Laika
   describe ValidationError do
@@ -30,18 +29,18 @@ module Laika
         @error = ValidationError.new
       end
 
-      it "should assign attributes from_hash" do
-        @error.from_hash(:section => 'foo', :field_name => 'bar')
+      it "should assign attributes attributes" do
+        @error.attributes(:section => 'foo', :field_name => 'bar')
         @error.section.should == 'foo'
         @error.field_name.should == 'bar'
       end
   
-      it "should ignore unknown attributes when responding to from_hash" do
-        lambda { @error.from_hash(:dingo => 'foo') }.should_not raise_exception
+      it "should ignore unknown attributes when responding to attributes" do
+        lambda { @error.attributes(:dingo => 'foo') }.should_not raise_exception
       end
 
-      it "from_hash should return self" do
-        @error.from_hash(:section => 'bar').should == @error 
+      it "attributes should return self" do
+        @error.attributes(:section => 'bar').should == @error 
       end
     end
   end

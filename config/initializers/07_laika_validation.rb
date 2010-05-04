@@ -1,6 +1,7 @@
 require 'xml_helper'
 
 require 'validation'
+require 'validation_error'
 
 # The Tale of Validator Initialization
 #

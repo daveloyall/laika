@@ -66,7 +66,7 @@ describe Validators::Umls::UmlsValidator, "Can validate codes/code_systems " do
       document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/validators/valid_codes.xml'))
       errors =  @validator.validate(nil,document)
       errors.size.should == 1
-      errors[0].error_message.should =~ /Laika was not configured to use a UMLS database/
+      errors[0].message.should =~ /Laika was not configured to use a UMLS database/
     end
   end
 
@@ -97,7 +97,7 @@ describe Validators::Umls::UmlsValidator, "Can validate codes/code_systems " do
       document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/validators/valid_codes.xml'))
       errors =  @validator.validate(nil,document)
       errors.size.should == 1
-      errors[0].error_message.should =~ /Laika encountered an error connecting/
+      errors[0].message.should =~ /Laika encountered an error connecting/
     end
   end
 

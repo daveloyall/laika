@@ -28,7 +28,11 @@ module Validators
        rescue 
           # this is where we will do something with the error
           
-          errors << ContentError.new(:error_message=>$!.message, :validator=>@validator_name,:inspection_type=>::XML_VALIDATION_INSPECTION)
+          errors << Laika::ValidationError.new(
+            :message => $!.message,
+            :validator => @validator_name,
+            :inspection_type=>::XML_VALIDATION_INSPECTION
+          )
        end
        errors
       end
