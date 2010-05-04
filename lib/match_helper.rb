@@ -12,9 +12,11 @@ module MatchHelper
       def match_value(an_element, xpath, field, value)
         error = XmlHelper.match_value(an_element, xpath, value)
         if error
-          return ContentError.new(:section => section_name, :subsection => subsection_name, :field_name => field,
-                                  :error_message => error,
-                                  :location=>(an_element) ? an_element.xpath : nil)
+          return error.attributes(
+            :section => section_name,
+            :subsection => subsection_name,
+            :field_name => field
+          )
         else
           return nil
         end
@@ -22,23 +24,12 @@ module MatchHelper
   
       def safe_match(element,&block)
          if element
-# Commenting this out for now so that code bugs can actually filter
-# up for resolution.  Either that or we need to capture the backtrace
-# as well.
-#            begin
                yield(element) 
                return nil
-#            rescue
-#                return ContentError.new(:section => section_name, 
-#                                        :error_message => "Error during validation of the #{section_name} section: #{$!}",
-#                                        :type=>'error',
-#                                        :location => element.xpath)
-#            end
-            
          else
-             return ContentError.new(:section => section_name, 
-                                     :error_message => 'Null value supplied for matching',
-                                     :type=>'error',
+             return Laika::ValidationError.new(:section => section_name, 
+                                     :message => 'Null value supplied for matching',
+                                     :severity=>'error',
                                      :location =>nil)             
          end
    
@@ -50,9 +41,9 @@ module MatchHelper
           yield(content) if block_given?
           return nil
         else
-            return ContentError.new(:section => section_name, 
-                                    :error_message => error_message,
-                                    :type => 'error',
+            return Laika::ValidationError.new(:section => section_name, 
+                                    :message => error_message,
+                                    :severity => 'error',
                                     :location => error_location)
         end
       end
@@ -63,9 +54,9 @@ module MatchHelper
           yield(content) if block_given?
           return nil
         else
-          return ContentError.new(:section =>section_name,
-                                  :error_message => error_message,
-                                  :type=>'error',
+          return Laika::ValidationError.new(:section =>section_name,
+                                  :message => error_message,
+                                  :severity=>'error',
                                   :location => error_location)
         end
       end

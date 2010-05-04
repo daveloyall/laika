@@ -76,7 +76,7 @@ module Validators
     
         base_error_parameters = { 
           :validator       => "UmlsValidator",
-          :msg_type        => msg_type,
+          :severity        => msg_type,
           :inspection_type => ::UMLS_CODESYSTEM_INSPECTION,
         }
         errors = []
@@ -98,25 +98,25 @@ module Validators
 
               # figure out how to handle the errors here
                unless validate_code(oid,code,name)
-                 errors << ContentError.new(
+                 errors << Laika::ValidationError.new(
                    base_error_parameters.merge(
                      :location        => el.xpath,
-                     :error_message   => "Code #{code} not found in CodeSystem #{oid}"
+                     :message   => "Code #{code} not found in CodeSystem #{oid}"
                    )
                  )
                end          
                     
             end
           rescue ActiveRecord::ActiveRecordError => e
-            UmlsBase.logger.warn("Validators::Umls::UmlsValidator#validate() - ActiveRecordError: #{e}\n#{e.backtrace}")
-            errors << ContentError.new(base_error_parameters.merge(
-              :error_message   => "Laika encountered an error connecting to the UMLS database and was not able to complete UMLS validation"
+            logger.warn("Validators::Umls::UmlsValidator#validate() - ActiveRecordError: #{e}\n#{e.backtrace}")
+            errors << Laika::ValidationError.new(base_error_parameters.merge(
+              :message   => "Laika encountered an error connecting to the UMLS database and was not able to complete UMLS validation"
             ))
           end
         else
-          UmlsBase.logger.warn("Validators::Umls::UmlsValidator#validate() - UmlsBase not configured with a #{Validators::Umls.configuration_key} database.  UMLS validation not attempted.")
-          errors << ContentError.new(base_error_parameters.merge(
-            :error_message   => "Laika was not configured to use a UMLS database"
+          logger.warn("Validators::Umls::UmlsValidator#validate() - UmlsBase not configured with a #{Validators::Umls.configuration_key} database.  UMLS validation not attempted.")
+          errors << Laika::ValidationError.new(base_error_parameters.merge(
+            :message   => "Laika was not configured to use a UMLS database"
           ))
         end
         errors     

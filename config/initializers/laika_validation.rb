@@ -22,6 +22,7 @@ require 'importers/c32/person_name_c32_importer'
 
 
 require 'validation'
+require 'validation_error'
 
 # The Tale of Validator Initialization
 #

@@ -31,7 +31,11 @@ module Validation
    # this is just a stubbed out marker class to we can ensure that
    # everything that is registered as a validator really is one
    class BaseValidator
-     attr_accessor :validation_type
+     attr_accessor :validation_type, :logger
+
+     def initialize
+       self.logger = Logger.new(STDOUT)
+     end
      
      def validate(patient_data, document)
          raise "Implement me damn it"

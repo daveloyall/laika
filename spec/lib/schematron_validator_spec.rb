@@ -28,7 +28,7 @@ describe Validators::Schematron::CompiledValidator , "can validate xml against s
     xml = File.open(File.dirname(__FILE__) + "/../test_data/validators/schematron_test_bad.xml","r") do |f| f.read() end
     errors = validator.validate(nil,REXML::Document.new(xml))
     errors.should_not be_empty
-    errors.first.error_message.should == "An element of type dog should have an id attribute that is a unique identifier for that animal."
+    errors.first.message.should == "An element of type dog should have an id attribute that is a unique identifier for that animal."
   end
 end
 

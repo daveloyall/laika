@@ -118,12 +118,13 @@ module Validators
       private
 
       def inspection_error xpath, message
-        ContentError.new(
-          :error_message   => message,
-          :type            => 'error',
+        Laika::ValidationError.new(
+          :message => message,
+          :severity        => 'error',
           :location        => xpath,
           :validator       => 'C62 Validator',
-          :inspection_type => ::CONTENT_INSPECTION)
+          :inspection_type => ::CONTENT_INSPECTION
+        )
       end
 
       def check_required elements, xpath, attr_names = []
