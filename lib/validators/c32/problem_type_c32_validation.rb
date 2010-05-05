@@ -5,7 +5,7 @@ module ProblemTypeC32Validation
   def validate_c32(problem_code)
 
     unless problem_code
-      return [ContentError.new]
+      return [Laika::ValidationError.new]
     end
 
     errors = []

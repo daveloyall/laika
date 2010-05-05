@@ -7,7 +7,7 @@ module AdvanceDirectiveTypeC32Validation
     def validate_c32(type)
   
         unless type
-            return [ContentError.new]
+            return [Laika::ValidationError.new]
         end
   
         errors = []
@@ -15,8 +15,6 @@ module AdvanceDirectiveTypeC32Validation
         errors << match_value(type,'@displayName','displayName',name)
         errors.compact
         
-        
     end 
-
 
 end

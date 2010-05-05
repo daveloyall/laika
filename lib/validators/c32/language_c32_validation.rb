@@ -1,10 +1,7 @@
 
 module LanguageC32Validation
 
-
   include MatchHelper
-
-
 
   #Reimplementing from MatchHelper
   def section_name
@@ -29,18 +26,21 @@ module LanguageC32Validation
                                 self.preference.to_s)        
         end
       else
-        errors << ContentError.new(:section => 'languages', 
-                                   :error_message => "No language found for #{language_code}",
-                                   :location=>document.xpath)
+        errors << Laika::ValidationError.new(
+          :section => 'languages', 
+          :message => "No language found for #{language_code}",
+          :location=>document.xpath
+        )
       end
     rescue
-      errors << ContentError.new(:section => 'languages', 
-                                 :error_message => 'Invalid, non-parsable XML for language data',
-                                 :type=>'error',
-                                 :location => document.xpath)
+      errors << Laika::ValidationError.new(
+        :section => 'languages', 
+        :message => 'Invalid, non-parsable XML for language data',
+        :severity => 'error',
+        :location => document.xpath
+      )
     end
     errors.compact
   end
-
 
 end

@@ -37,7 +37,7 @@ describe Telecom do
       errors = @telecom.validate_c32(document.root)
       errors.should_not be_empty
       errors.should have(2).errors
-      errors[1].error_message.should.eql? "Expected use HP got HV"
+      errors[1].message.should.eql? "Expected use HP got HV"
     end
     
     it "should find errors when a telecom is missing" do
@@ -45,7 +45,7 @@ describe Telecom do
       errors = @telecom.validate_c32(document.root)
       errors.should_not be_empty
       errors.should have(1).error
-      errors[0].error_message.should.eql? "Couldn't find the telecom for MC"
+      errors[0].message.should.eql? "Couldn't find the telecom for MC"
     end
   end
 end

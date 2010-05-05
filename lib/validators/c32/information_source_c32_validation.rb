@@ -18,15 +18,19 @@ module InformationSourceC32Validation
         assignedPerson = REXML::XPath.first(author,"./cda:assignedAuthor/cda:assignedPerson/cda:name", {'cda' => 'urn:hl7-org:v3'})
         errors.concat self.person_name.validate_c32(assignedPerson)
       else
-        errors << ContentError.new(:section=>"InformationSource",
-                                   :error_message=>"Author not found",
-                                   :location=>(document)? document.xpath : '')
+        errors << Laika::SectionMissing.new(
+          :section => "InformationSource",
+          :message => "Author not found",
+          :location => (document)? document.xpath : ''
+        )
       end
     rescue
-      errors << ContentError.new(:section => 'InformationSource', 
-                                 :error_message => 'Invalid, non-parsable XML for information source data',
-                                 :type=>'error',
-                                 :location => document.xpath)
+      errors << Laika::ValidationError.new(
+        :section => 'InformationSource', 
+        :message => 'Invalid, non-parsable XML for information source data',
+        :type=>'error',
+        :location => document.xpath
+      )
     end
     errors.compact
   end

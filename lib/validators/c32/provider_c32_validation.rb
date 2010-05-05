@@ -14,9 +14,11 @@ module ProviderC32Validation
       namespaces = {'cda'=>"urn:hl7-org:v3",'sdtc'=>"urn:hl7-org:sdtc"}
       provider = REXML::XPath.first(document,'/cda:ClinicalDocument/cda:documentationOf/cda:serviceEvent/cda:performer',namespaces)
       unless provider
-        return [ContentError.new(:section => 'Provider', 
-                                 :error_message => "Provider not found", 
-                                 :location => document.try(:xpath))]    
+        return [Laika::SectionMissing.new(
+          :section => 'Provider', 
+          :message => "Provider not found", 
+          :location => document.try(:xpath)
+        )]
       end     
       date_range = REXML::XPath.first(provider, 'cda:time',namespaces)
       assigned = REXML::XPath.first(provider,'cda:assignedEntity',namespaces)
@@ -42,22 +44,28 @@ module ProviderC32Validation
           if id
             errors << match_value(id,'@root','id',patient_identifier)
           else
-            errors << ContentError.new(:section => section,
-                                       :error_message => "Expected to find a patient identifier with the value of #{patient_identifier}",
-                                       :location => assigned.xpath)
+            errors << Laika::ValidationError.new(
+              :section => section,
+              :message => "Expected to find a patient identifier with the value of #{patient_identifier}",
+              :location => assigned.xpath
+            )
           end
         end         
       else
-        errors << ContentError.new(:section=>section,
-                                   :error_message=>"Assigned person not found",
-                                   :location=>(document) ? document.xpath : nil)
+        errors << Laika::ValidationError.new(
+          :section => section,
+          :message => "Assigned person not found",
+          :location => (document) ? document.xpath : nil
+        )
       end
     rescue
       puts $!
-      errors << ContentError.new(:section => 'HealthCare Provider', 
-                                 :error_message => 'Invalid, non-parsable XML for HealthCare Provider data',
-                                 :type=>'error',
-                                 :location => document.xpath)
+      errors << Laika::ValidationError.new(
+        :section => 'HealthCare Provider', 
+        :message => 'Invalid, non-parsable XML for HealthCare Provider data',
+        :severity => 'error',
+        :location => document.xpath
+      )
     end
     errors.compact
   end

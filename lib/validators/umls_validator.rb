@@ -68,6 +68,7 @@ module Validators
       def initialize(m_type)
         @mapping = YAML.load_file(UMLS_MAPPING_DEFAULT)    
         @msg_type=m_type
+        super()
       end   
 
       # Validate a given xml document against the umls db. This validation only looks to see 

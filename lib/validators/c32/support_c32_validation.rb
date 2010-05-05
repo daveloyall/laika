@@ -22,20 +22,24 @@ module SupportC32Validation
             errors << match_value(time_element, "cda:high/@value", "end_support", self.end_support.to_formatted_s(:brief))
           end
         else
-          errors <<  ContentError.new(:section => "Support", 
-                                      :subsection => "date",
-                                      :error_message => "No time element found in the support",
-                                      :location => support.xpath)
+          errors <<  Laika::ValidationError.new(
+            :section => "Support", 
+            :subsection => "date",
+            :message => "No time element found in the support",
+            :location => support.xpath
+          )
         end
         if self.address
           add =  REXML::XPath.first(support,"cda:addr",{'cda' => 'urn:hl7-org:v3'})
           if add
-             errors.concat   self.address.validate_c32(add)  
+             errors.concat   self.address.validate_c32(add)
           else                                 
-             errors <<  ContentError.new(:section => "Support", 
-                                         :subsection => "address",
-                                         :error_message => "Address not found in the support section #{support.xpath}",
-                                         :location => support.xpath)          
+             errors <<  Laika::ValidationError.new(
+               :section => "Support", 
+               :subsection => "address",
+               :message => "Address not found in the support section #{support.xpath}",
+               :location => support.xpath
+             )
           end
         end
         if self.telecom
@@ -46,14 +50,18 @@ module SupportC32Validation
         errors << match_value(support, "cda:code[@codeSystem='2.16.840.1.113883.5.111']/@code", "relationship", relationship.try(:code))
       else
         # add the error for no support object being there 
-        errors <<  ContentError.new(:section=> "Support", 
-                                    :error_message=> "Support element does not exist")          
+        errors <<  Laika::SectionMissing.new(
+          :section=> "Support", 
+          :message => "Support element does not exist"
+        )
       end
     rescue
-      errors << ContentError.new(:section => 'Support', 
-                                 :error_message => 'Invalid, non-parsable XML for supports data',
-                                 :type=>'error',
-                                 :location => document.xpath)
+      errors << Laika::ValidationError.new(
+        :section => 'Support', 
+        :message => 'Invalid, non-parsable XML for supports data',
+        :type=>'error',
+        :location => document.xpath
+      )
     end
     errors.compact
   end

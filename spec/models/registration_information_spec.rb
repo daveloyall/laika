@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-describe RegistrationInformation, "can vaildate it's content" do
+describe RegistrationInformation, "can validate it's content" do
   fixtures :patients, :registration_information, :person_names, :addresses,
            :telecoms, :genders, :marital_statuses, :ethnicities, :races, :religions,
            :patient_identifiers

@@ -40,11 +40,12 @@
             begin   
               errors << match_value(childAct, "cda:performer/@typeCode", "PRF", "PRF")
             rescue
-              errors << ContentError.new(
+              errors << Laika::ValidationError.new(
                 :section => 'Insurance Provider', 
-                :error_message => 'Failed checking that the XML element''performer'' has attribute ''typeCode'' that is equal to ''PRF''',
-                :type=>'error',
-                :location => childAct.xpath)
+                :message => 'Failed checking that the XML element''performer'' has attribute ''typeCode'' that is equal to ''PRF''',
+                :severity => 'error',
+                :location => childAct.xpath
+              )
             end
           end
 
@@ -59,11 +60,13 @@
             if guarantor_name_element
               errors.concat(self.insurance_provider_guarantor.person_name.validate_c32(guarantor_name_element))
             else
-              errors << ContentError.new(:section => 'insurance_provider', 
-                                         :subsection => 'guarantor_name',
-                                         :error_message => "Couldn't match the insurance provider guarantor's name",
-                                         :type => 'error',
-                                         :location => guarantor_name_element.xpath)
+              errors << Laika::ValidationError.new(
+                :section => 'insurance_provider', 
+                :subsection => 'guarantor_name',
+                :message => "Couldn't match the insurance provider guarantor's name",
+                :severity => 'error',
+                :location => guarantor_name_element.xpath
+              )
             end
           end
 
@@ -75,10 +78,12 @@
         end
 
       rescue
-        errors << ContentError.new(:section => 'Insurance Provider', 
-                                   :error_message => 'Invalid, non-parsable XML for Insurance Provider data',
-                                   :type=>'error',
-                                   :location => document.xpath)
+        errors << Laika::ValidationError.new(
+          :section => 'Insurance Provider', 
+          :message => 'Invalid, non-parsable XML for Insurance Provider data',
+          :severity => 'error',
+          :location => document.xpath
+        )
       end
       errors.compact
     end

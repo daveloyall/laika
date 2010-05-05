@@ -4,8 +4,11 @@ module ProviderRoleC32Validation
 
    def validate_c32(role)
        unless role
-           return [ContentError.new(:section => 'Provider', :subsection => 'ProviderRole',
-                                    :error_message => 'Unable to find provider role')]
+         return [Laika::ValidationError.new(
+           :section => 'Provider',
+           :subsection => 'ProviderRole',
+           :message => 'Unable to find provider role'
+         )]
        end
 
        errors = []

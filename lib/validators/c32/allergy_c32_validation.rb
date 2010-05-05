@@ -57,15 +57,19 @@ module AllergyC32Validation
         # end
         #end
       else
-        errors << ContentError.new(:section => 'allergies',
-        :error_message => "Unable to find product #{free_text_product}",
-        :location => section.try(:xpath))
+        errors << Laika::SectionMissing.new(
+          :section => 'allergies',
+          :message => "Unable to find product #{free_text_product}",
+          :location => section.try(:xpath)
+        )
       end
     rescue
-      errors << ContentError.new(:section => 'Allergy',
-      :error_message => 'Invalid, non-parsable XML for allergy data',
-      :type=>'error',
-      :location => document.xpath)
+      errors << Laika::ValidationError.new(
+        :section => 'Allergy',
+        :message => 'Invalid, non-parsable XML for allergy data',
+        :severity => 'error',
+        :location => document.xpath
+      )
     end
     errors.compact
   end
@@ -85,13 +89,25 @@ module AllergyC32Validation
           errors << match_value(obs_value, "@codeSystemName", 'no_known_allergies', 'SNOMED CT')
           errors << match_value(obs_value, "@codeSystem", 'no_known_allergies', '2.16.840.1.113883.6.96')
         else
-          errors << ContentError.new(:section => 'allergies', :error_message => "Unable to find observation value", :location => observation.xpath)
+          errors << Laika::ValidationError.new(
+            :section => 'allergies',
+            :message => "Unable to find observation value",
+            :location => observation.xpath
+          )
         end
       else
-        errors << ContentError.new(:section => 'allergies', :error_message => "Unable to find observation", :location => section.xpath)
+        errors << Laika::SectionMissing.new(
+          :section => 'allergies',
+          :message => "Unable to find observation",
+          :location => section.xpath
+        )
       end
     else
-      errors << ContentError.new(:section => 'allergies', :error_message => "Unable to find allergies section", :location => clinical_document.try(:xpath))
+      errors << Laika::ValidationError.new(
+        :section => 'allergies',
+        :message => "Unable to find allergies section",
+        :location => clinical_document.try(:xpath)
+      )
     end
     errors.compact
   end
