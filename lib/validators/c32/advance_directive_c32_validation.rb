@@ -3,8 +3,6 @@
 
     include MatchHelper
 
-
-
     def validate_c32(document)
 
       errors = []
@@ -24,9 +22,13 @@
           end
 
           if(deref_text != free_text)
-            errors << ContentError.new(:section=>"Advance Directive",
-                                       :error_message=>"Directive text #{free_text} does not match #{deref_text}",
-                                       :location=>(text)? text.xpath : (code)? code.xpath : section.xpath )
+            errors << Laika::ComparisonError.new(
+              :section  => "Advance Directive",
+              :message  => "Directive text #{free_text} does not match #{deref_text}",
+              :expected => free_text,
+              :provided => deref_text,
+              :field_name => 'originalText', 
+              :location => (text)? text.xpath : (code)? code.xpath : section.xpath )
           end
           if person_name
             errors.concat person_name.validate_c32(REXML::XPath.first(entity,'cda:playingEntity/cda:name',MatchHelper::DEFAULT_NAMESPACES))
@@ -38,23 +40,24 @@
             errors.concat telecom.validate_c32(entity)
           end
         else
-            errors << ContentError.new(:section => 'Advance Directive', 
-                                      :error_message => 'Advance Directive not found in document',
-                                      :type=>'error',
-                                      :location => document.xpath)          
+          errors << Laika::SectionMissing.new(
+            :section => 'Advance Directive', 
+            :message => 'Advance Directive not found in document',
+            :severity => 'error',
+            :location => document.xpath
+          )          
         end
       rescue
-        errors << ContentError.new(:section => 'Advance Directive', 
-                                   :error_message => 'Invalid, non-parsable XML for advance directive data',
-                                   :type=>'error',
-                                   :location => document.xpath)
+        errors << Laika::ValidationError.new(
+          :section => 'Advance Directive', 
+          :message => 'Invalid, non-parsable XML for advance directive data',
+          :severity => 'error',
+          :location => document.xpath
+        )
       end
 
       errors.compact
-      
 
     end
-
-
 
   end

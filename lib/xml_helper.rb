@@ -14,8 +14,7 @@ module XmlHelper
   def self.match_value(element, expression, expected, namespaces={'cda' => 'urn:hl7-org:v3'},bind_variables = {}, format=:small)
     error = nil
     expected_value = (expected.kind_of?(Numeric)) ? expected.to_s : expected
-    desired_node = REXML::XPath.first(element, expression, namespaces,bind_variables)
-
+    desired_node = REXML::XPath.first(element, expression, namespaces, bind_variables)
     if desired_node.nil? && !expected_value.nil?
       # if expected_value is nil, there may be no node in the document...
       msg =  "Unable to locate node for comparison.  Xpath: '#{expression}'"

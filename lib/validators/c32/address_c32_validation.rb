@@ -2,11 +2,11 @@
 
     include MatchHelper
 
-    # Checks the contents of the REXML::Element passed in to make sure that they match the
-    # information in this object. This method expects the the element passed in to be the
-    # address element that it will evaluate.
-    # Will return an empty array if everything passes. Otherwise,
-    # it will return an array of ContentErrors with a description of what's wrong.
+    # Checks the contents of the REXML::Element passed in to make sure that
+    # they match the information in this object. This method expects the the
+    # element passed in to be the address element that it will evaluate.  Will
+    # return an empty array if everything passes. Otherwise, it will return an
+    # array of ValidationErrors with a description of what's wrong.
     def validate_c32(address_element)
       errors = []
       if address_element
@@ -19,9 +19,11 @@
           errors << match_value(address_element, 'cda:country', 'country', self.iso_country.code)
         end
       else
-         errors << ContentError.new(:section => self.addressable_type.underscore, 
-                                    :subsection => 'address',
-                                    :error_message => 'Address element is nil')
+        errors << Laika::SectionMissing.new(
+          :section => self.addressable_type.underscore, 
+          :subsection => 'address',
+          :message => 'Address element is nil'
+        )
       end
       errors.compact
     end
@@ -36,5 +38,4 @@
       'address'
     end
 
-
-  end
+end

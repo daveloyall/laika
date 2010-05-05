@@ -5,7 +5,7 @@
     def validate_c32(allergy_status_code)
 
       unless allergy_status_code
-        return [ContentError.new]
+        return [Laika::ValidationError.new]
       end
 
       errors = []

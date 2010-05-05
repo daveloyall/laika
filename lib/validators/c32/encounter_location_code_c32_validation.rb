@@ -5,7 +5,7 @@ module EncounterLocationCodeC32Validation
   def validate_c32(encounter_location_code)
 
     unless encounter_location_code
-      return [ContentError.new]
+      return [Laika::ValidationError.new]
     end
 
     errors = []

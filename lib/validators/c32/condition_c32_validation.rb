@@ -26,9 +26,13 @@
                 text =  REXML::XPath.first(observation,"cda:text",MatchHelper::DEFAULT_NAMESPACES)
                 deref_text = deref(text)
                 if(deref_text != problem_name)
-                  errors << ContentError.new(:section => "Condition",
-                                             :error_message => "Problem name #{problem_name} does not match #{deref_text}",
-                                             :location => (text)? text.xpath : (code)? code.xpath : section.xpath)
+                  errors << Laika::ComparisonError.new(
+                    :section => "Condition",
+                    :message => "Problem name #{problem_name} does not match #{deref_text}",
+                    :expected => problem_name,
+                    :provided => deref_text,
+                    :location => (text)? text.xpath : (code)? code.xpath : section.xpath
+                  )
                 end
                 # if the free text name matches a code from the SNOMED problem list, perform a coded value inspection
                 snowmed_problem = SnowmedProblem.find(:first, :conditions => {:name => problem_name})
@@ -41,23 +45,29 @@
                 end
               end
             else
-              errors << ContentError.new(:section => 'Condition',
-                                         :error_message => 'Unable to the act/entry for this condition',
-                                         :type => 'error',
-                                         :location => section.xpath)
+              errors << Laika::SectionMissing.new(
+                :section => 'Condition',
+                :message => 'Unable to find the act/entry for this condition',
+                :severity => 'error',
+                :location => section.xpath
+              )
             end
           else
-            errors << ContentError.new(:section => 'Condition',
-                                       :error_message => 'Unable to find Conditions section',
-                                       :type => 'error',
-                                       :location => document.xpath)
+            errors << Laika::SectionMissing.new(
+              :section => 'Condition',
+              :message => 'Unable to find Conditions section',
+              :severity => 'error',
+              :location => document.xpath
+            )
           end
 
         rescue
-          errors << ContentError.new(:section => 'Condition',
-                                     :error_message => 'Invalid, non-parsable XML for condition data',
-                                     :type => 'error',
-                                     :location => document.xpath)
+          errors << Laika::ValidationError.new(
+            :section => 'Condition',
+            :message => 'Invalid, non-parsable XML for condition data',
+            :severity => 'error',
+            :location => document.xpath
+          )
         end
         errors.compact
       end

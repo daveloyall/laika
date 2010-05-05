@@ -16,7 +16,7 @@ describe Medication, 'it can validate medication elements in a C32' do
     substance_administration_hash = XmlHelper.dereference('substanceAdministration', document)
     errors = med.validate_c32(document, :validation_type => Validation::C32_V2_5_TYPE, :substance_administration_hash => substance_administration_hash)
     errors.size.should == 1
-    errors.first.error_message.should == "Expected nil got 30.0"
+    errors.first.message.should == "Expected nil got 30.0"
     med.quantity_ordered_value = 30.0
     errors = med.validate_c32(document, :validation_type => Validation::C32_V2_5_TYPE, :substance_administration_hash => substance_administration_hash)
     errors.should be_empty

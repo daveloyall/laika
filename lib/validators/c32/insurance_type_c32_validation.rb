@@ -5,7 +5,7 @@ module InsuranceTypeC32Validation
   def validate_c32(insurance_type_code)
 
     unless insurance_type_code
-      return [ContentError.new]
+      return [Laika::ValidationError.new]
     end
 
     errors = []

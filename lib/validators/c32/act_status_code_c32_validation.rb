@@ -5,7 +5,7 @@
     def validate_c32(act_status_code)
 
       unless act_status_code
-        return [ContentError.new]
+        return [Laika::ValidationError.new]
       end
 
       errors = []

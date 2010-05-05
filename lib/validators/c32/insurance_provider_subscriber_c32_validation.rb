@@ -4,11 +4,10 @@
     include MatchHelper
 
 
-
     def validate_c32(act)
 
       unless act
-        return [ContentError.new]
+        return [Laika::ValidationError.new]
       end
 
       errors = []
@@ -25,11 +24,12 @@
           errors.concat telecom.validate_c32(REXML::XPath.first(particpantRole,'cda:telecom',MatchHelper::DEFAULT_NAMESPACES))
         end
       rescue
-        errors << ContentError.new(
-                :section => 'Subscriber Information', 
-                :error_message => 'Failed checking name, address and telecom details on the insurance provider subcriber XML',
-                :type=>'error',
-                :location => act.xpath)
+        errors << Laika::ValidationError.new(
+          :section => 'Subscriber Information', 
+          :message => 'Failed checking name, address and telecom details on the insurance provider subcriber XML',
+          :severity => 'error',
+          :location => act.xpath
+        )
       end
 
       return errors.compact

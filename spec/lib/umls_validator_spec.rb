@@ -3,6 +3,9 @@ require File.dirname(__FILE__) + '/../spec_helper'
 describe Validators::Umls::UmlsValidator, "Can validate codes/code_systems " do
   before(:each) do 
     @validator = Validators::Umls::UmlsValidator.new("warning")
+    @mock_logger = mock
+    @mock_logger.should_not_receive(:warn) 
+    @validator.logger = @mock_logger
     @tests = [ 
                {:codesystem=>"",:code=>"", :expected=>true}, # should return true as we dont pass judgment on code systems we dont know about
                {:codesystem=>"2.16.840.1.113883.6.96",:code=>"46120009", :expected=>true},
@@ -63,6 +66,8 @@ describe Validators::Umls::UmlsValidator, "Can validate codes/code_systems " do
     end
 
     it "should handle validation failure do to lack of umls database" do
+      @validator.logger = mock
+      @validator.logger.should_receive(:warn).once
       document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/validators/valid_codes.xml'))
       errors =  @validator.validate(nil,document)
       errors.size.should == 1
@@ -94,6 +99,8 @@ describe Validators::Umls::UmlsValidator, "Can validate codes/code_systems " do
     end
 
     it "should fail if attempt to validate" do
+      @validator.logger = mock
+      @validator.logger.should_receive(:warn).once
       document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/validators/valid_codes.xml'))
       errors =  @validator.validate(nil,document)
       errors.size.should == 1

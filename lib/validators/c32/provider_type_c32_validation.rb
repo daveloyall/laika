@@ -4,9 +4,11 @@ module ProviderTypeC32Validation
 
   def validate_c32(type)
     unless type
-      return [ContentError.new(:section => 'Provider', 
-                               :subsection => 'ProviderType',
-                               :error_message => 'Unable to find provider type')]
+      return [Laika::ValidationError.new(
+        :section => 'Provider', 
+        :subsection => 'ProviderType',
+        :error_message => 'Unable to find provider type'
+      )]
     end
     errors = []
     errors << match_value(type,'@code','code',code)
