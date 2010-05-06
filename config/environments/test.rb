@@ -28,4 +28,9 @@ config.action_mailer.delivery_method = :test
 # like if you have constraints or database-specific column types
 # config.active_record.schema_format = :sql
 
-config.gem 'modelfactory', :version => '>=0.9.2'
+# These are dependencies for the tests.
+# We just want to make sure they're available without loading them.
+config.gem 'rspec',       :lib => false, :version => '>= 1.3.0'
+config.gem 'rspec-rails', :lib => false, :version => '>= 1.3.2'
+config.gem 'selenium-client', :lib => false
+config.gem 'modelfactory', :lib => false, :version => '>=0.9.2'
