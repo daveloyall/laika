@@ -33,16 +33,20 @@ module TestPlansHelper
   end
 
   def action_list_items test_plan, opts
-    test_plan.test_actions.map do |k, v|
-      if k =~ />$/
-        content_tag 'li',
-          link_to_remote(k[0..-2], :url => {
-            :controller => 'test_plans', :action => v, :id => test_plan
-          }, :update => opts[:update])
+    test_plan.test_actions.map do |k, action|
+      (link, is_ajax) = /(\w+)(>)?/.match(k)[1,2]
+      options = { :controller => 'test_plans', :action => action, :id => test_plan }
+      html_options = { :id => "test_plan_#{test_plan.id}_#{action}", :class => k.to_s.downcase }
+
+      if is_ajax.nil?
+        method = :link_to
       else
-        content_tag 'li',
-          link_to(k, { :controller => 'test_plans', :action => v, :id => test_plan }, :class => k.to_s.downcase)
+        method = :link_to_remote
+        options = { :url => options, :update => opts[:update] }
       end
+
+      content_tag 'li', send(method, link, options, html_options)
+
     end
   end
 
