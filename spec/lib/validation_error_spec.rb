@@ -18,8 +18,8 @@ module Laika
         @error.field_name.should == 'bar'
       end
   
-      it "to_hash should produce a hash of attributes" do
-        @error.to_hash.should == { :section => 'foo', :field_name => 'bar' } 
+      it "attributes reader should produce a hash" do
+        @error.attributes.should == { :section => 'foo', :field_name => 'bar' } 
       end
     end
 
@@ -29,19 +29,22 @@ module Laika
         @error = ValidationError.new
       end
 
-      it "should assign attributes attributes" do
-        @error.attributes(:section => 'foo', :field_name => 'bar')
+      it "should be able to assign attributes from a hash" do
+        @error.attributes=({:section => 'foo', :field_name => 'bar'})
         @error.section.should == 'foo'
         @error.field_name.should == 'bar'
       end
   
-      it "should ignore unknown attributes when responding to attributes" do
-        lambda { @error.attributes(:dingo => 'foo') }.should_not raise_exception
+      it "should ignore unknown attributes when mass assinging attributes attributes" do
+        lambda { @error.attributes=({:dingo => 'foo'}) }.should_not raise_exception
       end
 
-      it "attributes should return self" do
-        @error.attributes(:section => 'bar').should == @error 
+      it "should be able to update attributes and chain" do
+        @error.update_attributes(:section => 'foo', :field_name => 'bar').should == @error
+        @error.section.should == 'foo'
+        @error.field_name.should == 'bar'
       end
+
     end
   end
 end

@@ -39,4 +39,54 @@ describe ContentError do
     @error.tap(&:fail).state.should == 'failed'
   end
 
+  describe "from validation errors" do
+
+    before do
+      @validation_error = Laika::ValidationError.new(
+        :section         => 'section',
+        :subsection      => 'subsection',
+        :field_name      => 'field',
+        :message         => 'foo',
+        :location        => '//xpath',
+        :severity        => 'error',
+        :validator       => 'test',
+        :inspection_type => 'conversion'
+      )
+    end
+
+    it "should construct a content error given a Laika Validation::Error" do
+      content_error = ContentError.from_validation_error!(@validation_error)
+      content_error.should be_kind_of(ContentError)
+      content_error.section.should == 'section'
+      content_error.subsection.should == 'subsection'
+      content_error.field_name.should == 'field'
+      content_error.error_message.should == 'foo'
+      content_error.location.should == '//xpath'
+      content_error.msg_type.should == 'error'
+      content_error.validator.should == 'test'
+      content_error.inspection_type.should == 'conversion'
+      content_error.error_type.should == 'ValidationError'
+      content_error.children.should be_empty
+    end
+
+    describe "with nested errors" do
+
+      before do
+        fields = { :validator => 'conversion' }
+        @validation_error.suberrors << (@bar = Laika::ValidationError.new(fields.merge(:message => 'bar')))
+        @validation_error.suberrors << (@baz = Laika::ValidationError.new(fields.merge(:message => 'baz')))
+        @bar.suberrors << (@grandchild = Laika::ValidationError.new(fields.merge(:message => 'grandchild')))
+        @content_error = ContentError.from_validation_error!(@validation_error)
+      end
+
+      it "should handle trees of validation errors" do
+        @content_error.children.should_not be_empty
+        @content_error.children.size.should == 2
+      end
+
+      it "should reach recursively into descendants" do
+        @content_error.children.first.children.first.error_message.should == 'grandchild'
+      end 
+    end
+  end
 end

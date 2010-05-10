@@ -53,7 +53,7 @@ class GenerateAndFormatPlan < TestPlan
 #    logger.debug("PD #{patient}  doc #{clinical_document.current_data}")
 
     content_errors.clear
-    content_errors.concat errors
+    content_errors.from_validation_errors(errors)
 
     if validator.contains_kind_of?(Validators::Umls::UmlsValidator)
       self.umls_enabled = true
