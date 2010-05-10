@@ -34,7 +34,11 @@ class TestPlan < ActiveRecord::Base
   belongs_to :proctor
   has_one    :patient,           :dependent => :destroy
   belongs_to :clinical_document, :dependent => :destroy
-  has_many   :content_errors,    :dependent => :destroy
+  has_many   :content_errors,    :dependent => :destroy do
+    def from_validation_errors(validation_errors)
+      validation_errors.each { |e| self << ContentError.from_validation_error!(e) } 
+    end
+  end
 
   default_scope :order => 'created_at ASC'
 

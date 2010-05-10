@@ -11,15 +11,12 @@ module MatchHelper
     base.class_eval do
       def match_value(an_element, xpath, field, value)
         error = XmlHelper.match_value(an_element, xpath, value)
-        if error
-          return error.attributes(
+        error.update_attributes(
             :section => section_name,
             :subsection => subsection_name,
             :field_name => field
-          )
-        else
-          return nil
-        end
+        ) if error
+        return error
       end
   
       def safe_match(element,&block)
@@ -32,7 +29,6 @@ module MatchHelper
                                      :severity=>'error',
                                      :location =>nil)             
          end
-   
       end    
   
       def match_required(element,xpath,namespaces,xpath_variables,subsection,error_message,error_location=nil,&block)

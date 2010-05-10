@@ -50,21 +50,28 @@ module Laika
 
     def initialize(attributes = {})
       self.suberrors = []
-      self.attributes(attributes)
+      self.attributes=(attributes)
     end
 
     # Allows you to set attributes of this instance with a hash.  Any publically accessible attribute
-    # writer methods may be set.  Returns self to allow chaining.
-    def attributes(attributes = {})
-      attributes.each do |key, value|
+    # writer methods may be set.
+    def attributes=(new_attributes)
+      return if new_attributes.nil?
+      new_attributes.each do |key, value|
         writer = "#{key}="
         send(writer, value) if respond_to?(writer) && self.class.public_method_defined?(writer)
       end
+      return new_attributes 
+    end
+
+    # Updates attributes from an options hash and returns self.
+    def update_attributes(new_attributes)
+      self.attributes=(new_attributes)
       return self
     end
 
     # Returns the ValidationError's attributes as a hash.
-    def to_hash
+    def attributes
       self.attributes_hash || {}
     end
   end
