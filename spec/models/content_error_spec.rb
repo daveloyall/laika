@@ -69,6 +69,19 @@ describe ContentError do
       content_error.children.should be_empty
     end
 
+    it "should set expected and provided if methods are present" do
+      content_error = ContentError.from_validation_error!(Laika::ComparisonError.new(:validator => 'test', :expected => 'expected', :provided => 'provided'))
+      content_error.error_type.should == 'ComparisonError'
+      content_error.expected.should == 'expected'
+      content_error.provided.should == 'provided'
+    end
+
+    it "should set expected_section and provided_sections if methods are present" do
+      content_error = ContentError.from_validation_error!(Laika::SectionMissing.new(:validator => 'test', :expected_section => { :foo => :bar }, :provided_sections => []))
+      content_error.error_type.should == 'SectionMissing'
+      content_error.expected_section.should == { :foo => :bar }
+      content_error.provided_sections.should == []
+    end
     describe "with nested errors" do
 
       before do

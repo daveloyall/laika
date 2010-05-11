@@ -25,7 +25,7 @@ class ContentError < ActiveRecord::Base
     # Constructor for generating a ContentError from a Laika::ValidationError.
     # May throw an ActiveRecord exception if unable to save!
     def from_validation_error!(validation_error)
-      error = ContentError.create!(
+      error = ContentError.new(
         :section          => validation_error.section,
         :subsection       => validation_error.subsection,
         :field_name       => validation_error.field_name,
@@ -36,6 +36,10 @@ class ContentError < ActiveRecord::Base
         :inspection_type  => validation_error.inspection_type,
         :error_type       => validation_error.class.to_s.demodulize
       )
+      [:expected, :provided, :expected_section, :provided_sections].each do |m|
+        error.send("#{m}=", validation_error.send(m)) if validation_error.respond_to?(m)
+      end
+      error.save!
       validation_error.suberrors.each { |sub| error.children << ContentError.from_validation_error!(sub) } 
       return error
     end
