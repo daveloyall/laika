@@ -35,7 +35,10 @@ class TestPlan < ActiveRecord::Base
   has_one    :patient,           :dependent => :destroy
   belongs_to :clinical_document, :dependent => :destroy
   has_many   :content_errors,    :dependent => :destroy do
-    def from_validation_errors(validation_errors)
+
+    # Imports Laika::ValidationErrors from the passed array as ContentErrors
+    # associated with this test plan.
+    def import_from_validation_errors!(validation_errors)
       validation_errors.each { |e| self << ContentError.from_validation_error!(e) } 
     end
   end

@@ -14,6 +14,7 @@ describe "GenerateAndFormats" do
     select 'C32 v2.5'
     attach_file "upload_#{@test_plan.id}", @c32_file.path
     click_button 'Attach'
+    click_link "test_plan_#{@test_plan.id}_doc_inspect"
     body.should contain('foo')
   end
 
