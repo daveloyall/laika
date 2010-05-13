@@ -22,7 +22,9 @@
         </div>
         <%- end -%>
 
-        <%- subsection_errors.each do |e| -%>
+        <%- subsection_errors.each_with_index do |e,index|
+              error_id = @error_mapping[e.location] if e.location
+        -%>
 
         <!-- BEGIN FIELD -->
         <div class="row column span-21 module_field <%= "#{e.error_type.demodulize.underscore} #{e.state}" %>">
@@ -36,7 +38,13 @@
             <p><%= e.field_name %></p>
           </div>
           <div class="column span-7 data_field">
-            <p><%= e.error_message %></p>
+            <p>
+            <% if error_id %>
+              <a style="color:#cc3300" href="javascript:scroll_to_module('error_<%=error_id%>', 1.0);" ><b><%= index %></b> <span><%= h e.error_message %></span></a>
+            <% else %>
+              <b><%= index %>.</b> <span><%= e.error_message %></span>
+            <% end %>
+            </p>
           </div>
           <div class="column span-4">
             <%- if e.review? %>
