@@ -1,0 +1,94 @@
+    	<div class="row column span-21 inspection_table_headers">
+    	  <div class="column span-3">
+    	    <p>Severity</p>
+    	  </div>
+    	  <div class="column span-5">
+    	    <p>Field Name</p>
+    	  </div>
+    	  <div class="column span-7">
+    	    <p>Error</p>
+    	  </div>
+    	  <div class="column span-4">
+    	    <p>Result</p>
+    	  </div>    
+      </div>
+
+      <%- errors.group_by(&:subsection).each do |subsection, subsection_errors| -%>
+
+      <div class="row column span-21 module_subsection">
+        <%- unless subsection.nil? -%>
+        <div class="column span-15 subsection_name">
+          <h4><%= subsection.titleize %></h4>
+        </div>
+        <%- end -%>
+
+        <%- subsection_errors.each do |e| -%>
+
+        <!-- BEGIN FIELD -->
+        <div class="row column span-21 module_field <%= "#{e.error_type.demodulize.underscore} #{e.state}" %>">
+          <div class="error_type">
+            <p><span class="type"><%= e.error_type %></span> - <span class="validator"><%= e.validator %></span></p>
+          </div>
+          <div class="column span-3 first">
+            <p><%= e.msg_type %></p>
+          </div>
+          <div class="column span-5 data_field">
+            <p><%= e.field_name %></p>
+          </div>
+          <div class="column span-7 data_field">
+            <p><%= e.error_message %></p>
+          </div>
+          <div class="column span-4">
+            <%- if e.review? %>
+            <a class="manual-review" href="#">OPEN</a>
+            <%- end -%>
+          </div>
+
+          <%- case e.error_type -%>
+            <%- when 'ComparisonError' -%>
+          <div class="row comparison_fields">
+            <div class="column span-8 data_field">
+              <dl>
+                <dt>Expected:</dt>
+                <dd><%= e.expected %></dd>
+              </dl>
+            </div>
+            <div class="column span-8 data_field">
+              <dl>
+                <dt>Provided:</dt>
+                <dd><%= e.provided%></dd>
+              </dl>
+            </div>
+          </div>
+            <%- when 'SectionMissing' -%> 
+          <div class="row section_missing">
+            <div class="column span-8 data_field">
+              <p>Expected Section:</p>
+              <%= render :partial => 'hash_definition_list', :locals => { :hash_definition_list => e.expected_section } %>
+            </div>
+            <div class="column span-8 data_field">
+              <p>Provided Sections:</p>
+              <%= render :partial => 'hash_definition_list', :collection => e.provided_sections %>
+            </div>
+          </div>
+          <%- end # error_type - additional fields %>
+
+          <%- if e.review? %>
+          <div class="row field_review_controls">
+            <div class="column span-14 prepend-1">
+              <h5>Status override</h5>
+              <% form_for(:test_plan, :url => mark_test_plan_url(@test_plan)) do |f| %>
+                <%= f.select :state, { 'PASS' => 'passed', 'FAIL' => 'failed' } %><br />
+                <%= f.label :status_override_reason %><br />
+                <%= f.text_area :status_override_reason %><br />
+                <%= f.submit "Assign" %>
+              <% end %> 
+            </div>
+          </div>
+          <%- end -%>
+        </div>
+        <!-- END FIELD -->
+
+        <%-   end # subsection_errors -%>
+      </div> <!-- subsection -->
+      <%- end # subsections -%>

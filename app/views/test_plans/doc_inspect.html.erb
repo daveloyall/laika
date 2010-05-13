@@ -69,7 +69,7 @@
 <div id="umls_validation" class="test_results">
     <h2>UMLS Validation:</h2>
     <% if @test_plan.umls_enabled? -%>
-      <%= render :partial => "umls_error_response",
+      <%= render :partial => "content_inspection_results",
         :locals => { :errors => @test_plan.umls_codesystem_errors } %>
     <% end -%>
 </div>    

@@ -22,7 +22,7 @@ describe XdsProvideAndRegisterPlan do
     end
   
     it "should fail validation with content errors" do
-      @validator.should_receive(:validate).and_return([ContentError.factory.create])
+      @validator.should_receive(:validate).and_return([validation_error_stub])
   
       plan = XdsProvideAndRegisterPlan.factory.create
       plan.validate_xds_metadata XDS::Metadata.new

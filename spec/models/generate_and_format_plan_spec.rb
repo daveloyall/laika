@@ -22,7 +22,7 @@ describe GenerateAndFormatPlan do
 
     describe "to return a non-empty list" do
       before do
-        @validator.should_receive(:validate).and_return([ContentError.factory.create])
+        @validator.should_receive(:validate).and_return([validation_error_stub])
       end
 
       it "should fail validation" do

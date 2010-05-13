@@ -15,7 +15,8 @@ describe "GenerateAndFormats" do
     attach_file "upload_#{@test_plan.id}", @c32_file.path
     click_button 'Attach'
     click_link "test_plan_#{@test_plan.id}_doc_inspect"
-    body.should contain('foo')
+    body.should contain('6')
+    body.should contain('XML Validation Errors')
   end
 
 end

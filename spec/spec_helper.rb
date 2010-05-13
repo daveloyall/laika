@@ -82,6 +82,21 @@ ModelFactory.configure do
 
 end
 
+def validation_error_stub(options = {})
+  attributes = {
+    :section         => 'section',
+    :subsection      => 'subsection',
+    :field_name      => 'field',
+    :message         => 'foo',
+    :location        => '//xpath',
+    :severity        => 'error',
+    :validator       => 'test',
+    :inspection_type => 'testing',
+    :suberrors       => [],
+  }.merge(options)
+  stub('laika-validation-error', attributes)
+end
+
 Spec::Runner.configure do |config|
   # If you're not using ActiveRecord you should remove these
   # lines, delete config/database.yml and disable :active_record
