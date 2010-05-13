@@ -4,15 +4,12 @@ $j(document).ready(function(){
 	// Hiding all force pass/fail controls
   $j(".field_review_controls").hide();
 
-
 	// Toggle review controls
 	$j(".manual-review").click(function(event) {
 			$j(this).text($j(this).text() == 'OPEN' ? 'CLOSE' : 'OPEN');
 			$j(this).parents().next(".field_review_controls").slideToggle("slow");
 			return false;
 	})
-  
-	
 
 	// FILTERING
   $j("#filter input:checkbox").click(function(e) {
@@ -53,7 +50,6 @@ $j(document).ready(function(){
 				nottested.hide();
 			}
   });
-  
   
   
 });

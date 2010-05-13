@@ -124,7 +124,7 @@ describe TestPlansController do
         end
 
         it "should fail the test case" do
-          @validator.stub!(:validate).and_return([ContentError.factory.create])
+          @validator.stub!(:validate).and_return([validation_error_stub])
 
           get :doc_validate, :id => @plan.id, :clinical_document => @upload
           @plan.reload

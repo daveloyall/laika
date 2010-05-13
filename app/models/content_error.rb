@@ -7,6 +7,8 @@ class ContentError < ActiveRecord::Base
   serialize :expected_section, Hash
   serialize :provided_sections, Array
 
+  validates_presence_of :validator
+
   state_machine :initial => :failed do
     event :pass do
       transition all => :passed
@@ -40,6 +42,7 @@ class ContentError < ActiveRecord::Base
         error.send("#{m}=", validation_error.send(m)) if validation_error.respond_to?(m)
       end
       error.save!
+      error.review! if validation_error.kind_of?(Laika::ComparisonError)
       validation_error.suberrors.each { |sub| error.children << ContentError.from_validation_error!(sub) } 
       return error
     end
