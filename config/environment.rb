@@ -11,17 +11,6 @@ require File.join(File.dirname(__FILE__), 'boot')
 java.lang.System.setProperty("javax.xml.transform.TransformerFactory","net.sf.saxon.TransformerFactoryImpl")
 java.lang.System.setProperty("javax.xml.parsers.DocumentBuilderFactory","net.sf.saxon.dom.DocumentBuilderFactoryImpl")
 
-# XXX ActiveRecord extensions need to be loaded first, otherwise some
-# operations that utilize AR during init will fail. There's probably a
-# better way to do this.
-require 'active_record'
-require_dependency 'has_select_options'
-require_dependency 'has_c32_component'
-class ActiveRecord::Base
-  extend HasSelectOptionsExtension
-  extend HasC32ComponentExtension
-end
-
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified
   # here.  Application configuration should go into files in
