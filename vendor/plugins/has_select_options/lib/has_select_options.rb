@@ -1,14 +1,14 @@
+# This module extends ActiveRecord::Base with a single class method:
+# has_select_options().  When you call this method on an ActiveRecord class it
+# will generate the class method select_options().
 #
-# This module extends ActiveRecord::Base with a single class method: has_select_options().
-# When you call this method on an ActiveRecord class it will generate the class method select_options().
-#
-# - This is meant to be used with models whose records are used as the choices in a select dropdown.
-# - You can pass finder options to filter or change the order.
-# - You can change the generated method name, useful if you need multiple methods
-# - You can pass a block to change the output of select_options. The block argument is a single record.
-# - The output of select_options can be passed to a form.select helper.
-# - You can explicitly pass an array of objects that you'd like to select from instead.
-# - You can prefix the method with html_ to get HTML output for use with select_tag
+#  - This is meant to be used with models whose records are used as the choices in a select dropdown. 
+#  - You can pass finder options to filter or change the order.
+#  - You can change the generated method name, useful if you need multiple methods
+#  - You can pass a block to change the output of select_options. The block argument is a single record.
+#  - The output of select_options can be passed to a form.select helper.
+#  - You can explicitly pass an array of objects that you'd like to select from instead.
+#  - You can prefix the method with html_ to get HTML output for use with select_tag
 #
 # By default, select_options will select all records sorted by name ascending.
 # The default output for each record is [name, id].
@@ -68,3 +68,4 @@ module HasSelectOptionsExtension
   end
 end
 
+ActiveRecord::Base.extend(HasSelectOptionsExtension)
