@@ -6,6 +6,7 @@ class ContentError < ActiveRecord::Base
 
   serialize :expected_section, Hash
   serialize :provided_sections, Array
+  serialize :exception, Exception
 
   validates_presence_of :validator
 
@@ -36,7 +37,8 @@ class ContentError < ActiveRecord::Base
         :msg_type         => validation_error.severity,
         :validator        => validation_error.validator,
         :inspection_type  => validation_error.inspection_type,
-        :error_type       => validation_error.class.to_s.demodulize
+        :error_type       => validation_error.class.to_s.demodulize,
+        :exception        => validation_error.exception
       )
       [:expected, :provided, :expected_section, :provided_sections].each do |m|
         error.send("#{m}=", validation_error.send(m)) if validation_error.respond_to?(m)

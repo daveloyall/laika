@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100428002249) do
+ActiveRecord::Schema.define(:version => 20100521203532) do
 
   create_table "abstract_results", :force => true do |t|
     t.string  "result_id"
@@ -152,6 +152,7 @@ ActiveRecord::Schema.define(:version => 20100428002249) do
     t.string  "error_type"
     t.text    "expected_section"
     t.text    "provided_sections"
+    t.text    "exception"
   end
 
   add_index "content_errors", ["msg_type"], :name => "index_content_errors_on_msg_type"

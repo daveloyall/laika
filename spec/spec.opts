@@ -1,4 +1,6 @@
 --colour
---format progress
+--format nested 
 --loadby mtime
 --reverse
+--backtrace
+--diff

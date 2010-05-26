@@ -1,25 +1,29 @@
-#
 # This is the central record representing patient data.
 #
 class Patient < ActiveRecord::Base
+
+  # C83 modules with multiple sections
   has_many_c32 :languages
-  has_many_c32 :providers
+  has_many_c32 :providers, :component_module => :healthcare_providers
   has_many_c32 :medications
   has_many_c32 :allergies
   has_many_c32 :insurance_providers
   has_many_c32 :conditions
   has_many_c32 :vital_signs
-  has_many_c32 :results
+  has_many_c32 :results, :component_module => :test_results
   has_many_c32 :immunizations
   has_many_c32 :encounters
   has_many_c32 :procedures
-  has_many_c32 :medical_equipments
-  has_many_c32 :patient_identifiers
+  has_many_c32 :medical_equipments, :component_module => :medical_equipment
 
-  has_one_c32 :registration_information
+  # C83 modules with a single section
+  has_one_c32 :registration_information, :component_module => :personal_information
   has_one_c32 :support
   has_one_c32 :information_source
-  has_one_c32 :advance_directive
+  has_one_c32 :advance_directive, :component_module => :advanced_directive
+
+  # patient_identifiers are not c32 components
+  has_many :patient_identifiers
 
   # This is the aggregate of results and vital_signs, we don't destroy
   # dependent because results and vital_signs already do that.
@@ -49,6 +53,21 @@ class Patient < ActiveRecord::Base
   belongs_to :user
 
   validates_presence_of :name
+
+  # Hash of all the C32 modules, returned as Symbols, keyed against the
+  # active_record association names used to represent them in the patient model.
+  # Used to look up which association to access for a particular component
+  # module's data.
+  def self.c32_modules
+    c32_associations = reflect_on_all_associations.select do |reflection|
+      extends = reflection.options[:extend]
+      extends == HasC32ComponentExtension::C32Component || extends.try(:include?, HasC32ComponentExtension::C32Component)
+    end
+    return c32_associations.inject({}) do |hash,reflection|
+      hash[reflection.c32_component_module_name] = reflection.name
+      hash 
+    end
+  end
 
   # Generate an OID using the time and the patient's ActiveRecord ID.
   #

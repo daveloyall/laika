@@ -57,13 +57,15 @@ module XmlHelper
     return error
   end
  
-  # Extracts all the given sections from a passed REXML doc and return them as a hash
-  # keyed by an internal reference@value
+  # Extracts all the given sections from a passed REXML doc and return them as
+  # a hash keyed by an internal reference@value
   #
-  # For example, if the section is substanceAdministration, this will produce a hash of
-  # all the medication component's substanceAdministration element's keyed by their own
-  # consumable/manufacturedProduct/manufacturedMaterial/code/reference@value's (which 
-  # should key to the medication names in the free text table for a v2.5 C32 doc...
+  # For example, if the section is substanceAdministration, this will produce a
+  # hash of all the medication component's substanceAdministration element's
+  # keyed by their own
+  # consumable/manufacturedProduct/manufacturedMaterial/code/reference@value's
+  # (which should key to the medication names in the free text table for a v2.5
+  # C32 doc...)
   def self.dereference(section_name, document)
     reference_hash = {}
     REXML::XPath.each(document,"//cda:#{section_name}", MatchHelper::DEFAULT_NAMESPACES) do |section|

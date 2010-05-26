@@ -50,7 +50,8 @@ describe ContentError do
         :location        => '//xpath',
         :severity        => 'error',
         :validator       => 'test',
-        :inspection_type => 'conversion'
+        :inspection_type => 'conversion',
+        :exception       => @exception = RuntimeError.new('foo')
       )
     end
 
@@ -66,6 +67,7 @@ describe ContentError do
       content_error.validator.should == 'test'
       content_error.inspection_type.should == 'conversion'
       content_error.error_type.should == 'ValidationError'
+      content_error.exception.should == @exception
       content_error.children.should be_empty
     end
 
@@ -77,7 +79,7 @@ describe ContentError do
     end
 
     it "should set expected_section and provided_sections if methods are present" do
-      content_error = ContentError.from_validation_error!(Laika::SectionMissing.new(:validator => 'test', :expected_section => { :foo => :bar }, :provided_sections => []))
+      content_error = ContentError.from_validation_error!(Laika::NoMatchingSection.new(:validator => 'test', :expected_section => { :foo => :bar }, :provided_sections => []))
       content_error.error_type.should == 'SectionMissing'
       content_error.expected_section.should == { :foo => :bar }
       content_error.provided_sections.should == []
