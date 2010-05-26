@@ -82,19 +82,42 @@ ModelFactory.configure do
 
 end
 
-def validation_error_stub(options = {})
-  attributes = {
-    :section         => 'section',
-    :subsection      => 'subsection',
-    :field_name      => 'field',
-    :message         => 'foo',
-    :location        => '//xpath',
-    :severity        => 'error',
-    :validator       => 'test',
-    :inspection_type => 'testing',
-    :suberrors       => [],
-  }.merge(options)
-  stub('laika-validation-error', attributes)
+class ActiveSupport::TestCase
+
+  # Fixtures needed to load patient records.  Excludes large, cumbersome
+  # tables like snowmed_problems...
+  def self.patient_fixtures
+    fixtures %w[
+act_status_codes addresses advance_directive_status_codes advance_directives
+advance_directive_types adverse_event_types allergies allergy_status_codes
+allergy_type_codes clinical_documents code_systems conditions contact_types
+coverage_role_types encounter_location_codes encounters encounter_types ethnicities
+genders immunizations information_sources insurance_provider_guarantors
+insurance_provider_patients insurance_provider_subscribers insurance_providers
+insurance_types iso_countries iso_languages iso_states language_ability_modes
+languages loinc_lab_codes marital_statuses medical_equipments medications
+medication_types no_immunization_reasons patients patient_identifiers person_names problem_types
+procedures provider_roles providers provider_types races registration_information
+relationships religions abstract_results result_type_codes role_class_relationship_formal_types
+severity_terms supports telecoms users vaccines vendors zip_codes
+    ]
+  end
+
+  def validation_error_stub(options = {})
+    attributes = {
+      :section         => 'section',
+      :subsection      => 'subsection',
+      :field_name      => 'field',
+      :message         => 'foo',
+      :location        => '//xpath',
+      :severity        => 'error',
+      :validator       => 'test',
+      :inspection_type => 'testing',
+      :suberrors       => [],
+    }.merge(options)
+    stub('laika-validation-error', attributes)
+  end
+
 end
 
 Spec::Runner.configure do |config|

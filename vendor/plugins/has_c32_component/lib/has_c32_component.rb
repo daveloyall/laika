@@ -25,15 +25,15 @@
 module HasC32ComponentExtension
 
   # options:
-  # * :section => name of the c32 component sections (defaults to the 
-  #   association name
+  # * :component_module => name of the C32 component module this association
+  #   describes (defaults to the association name)
   def has_many_c32(rel, args = {})
     _extend_for_c32(:has_many, rel, args)
   end
 
   # options:
-  # * :section => name of the c32 component section (defaults to the 
-  #   association name
+  # * :component_module => name of the C32 component module this association
+  #   describes (defaults to the association name)
   def has_one_c32(rel, args = {})
     _extend_for_c32(:has_one, rel, args)
   end
@@ -41,11 +41,11 @@ module HasC32ComponentExtension
   private
 
   def _extend_for_c32(macro, rel, args)
-    section = args.delete(:section)
+    component_module = args.delete(:component_module)
     send(macro, rel, args.merge(:extend => C32Component, :dependent => :destroy))
     reflection = reflect_on_association(rel)
     reflection.extend(C32Reflection)
-    reflection.c32_section_name = section
+    reflection.c32_component_module_name = component_module
   end
 
   # Methods specific to an association of C32 components.  These module
@@ -53,12 +53,14 @@ module HasC32ComponentExtension
   # a whole, rather than to an individual C32 object.
   module C32Component
 
-    # Returns the name of the C32 component sections contained in this 
-    # association.  This may be set with the :section option to the
-    # original has_many/one_c32 macro; otherwise defaults to the name
-    # of the association.
-    def section
-      proxy_reflection.c32_section_name || proxy_reflection.name.to_s
+    # Returns the name of the C32 component module described by the objects in
+    # this association.  This may be set with the :component_module option
+    # in the original has_many/one_c32 macro; otherwise defaults to the name of
+    # the association.
+    #
+    # Returns a symbol.
+    def component_module
+      proxy_reflection.c32_component_module_name
     end
 
     # True if this component has a single entry.  False if it has multiple entries.
@@ -77,17 +79,25 @@ module HasC32ComponentExtension
     end
   end
 
-  # Extends the reflection proxy with state specific to a C32 association.
-  # The activerecord association class macros such as has_many, create Reflections
-  # that hold the information needed to generate a working association in
-  # a given activerecord instance.  Although we can customize the behavior of
-  # an association by extending it with a module, if we want to associate
-  # additional state with an association, such as it's C32 section name,
-  # we need to extend the reflection itself.  This can then be accessed
+  # Extends the reflection proxy with state specific to a C32 association.  The
+  # activerecord association class macros such as has_many, create Reflections
+  # that hold the information needed to generate a working association in a
+  # given activerecord instance.  Although we can customize the behavior of an
+  # association by extending it with a module, if we want to associate
+  # additional state with an association, such as it's C32 component module
+  # name, we need to extend the reflection itself.  This can then be accessed
   # through the instantiated association's proxy_reflection()
   module C32Reflection
 
-    attr_accessor :c32_section_name
+    def c32_component_module_name
+      (@c32_component_module_name || self.name).to_sym
+    end
+    
+    def c32_component_module_name=(c32_component_module_name)
+      s = c32_component_module_name.to_s
+      return if s.blank?
+      @c32_component_module_name = s.gsub(/ /,'_').underscore.to_sym
+    end
 
   end
 end

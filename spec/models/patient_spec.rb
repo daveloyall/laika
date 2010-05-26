@@ -1,11 +1,32 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Patient, "with no fixtures" do
-  fixtures :all
 
   it "should create a random patient without errors" do
     lambda { Patient.new.randomize }.should_not raise_error
   end
+
+  it "should provide a hash of a c32 associations" do
+    Patient.c32_modules.should == {
+      :languages => :languages,
+      :healthcare_providers => :providers,
+      :medications => :medications,
+      :allergies => :allergies,
+      :insurance_providers => :insurance_providers,
+      :conditions => :conditions,
+      :vital_signs => :vital_signs,
+      :test_results => :results,
+      :immunizations => :immunizations,
+      :encounters => :encounters,
+      :procedures => :procedures,
+      :medical_equipment => :medical_equipments,
+      :personal_information => :registration_information,
+      :support => :support,
+      :information_source => :information_source,
+      :advanced_directive => :advance_directive,
+    }
+  end
+
 end
 
 describe Patient, "from factory" do
@@ -80,20 +101,7 @@ describe Patient, "with joe smith" do
 end
 
 describe Patient, "with built-in records" do
-  fixtures %w[
-act_status_codes addresses advance_directive_status_codes advance_directives
-advance_directive_types adverse_event_types allergies allergy_status_codes
-allergy_type_codes clinical_documents code_systems conditions contact_types
-coverage_role_types encounter_location_codes encounters encounter_types ethnicities
-genders immunizations information_sources insurance_provider_guarantors
-insurance_provider_patients insurance_provider_subscribers insurance_providers
-insurance_types iso_countries iso_languages iso_states language_ability_modes
-languages loinc_lab_codes marital_statuses medical_equipments medications
-medication_types no_immunization_reasons patients patient_identifiers person_names problem_types
-procedures provider_roles providers provider_types races registration_information
-relationships religions abstract_results result_type_codes role_class_relationship_formal_types
-severity_terms supports telecoms users vaccines vendors zip_codes
-  ]
+  patient_fixtures
 
   [ :david_carter, :emily_jones, :jennifer_thompson, :theodore_smith, :joe_smith, :will_haynes ].each do |patient|
     it "should round-trip validate #{patient} without errors or warnings" do
