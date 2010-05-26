@@ -1,5 +1,5 @@
   <div id="filter" class="column span-8">
-    <h3>Filter warnings by severity:</h3>
+    <p class="emp">Filter warnings by severity:</p>
     <input name="pass" type="checkbox" id="fieldPass" value="0" class="" checked="checked" /><label for="passed">Passed</label>
     <input name="review" type="checkbox" id="fieldReview" value="0" class="" checked="checked" /><label for="passed">Review</label>
     <input name="fail" type="checkbox" id="fieldFailed" value="0" class="" checked="checked" /><label for="passed">Failed</label>
@@ -7,29 +7,33 @@
   </div><!-- END FILTER-->
   
   
-  <div id="template">
+    <div id="tableContainer" class="tableContainer"> 
+      <table border="0" cellpadding="0" cellspacing="0" width="100%" class="scrollTable"> 
+        <thead class="fixedHeader"> 
+        	<tr> 
+        		<th><a href="#">Error Type</a></th> 
+        		<th><a href="#">Field Name</a></th> 
+        		<th><a href="#">Message</a></th>
+        		<th><a href="#">Result</a></th> 
+        	</tr> 
+        </thead>
+        <tbody class="scrollContent">
+        
+        <%-
+          errors.group_by(&:section).each do |section, section_errors|
+        -%>
+        
+        <%= render :partial => "section_errors", :locals => { :errors => section_errors } %>
+        
+        <%- end -%>
+        </tbody>
+      </table>
+    </div><!--CLOSE table container -->
 
-<%-
-  errors.group_by(&:section).each do |section, section_errors|
--%>
 
-    <div class="column span-21 module_inspection_result">
-    	<div class="column span-21 inspection_result_header">
-      <%- unless section.nil? -%>     
-    	  <div class="column span-15 module_name">
-    	    <h2><%= section.titleize %></h2>
-    	  </div>
-      <%- end -%>
-    	  <div class="overall_inspection_status column span-3 pending">
-    	    <p>PENDING</p>
-    	  </div>
-    	</div>
-
-      <%= render :partial => "section_errors", :locals => { :errors => section_errors } %>
-
-    </div><!--CLOSE MODULE INSPECTION RESULT -->
-
-<%- end -%>
-  </div><!-- CLOSE TEMPLATE -->
-
+    <div id="xml_frame">
+      <h3>Vendor Generated XML</h3>
+      <hr/>
+      <%= render :partial => "node" , :locals => {:doc => @xml_document} %>
+    </div>
 
