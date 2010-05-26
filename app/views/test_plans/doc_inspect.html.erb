@@ -55,36 +55,29 @@
 </div>
 
 <div id="xml_validation" class="test_results">
-    <h2>XML Validation Results:</h2>
+    <div class="results_header">
+      <h2>XML Validation Results:</h2>
+    </div>
     <%= render :partial => "xml_error_response",
       :locals => { :errors => @test_plan.xml_validation_errors } %>
 </div>
 
 <div id="content_inspection"class="test_results">
-    <h2>Content Inspection:</h2>
+    <div class="results_header">
+      <h2>Content Inspection:</h2>
+    </div>
     <%= render :partial => "content_inspection_results",
       :locals => { :errors => @test_plan.content_inspection_errors } %>
 </div>
 
 <div id="umls_validation" class="test_results">
-    <h2>UMLS Validation:</h2>
+    <div class="results_header">
+      <h2>UMLS Validation:</h2>
+    </div>
     <% if @test_plan.umls_enabled? -%>
       <%= render :partial => "content_inspection_results",
         :locals => { :errors => @test_plan.umls_codesystem_errors } %>
     <% end -%>
 </div>    
 
-<div id="xml_controls" class="column">
-    <a id="launch_xml_window" href="#" onclick="Effect.SlideDown('xml_window', { duration: 0.325 }); return false;">VIEW XML</a>
-</div>
 
-<div id="xml_window" style="display: none;">
-  <!-- Start Pretty XML -->
-  <div class="column pretty-xml" style="background: #FFF; overflow: auto; width: 70%; height: 200px; padding: 10px; margin: 0 14%; position: relative;">
-    <p><a href="#" onclick="$('xml_window').hide(); return false;">CLOSE</a></p>
-    <h3>Vendor Generated XML</h3>
-    <hr/>
-    <%= render :partial => "node" , :locals => {:doc => @xml_document} %>
-  </div>
-  <!-- End Pretty XML -->
-</div>
