@@ -34,6 +34,14 @@ module PersonLike
     def full_name
       "#{person_name.first_name} #{person_name.last_name}"
     end
+
+    def first_name
+      person_name.first_name
+    end
+    
+    def last_name
+      person_name.last_name
+    end
   end
 
 end

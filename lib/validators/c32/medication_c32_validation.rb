@@ -102,8 +102,9 @@
                                     "cda:entryRelationship[@typeCode='REFR']/cda:supply[@moodCode='INT']", 
                                     MatchHelper::DEFAULT_NAMESPACES)
         errors << match_value(order, "cda:quantity/@value", "quantity_ordered_value", quantity_ordered_value)
-        # This differs from the XPath expression given in the C32 spec which claims that the value should be under cda:high
-        # however, the CCD schema claims that it should be an effectiveTime with no children
+        # This differs from the XPath expression given in the C32 spec which
+        # claims that the value should be under cda:high however, the CCD
+        # schema claims that it should be an effectiveTime with no children
         errors << match_value(order, "cda:effectiveTime/@value", "expiration_time", expiration_time.try(:to_formatted_s, :brief))
       end
       return errors

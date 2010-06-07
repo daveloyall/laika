@@ -13,4 +13,11 @@ describe PersonLike do
     ri = RegistrationInformation.new
     ri.person_blank?.should be_true
   end
+
+  it "should provide direct accessors for first and last name" do
+    ri = RegistrationInformation.new(:person_name => PersonName.new( :first_name => 'Foo', :last_name => 'Bar' ))
+    ri.full_name.should == 'Foo Bar'
+    ri.first_name.should == 'Foo'
+    ri.last_name.should == 'Bar'
+  end
 end
