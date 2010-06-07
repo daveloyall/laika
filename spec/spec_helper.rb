@@ -82,6 +82,18 @@ ModelFactory.configure do
 
 end
 
+class TestLogger
+  [:debug, :info, :warn, :error].each do |m|
+    define_method(m) { |message| puts "#{m.to_s.upcase}: #{message}" }
+  end
+end
+
+class TestLoggerDevNull
+  [:debug, :info, :warn, :error].each do |m|
+    define_method(m) { |message|  } # crickets
+  end
+end
+
 class ActiveSupport::TestCase
 
   # Fixtures needed to load patient records.  Excludes large, cumbersome
