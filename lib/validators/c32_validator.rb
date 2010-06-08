@@ -329,6 +329,32 @@ module Validators
           :action  => :match_value,
           :locator => %q{cda:participant[@typeCode='CSM']/cda:participantRole[@classCode='MANU']/cda:playingEntity[@classCode='MMAT']/cda:code[@codeSystem='2.16.840.1.113883.6.88']/@code},
         },
+        # Insurance Provider Component Module validation
+        :insurance_providers => {
+          :action      => :get_section,
+          :template_id => '2.16.840.1.113883.10.20.1.9',
+          :subsections => [:parent_act],
+        },
+        :parent_act => {
+          :action      => :validate_sections,
+          :locator     => %q{cda:entry/cda:act[cda:templateId/@root='2.16.840.1.113883.10.20.1.20']/cda:entryRelationship/cda:act[cda:templateId/@root='2.16.840.1.113883.10.20.1.26']},
+          :subsection_type => :child_act,
+        },
+        :child_act => {
+          :action      => :match_section,
+          :locator     => %q{.},
+          :subsections => [:group_number, :insurance_type],# :represented_organization, :insurance_provider_guarantor],
+        },
+        :group_number => {
+          :action  => :match_value_if_exists_in_model,
+          :locator => %q{cda:id/@root}, 
+        },
+        :insurance_type => {
+          :action      => :get_section_if_exists_in_model,
+          :locator     => %q{cda:code[@codeSystem='2.16.840.1.113883.6.255.1336']},
+          :matches     => :insurance_type,
+          :subsections => [:code, :display_name],
+        },
         # Person Information Component Module validation
       }
 
@@ -622,6 +648,7 @@ module Validators
       def gold_expected_value(section_key = section, raw = false)
         logger.debug("gold_expected_value for section: #{section_key}")
         matches_expression = matches(section_key) || section_key.to_sym
+        logger.debug("gold_expected_value evaluating expression: #{matches_expression} against #{gold_model.inspect}")
         expected_value = case matches_expression
           when String then gold_model.instance_eval(matches_expression)
           when Symbol then gold_model.send(matches_expression) if gold_model.respond_to?(matches_expression)
@@ -1079,6 +1106,9 @@ module Validators
           association.respond_to?(:each) ?
             gold_model_array = association :
             gold_model = association
+
+          # temporary test for whether we have any directives set up for this component module
+          next unless C32Validation::DirectiveMap::SECTION_DIRECTIVES_MAP.key?(component_module)
 
           logger.debug("Validating component: #{component_module}, association_key: #{association_key}")
           logger.debug("gold_model: #{gold_model}")
