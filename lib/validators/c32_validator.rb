@@ -256,7 +256,7 @@ module Validators
           :action      => :match_section,
           :locator     => %q{cda:consumable/cda:manufacturedProduct/cda:manufacturedMaterial/cda:code[cda:originalText/text() = '${product_coded_display_name}']},
           :keys        => {
-            :product_coded_display_name => %q{cda:consumable/cda:manufacturedProduct/cda:manufacturedMaterial/cda:code[cda:originalText/text()]},
+            :product_coded_display_name => %q{cda:consumable/cda:manufacturedProduct/cda:manufacturedMaterial/cda:code/cda:originalText/text()},
           },
           :subsections => [:consumable, :medication_type, :status, :order],
         },
@@ -298,13 +298,44 @@ module Validators
           :action   => :match_value,
           :locator  => %q{cda:effectiveTime/@value"},
         },
+        # Allergy Component Module validation
+        :allergies => {
+          :action      => :get_section,
+          :template_id => '2.16.840.1.113883.10.20.1.2',
+          :subsections => [:acts],
+        }, 
+        :acts => {
+          :action          => :validate_sections,
+          :locator         => %q{//cda:act[cda:templateId/@root='2.16.840.1.113883.10.20.1.27']/cda:entryRelationship[@typeCode='SUBJ']/cda:observation[cda:templateId/@root='2.16.840.1.113883.10.20.1.18']},
+          :subsection_type => :adverse_events,
+        },
+        :adverse_events=> {
+          :action       => :match_section,
+          :locator      => %q{cda:participant[@typeCode='CSM']/cda:participantRole[@classCode='MANU']/cda:playingEntity[@classCode='MMAT']/cda:name[text() = '${free_text_product}']},
+          :keys => {
+            :free_text_product => %q{cda:participant[@typeCode='CSM']/cda:participantRole[@classCode='MANU']/cda:playingEntity[@classCode='MMAT']/cda:name/text()},
+          },
+          :subsections  => [:start_event, :end_event, :product_code],
+        },
+        :start_event => {
+          :action  => :match_value,
+          :locator =>  %q{cda:effectiveTime/cda:low/@value},
+        },
+        :end_event => {
+          :action  => :match_value,
+          :locator =>  %q{cda:effectiveTime/cda:high/@value},
+        },
+        :product_code => {
+          :action  => :match_value,
+          :locator => %q{cda:participant[@typeCode='CSM']/cda:participantRole[@classCode='MANU']/cda:playingEntity[@classCode='MMAT']/cda:code[@codeSystem='2.16.840.1.113883.6.88']/@code},
+        },
         # Person Information Component Module validation
       }
 
       def section_directives_map_entry(section_key = section)
         section_directives = SECTION_DIRECTIVES_MAP[section_key]
         section_directives = section_directives[validation_type] if section_directives.try(:key?, validation_type)
-        raise(SectionDirectiveException, "SECTION_DIRECTIVES_MAP entry missing or malformed for the given key: #{section_key}, validation_type: #{validation_type}\n#{SECTION_DIRECTIVES_MAP.inspect}") if section_directives.nil? || !section_directives.kind_of?(Hash)
+        raise(SectionDirectiveException, "SECTION_DIRECTIVES_MAP entry missing or malformed for the given key: #{section_key}, validation_type: #{validation_type}") if section_directives.nil? || !section_directives.kind_of?(Hash)
         return section_directives
       end
 
@@ -918,7 +949,7 @@ module Validators
 
       # The validation to be performed against the current section in scope.
       def current_action
-        action(section)
+        action(section) || raise(ValidatorException, "No Action set in directive mapping for current section: #{section}")
       end
 
       def validate

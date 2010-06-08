@@ -7,7 +7,7 @@ describe "C32 Medication Validation" do
     @medication = medications(:jennifer_thompson_medication)
     @scope = Validators::C32Validation::ComponentScope.new(
       :validation_type => Validation::C32_V2_5_TYPE,
-      :logger => TestLogger.new,
+      :logger => TestLoggerDevNull.new,
       :validator => "ComponentScopeTest",
       :inspection_type => "Testing",
       :component_module => :medications,
@@ -28,7 +28,6 @@ describe "C32 Medication Validation" do
 
     it "should verify a medication in a C32 doc version 2.3" do
       errors = @scope.validate
-      pp errors
       errors.should be_empty
     end
 
