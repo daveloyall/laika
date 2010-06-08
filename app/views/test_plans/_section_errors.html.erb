@@ -1,40 +1,110 @@
-
-<%- errors.group_by(&:subsection).each do |subsection, subsection_errors| -%>
+  
+  <%- errors.group_by(&:subsection).each do |subsection, subsection_errors| -%>
 
   <%- subsection_errors.each_with_index do |e,index|
         error_id = @error_mapping[e.location] if e.location
   -%>
-          
-    <tr>
-      <td colspan="4">
-        <%- unless subsection.nil? -%>
-          <div class="column span-15 subsection_name">
-            <div class="subsection_title"><h4><%= subsection.titleize %></h4>
-            <div class="error_severity"><p><%= e.msg_type %></p></div>
-          </div>
-        <%- end -%>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <p><span class="type"><%= e.error_type %></span></p>
-        <div class="validator_type"><p><%= e.validator %></p></div>
-      </td>
-      <td>
-        <p><%= e.field_name %></p>
-      </td>
-      <td>
-        <% if error_id %>
-          <a style="color:#cc3300" href="javascript:scroll_to_module('error_<%=error_id%>', 1.0);" ><b><%= index %></b> <span><%= h e.error_message %></span></a>
-          <a title="$(...).scrollTo( 'error_<%=error_id%>', 1.0, {axis:'x'} );//only scroll on this axis (can be x, y, xy or yx)" id="options-axis" href="#"><b><%= index %></b> <span><%= h e.error_message %></span></a>
-        <% else %>
-          <b><%= index %>.</b> <span><%= e.error_message %></span>
-        <% end %>
-      </td>
-      <td>
-        
-      </td>
-    </tr>
-     
+
+  <!-- MODULE SUBSECTION HEADER -->
+  <%- unless subsection.nil? -%>
+  <tr>
+    <td class="subsection_header <%= "#{e.state}" %>" colspan="4">
+        <div class="subsection_title"><p><%= subsection.titleize %></p></div>
+        <div class="validator_type"><%= e.validator %></div>
+    </td>
+  </tr>
+  <%- end -%>
+  <!-- END MODULE SUBSECTION HEADER -->
+
+  <!-- MODULE SUBSECTION ERRORS TABLE ROW -->
+  <tr class="<%= "#{e.state}" %>">
+
+    <!-- ERROR TYPE & VALIDATOR -->
+    <td class="error_type_details <%= " #{e.state}" %>">
+      <div class="marker">
+        &nbsp;
+      </div>  
+      <p>
+        <%= e.error_type %>
+        <%= e.msg_type %>
+      </p>
+    </td>
+
+    <!-- FIELD NAME -->
+    <td>
+      <p><%= e.field_name %></p>
+    </td>
+
+    <!-- ERROR MESSAGE -->
+    <td>
+      <% if error_id %>
+        <a id="error_<%=error_id%>" class="error_link" href="#" onclick="$j('#xml_frame').scrollTo( $j('div#error_<%=error_id%>'));"><b><%= index %></b> <span><%= h e.error_message %></span></a>
+      <% else %>
+        <b><%= index %>.</b> <span><%= e.error_message %></span>
+      <% end %>
+    </td>
+
+    <!-- ERROR RESULT -->
+    <td>
+      <!--<%- if e.review? %>
+        <a class="manual-review" href="#">REVIEW</a>
+      <%- end -%>-->
+    </td>
+  </tr>
+  
+  <tr class="<%= "#{e.state}" %>">
+    <td colspan="4">
+      <%- if e.review? %>
+        <a class="manual-review" href="#">REVIEW</a>
+      <%- end -%>
+      <div class="error_review" colspan="4">
+          <%- case e.error_type -%>
+            <%- when 'ComparisonError' -%>
+            <div class="error_detail_review">
+              <div class="column span-9 data_field">
+                <dl>
+                  <dt>Expected:</dt>
+                  <dd><%= e.expected %></dd>
+                </dl>
+              </div>
+              <div class="column span-8 data_field">
+                <dl>
+                  <dt>Provided:</dt>
+                  <dd><%= e.provided%></dd>
+                </dl>
+              </div>
+            </div>
+
+            <%- when 'SectionMissing' -%> 
+            <div class="error_detail_review">
+              <div class="column span-9 data_field">
+                <p>Expected Section:</p>
+                <%= render :partial => 'hash_definition_list', :locals => { :hash_definition_list => e.expected_section } %>
+              </div>
+              <div class="column span-8 data_field">
+                <p>Provided Sections:</p>
+                <%= render :partial => 'hash_definition_list', :collection => e.provided_sections %>
+              </div>
+            </div>
+            <%- end # error_type - additional fields %>
+
+            <%- if e.review? %>
+              <div class="error_detail_review">
+                <div class="data_field">
+                  <p>Status override</p>
+                  <% form_for(:test_plan, :url => mark_test_plan_url(@test_plan)) do |f| %>
+                    <%= f.select :state, { 'PASS' => 'passed', 'FAIL' => 'failed' } %>
+                    <%= f.submit "Assign" %>
+                  <% end %> 
+                </div>
+              </div>
+          <%- end -%>
+        </div>
+    </td>
+  </tr>
+    
+  <!-- END ERROR TYPE & VALIDATOR -->
+
   <%- end # subsection_errors -%>
-<%- end # subsections -%>
+  <%- end # subsections -%>
+

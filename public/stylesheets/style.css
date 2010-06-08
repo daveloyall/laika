@@ -135,7 +135,7 @@ a:hover {
 
 .content {
 	background: url('/images/content.png') top left repeat-y;
-	padding: 30px 5px 250px; 
+	padding: 25px 5px 250px; 
 	min-height: 400px;
 	overflow: hidden;
 }

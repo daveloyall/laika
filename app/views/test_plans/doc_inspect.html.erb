@@ -55,25 +55,18 @@
 </div>
 
 <div id="xml_validation" class="test_results">
-    <div class="results_header">
-      <h2>XML Validation Results:</h2>
-    </div>
     <%= render :partial => "xml_error_response",
       :locals => { :errors => @test_plan.xml_validation_errors } %>
 </div>
 
 <div id="content_inspection"class="test_results">
-    <div class="results_header">
-      <h2>Content Inspection:</h2>
-    </div>
+  <div id="content-inspection-inner-wrap">
     <%= render :partial => "content_inspection_results",
       :locals => { :errors => @test_plan.content_inspection_errors } %>
+  </div>
 </div>
 
 <div id="umls_validation" class="test_results">
-    <div class="results_header">
-      <h2>UMLS Validation:</h2>
-    </div>
     <% if @test_plan.umls_enabled? -%>
       <%= render :partial => "content_inspection_results",
         :locals => { :errors => @test_plan.umls_codesystem_errors } %>

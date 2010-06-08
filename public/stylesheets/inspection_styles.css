@@ -11,7 +11,7 @@
 	}
 	
 	.validator_type {
-		float: left;
+		float: right;
 		display: block;
 		padding: 5px;
 	}
@@ -19,29 +19,6 @@
 	.error_severity p, .validator_type p {
 		margin: 0 0 0 0;
 	}
-
-#xml_window {
-	height: 220px; 
-	position: fixed; 
-	bottom: 0; 
-	left: 0; 
-	width: 100%; 
-	z-index: 1000; 
-	background: #446671 url('/images/xml_controls_bg.png') top left repeat-x; 
-	padding: 25px 0;
-}
-
-#xml_controls {
-	height: 50px; 
-	position: fixed; 
-	bottom: 0; 
-	left: 0; 
-	width: 100%; 
-	z-index: 1000; 
-	background: #333; 
-	padding: 5px 2px; 
-	text-align: center;
-}
 
 .module_inspection_result {
   padding: 5px;
@@ -105,38 +82,6 @@
 	padding: 10px 3px;
 }
 
-.pending {
-  background: #ff9933;
-}
-
-.passed {
-  border: 2px solid #339933;
-}
-
-.failed {
-  border: 2px solid #ff3333;
-}
-
-.pass  {
-	background: #FFF url('/images/passed.png') center right no-repeat;
-} 
-
-.fail  {
-	background: #fab7a4 url('/images/failed.png') center right no-repeat;;
-}
-
-.review  {
-	border-top: 2px solid #ff9933;
-	border-bottom: 2px solid #ff9933;
-	background: #fed6ae url('/images/review.png') center right no-repeat;;
-}
-
-.not-tested {
-	border-top: 2px solid #888;
-	border-bottom: 2px solid #888;
-	background: #e0e0e0;
-}
-
 .inspection_controls {
   width: 300px;
   float: right;
@@ -159,8 +104,8 @@ ol#error_report_toc a {
     color: #000;
     display: block;
     float: left;
-    height: 2.75em;
-    padding: 12px 10px 0;
+    height: 2em;
+    padding: 4px 10px 0;
     text-decoration: none;
 }
 
@@ -195,9 +140,8 @@ ol#error_report_toc span {
 div.test_results {
     border-top: #000 solid 3px;
     clear: left;
-    padding: 1em;
 		overflow: hidden;
-		background: #fff;
+		background: transparent;
 }
 
 #test_summary_meta h3 {
@@ -226,41 +170,85 @@ div.test_results {
 	color: #FFF;
 }
 
-.results_header {
-	float: left;
-	width: 225px;
+#content-inspection-inner-wrap {
+	background: #333;
+	padding: 5px;
 }
+
+
 
 #filter {
 	float: right;
 	width: 430px;
-	padding: 5px;
-	background: #eeeeee;
+	padding: 5px 0px 5px 15px;
 }
-
-#filter .emp {
-	float: left;
-}
+	#filter p {
+		margin: 0 0 0 0;
+	}
+	
+	#filter .emp {
+		float: left;
+	}
+	
+	#filter label {
+		color: #eeeeee;
+	}
 
 .emp {
 	font-weight: bold;
-	color: #45879b;
+	color: #ccc;
 }
+
+.results_header {
+	background:none repeat scroll 0 0 #333333;
+	left:105px;
+	padding:10px;
+	position:absolute;
+	top:205px;
+	width:135px;
+}
+
+	.results_header h2 {
+		font-size: 1.25em;
+	}
+
 
 #xml_frame {
-	overflow: auto;
-	width: 845px;
-	border: 5px solid yellow;
-	height: 245px;
-	margin-top: 25px;
+	border:2px solid yellow;
+	margin-top:25px;
+	overflow:auto;
+	height:245px;
+	padding:10px;
 }
 
+a.manual-review {
+	display: block;
+	background: #ccc;
+	padding: 3px;
+	text-align: center;
+	color: #ee5420;
+}
+
+a.manual-review:hover {
+	background: #333;
+	color: #FFF;
+}
+
+.error_review {
+	margin: 15px 0 0 0;
+}
+
+#individual_error_details {
+	background: #ccc;
+	height: 350px;
+	margin-top:25px;
+}
 
 /* NOT PRIORITY - PRINT THE TABLE HEAD ONCE */
 div.tableContainer {
 	clear: both;
 	border: 5px solid #333333;
-	height: 285px;
+	height: 330px;
 	overflow: auto;
 	width: 845px
 }
@@ -280,7 +268,8 @@ div.tableContainer table {
 /* define width of table. Add 16px to width for scrollbar.           */
 /* All other non-IE browsers.                                        */
 html>body div.tableContainer table {
-	width: 845px
+	width: 845px;
+	border: 10px solid #000000;
 }
  
 /* set table header to a fixed position. WinIE 6.x only                                       */
@@ -299,10 +288,7 @@ html>body thead.fixedHeader tr {
  
 /* make the TH elements pretty */
 thead.fixedHeader th {
-	background: #45879b;
-	border-left: 1px solid #555;
-	border-right: 1px solid #888;
-	border-top: 1px solid #555;
+	background: #000;
 	font-weight: normal;
 	padding: 4px 3px;
 	text-align: left
@@ -331,20 +317,39 @@ thead.fixedHeader a:hover {
 /* induced side effect is that child TDs no longer accept width: auto                     */
 html>body tbody.scrollContent {
 	display: block;
-	height: 262px;
+	height: 285px;
 	overflow: auto;
 	width: 100%
+}
+
+tbody.scrollContent td.subsection_header {
+	padding: 8px 5px;
+	border-top: 10px solid #000;
+}
+
+tbody.scrollContent td.subsection_header .subsection_title {
+	float: left;
+}
+
+	tbody.scrollContent td.subsection_header .subsection_title p {
+		margin: 0 0 0 0;
+		font-size: 1.3em;
+		font-weight: bold;
+	}
+
+tbody.scrollContent td.subsection_header .error_severity {
+	float: right;
 }
  
 /* make TD elements pretty. */
 /* http://www.alistapart.com/articles/zebratables/                             */
 tbody.scrollContent td, tbody.scrollContent tr.normalRow td {
-	background: #FFF;
 	border-bottom: none;
 	border-left: none;
 	border-right: 1px solid #CCC;
 	border-top: 1px solid #DDD;
-	padding: 2px 3px 3px 4px
+	padding: 2px 3px 3px 4px;
+	background: #FFF;
 }
 
  
@@ -372,17 +377,103 @@ html>body thead.fixedHeader th + th + th + th {
 /* All other non-IE browsers.                                            */
 /* http://www.w3.org/TR/REC-CSS2/selector.html#adjacent-selectors        */
 html>body tbody.scrollContent td {
-	width: 200px
+	width: 180px
 }
  
 html>body tbody.scrollContent td + td {
-	width: 240px
+	width: 215px
 }
  
 html>body tbody.scrollContent td + td + td {
-	width: 300px
+	width: 285px
 }
 
 html>body tbody.scrollContent td + td + td + td{
 	width: 300px
 }
+
+tbody.scrollContent td p {
+	margin: 0;
+}
+
+tbody.scrollContent tr td.error_type_details p {
+	float: left;
+	margin:10px 0 0 2px;
+	width: 100px;
+}
+
+.marker {
+	width: 25px;
+	height: 34px;
+	float: left;
+	margin: 2px;
+}
+
+/* PASSED */
+
+tr td.error_type_details.passed .marker {
+  background: green;
+}
+
+tr td.subsection_header.passed {
+	background: #36b03f;
+	color: #F2f2f2;
+}
+
+/* FAILED */
+
+tr td.error_type_details.failed .marker{
+  background: red;
+}
+
+tr td.subsection_header.failed {
+	background: #FF0000;
+	color: #f2f2f2;
+}
+
+/* REVIEW */
+
+tr td.error_type_details.review .marker{
+	background: orange;
+}
+
+tr td.subsection_header.review {
+	background: #ff9b2f;
+	color: #f2f2f2;
+}
+
+
+.pending {
+  background: #fed6ae;
+}
+
+
+
+
+/* DISABLED STYLING KEPT FOR REFERENCE */
+/* 
+                                  
+#xml_window {
+	height: 220px; 
+	position: fixed; 
+	bottom: 0; 
+	left: 0; 
+	width: 100%; 
+	z-index: 1000; 
+	background: #446671 url('/images/xml_controls_bg.png') top left repeat-x; 
+	padding: 25px 0;
+}
+
+#xml_controls {
+	height: 50px; 
+	position: fixed; 
+	bottom: 0; 
+	left: 0; 
+	width: 100%; 
+	z-index: 1000; 
+	background: #333; 
+	padding: 5px 2px; 
+	text-align: center;
+}
+
+*/

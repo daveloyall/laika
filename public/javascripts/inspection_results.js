@@ -1,22 +1,23 @@
 var $j = jQuery.noConflict();
 
 $j(document).ready(function(){
+	
 	// Hiding all force pass/fail controls
-  $j(".field_review_controls").hide();
+	$j(".error_review").hide();
 
 	// Toggle review controls
 	$j(".manual-review").click(function(event) {
-			$j(this).text($j(this).text() == 'OPEN' ? 'CLOSE' : 'OPEN');
-			$j(this).parents().next(".field_review_controls").slideToggle("slow");
+			$j(this).text($j(this).text() == 'REVIEW' ? 'CLOSE' : 'REVIEW');
+			$j(this).next($j(".error_review")).slideToggle("slow");
 			return false;
 	})
 
 	// FILTERING
   $j("#filter input:checkbox").click(function(e) {
-      var pass = $j(".module_field").filter('.pass');
-			var fail = $j(".module_field").filter('.fail');
-			var review = $j(".module_field").filter('.review');
-			var nottested = $j(".module_field").filter('.not_tested');
+      var pass = $j("tr, td").filter('.pass');
+			var fail = $j("tr, td").filter('.failed');
+			var review = $j("tr, td").filter('.review');
+			var nottested = $j("tr, td").filter('.not_tested');
       
 			// If passed checkbox is checked
       if ($j("#fieldPass").is(":checked")) {
@@ -50,17 +51,17 @@ $j(document).ready(function(){
 				nottested.hide();
 			}
   });
+
+	// SCROLLING	
+	//$j('a.error_link').click(function() {
+	//		var $errorid = (this).attr("id");
+	//		var $target = $j('xml_frame').find('div:attr(id, $errorid)');
+	//    $j('#xml_frame').scrollTo( $target, {axis:'x'});
+	//});
   
-  
+
+	
+	
+
 });
 
-// Check the status of each field within a given module
-
-// If all individual fields pass: set the overall inspection status to pass
-
-// Else (one or more fields result in review or fail) set the overall inspection 
-// status to pending
-
-// Each time a force pass or fail is submitted on an individual field 
-// within a module check to see whether all individual fields pass and 
-// update overall module inspection status
