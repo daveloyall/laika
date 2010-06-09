@@ -23,6 +23,14 @@
           errors.group_by(&:section).each do |section, section_errors|
         -%>
         
+        <!-- MODULE SECTION HEADER -->
+        <tr>
+          <td class="section_header" colspan="4">
+              <div class="section_title"><p><%= section.to_s.titleize %></p></div>
+          </td>
+        </tr>
+        <!-- END MODULE SECTION HEADER -->
+
         <%= render :partial => "section_errors" , :locals => {:errors => section_errors } %>
         
         <%- end -%>

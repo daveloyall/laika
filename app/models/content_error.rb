@@ -22,6 +22,17 @@ class ContentError < ActiveRecord::Base
     end
   end
 
+  # Truncates the error message to the first sentence or phrase ending in
+  # a period or colon.
+  def summary
+    error_message.nil? ? '' : error_message.split(/[.:]/).first.concat('...')
+  end
+
+  # True if content error has additional detail information to review (expected/provided section data)
+  def details?
+    [expected_section, provided_sections].any? { |a| !a.nil? }
+  end
+
   # Class methods for ContentError
   class << self
  
@@ -29,12 +40,12 @@ class ContentError < ActiveRecord::Base
     # May throw an ActiveRecord exception if unable to save!
     def from_validation_error!(validation_error)
       error = ContentError.new(
-        :section          => validation_error.section,
-        :subsection       => validation_error.subsection,
-        :field_name       => validation_error.field_name,
+        :section          => validation_error.section.try(:to_s),
+        :subsection       => validation_error.subsection.try(:to_s),
+        :field_name       => validation_error.field_name.try(:to_s),
         :error_message    => validation_error.message,
         :location         => validation_error.location,
-        :msg_type         => validation_error.severity,
+        :msg_type         => validation_error.severity.try(:to_s),
         :validator        => validation_error.validator,
         :inspection_type  => validation_error.inspection_type,
         :error_type       => validation_error.class.to_s.demodulize,
@@ -44,7 +55,7 @@ class ContentError < ActiveRecord::Base
         error.send("#{m}=", validation_error.send(m)) if validation_error.respond_to?(m)
       end
       error.save!
-      error.review! if validation_error.kind_of?(Laika::ComparisonError)
+      error.review! if validation_error.review?
       validation_error.suberrors.each { |sub| error.children << ContentError.from_validation_error!(sub) } 
       return error
     end

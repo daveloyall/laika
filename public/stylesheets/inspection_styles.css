@@ -1,47 +1,49 @@
 .error_type {
-	background: #FF3333;
-	overflow: hidden;
-	padding: 5px;
+  background: #FF3333;
+  overflow: hidden;
+  padding: 5px;
 }
 
-	.error_severity {
-		display: block;
-		padding: 5px;
-		float: left;
-	}
-	
-	.validator_type {
-		float: right;
-		display: block;
-		padding: 5px;
-	}
-	
-	.error_severity p, .validator_type p {
-		margin: 0 0 0 0;
-	}
+.error_severity {
+  display: block;
+  padding: 5px;
+  float: left;
+}
+  
+.validator_type {
+  float: right;
+  display: block;
+  padding: 5px;
+}
+  
+.error_severity p,
+.validator_type p,
+.error_type_details p, {
+    margin: 0 0 0 0;
+}
 
 .module_inspection_result {
   padding: 5px;
   margin: 0 0 20px 0;
-	background: #FFF;
+  background: #FFF;
 }
 
 .first {
-	padding-left: 5px;
+  padding-left: 5px;
 }
 
 .row {
-	padding: 12px 0px 0px;
-	clear: left;
-	border-bottom: 1px solid #e0e0e0;
+  padding: 12px 0px 0px;
+  clear: left;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .data_field {
-	overflow: hidden;
+  overflow: hidden;
 }
 
 .field_review_controls {
-	overflow: hidden;
+  overflow: hidden;
 }
 
 .inspection_table_headers {
@@ -79,7 +81,7 @@
   color: #FFF;
   font-weight: bold;
   font-size: 1.5em;
-	padding: 10px 3px;
+  padding: 10px 3px;
 }
 
 .inspection_controls {
@@ -110,7 +112,7 @@ ol#error_report_toc a {
 }
 
 ol#error_report_toc a:hover {
-	  color: #FFF;
+    color: #FFF;
     background-color: #5e828c;
     background-position: 0 -45px;
 }
@@ -140,136 +142,138 @@ ol#error_report_toc span {
 div.test_results {
     border-top: #000 solid 3px;
     clear: left;
-		overflow: hidden;
-		background: transparent;
+    overflow: hidden;
+    background: transparent;
 }
 
 #test_summary_meta h3 {
-	padding: 0 0 5px 0;
-	border-bottom: 1px solid #e0e0e0;
-	margin: 5px 0 3px 0;
+  padding: 0 0 5px 0;
+  border-bottom: 1px solid #e0e0e0;
+  margin: 5px 0 3px 0;
 }
 
 .inspection_result_header h3 {
-	padding: 0 0 0px 0;
-	margin: 0px 0 0px 0;
+  padding: 0 0 0px 0;
+  margin: 0px 0 0px 0;
 }
 
 .inspection_result_header span {
-	float: right;
-	padding: 3px 20px 0 0;
+  float: right;
+  padding: 3px 20px 0 0;
 }
 
 #launch_xml_window {
-	font-size: 1.3em;
-	color: #99e4fd;
-	text-decoration: none;
+  font-size: 1.3em;
+  color: #99e4fd;
+  text-decoration: none;
 }
 
 #launch_xml_window:hover {
-	color: #FFF;
+  color: #FFF;
 }
 
 #content-inspection-inner-wrap {
-	background: #333;
-	padding: 5px;
+  background: #333;
+  padding: 5px;
 }
-
-
 
 #filter {
-	float: right;
-	width: 430px;
-	padding: 5px 0px 5px 15px;
+  float: right;
+  width: 430px;
+  padding: 5px 0px 5px 15px;
 }
-	#filter p {
-		margin: 0 0 0 0;
-	}
-	
-	#filter .emp {
-		float: left;
-	}
-	
-	#filter label {
-		color: #eeeeee;
-	}
+
+#filter p {
+  margin: 0 0 0 0;
+}
+
+#filter .emp {
+  float: left;
+}
+
+#filter label {
+  color: #eeeeee;
+}
 
 .emp {
-	font-weight: bold;
-	color: #ccc;
+  font-weight: bold;
+  color: #ccc;
 }
 
 .results_header {
-	background:none repeat scroll 0 0 #333333;
-	left:105px;
-	padding:10px;
-	position:absolute;
-	top:205px;
-	width:135px;
+  background:none repeat scroll 0 0 #333333;
+  left:105px;
+  padding:10px;
+  position:absolute;
+  top:205px;
+  width:135px;
 }
 
-	.results_header h2 {
-		font-size: 1.25em;
-	}
-
+.results_header h2 {
+  font-size: 1.25em;
+}
 
 #xml_frame {
-	border:2px solid yellow;
-	margin-top:25px;
-	overflow:auto;
-	height:245px;
-	padding:10px;
+  border:2px solid yellow;
+  margin-top:25px;
+  overflow:auto;
+  height:245px;
+  padding:10px;
 }
 
 a.manual-review {
-	display: block;
-	background: #ccc;
-	padding: 3px;
-	text-align: center;
-	color: #ee5420;
+  display: block;
+  background: #ccc;
+  padding: 3px;
+  text-align: center;
+  color: #ee5420;
 }
 
 a.manual-review:hover {
-	background: #333;
-	color: #FFF;
+  background: #333;
+  color: #FFF;
 }
 
 .error_review {
-	margin: 15px 0 0 0;
+  margin: 15px 0 0 0;
+}
+
+.error_review hr {
+  margin: 0;
 }
 
 #individual_error_details {
-	background: #ccc;
-	height: 350px;
-	margin-top:25px;
+  background: #ccc;
+  height: 350px;
+  margin-top:25px;
 }
 
 /* NOT PRIORITY - PRINT THE TABLE HEAD ONCE */
 div.tableContainer {
-	clear: both;
-	border: 5px solid #333333;
-	height: 330px;
-	overflow: auto;
-	width: 845px
+  clear: both;
+  border: 5px solid #333333;
+  height: 330px;
+  overflow: auto;
+  width: 845px
 }
  
 /* Reset overflow value to hidden for all non-IE browsers. */
 html>body div.tableContainer {
-	overflow: hidden;
-	width: 845px
+  overflow: hidden;
+  width: 845px
 }
  
 /* define width of table. IE browsers only                 */
 div.tableContainer table {
-	float: left;
-	width: 839px
+  float: left;
+  width: 839px
 }
  
 /* define width of table. Add 16px to width for scrollbar.           */
 /* All other non-IE browsers.                                        */
 html>body div.tableContainer table {
-	width: 845px;
-	border: 10px solid #000000;
+  width: 845px;
+  border: 10px solid #000000;
 }
  
 /* set table header to a fixed position. WinIE 6.x only                                       */
@@ -277,38 +281,38 @@ html>body div.tableContainer table {
 /* an element that has an overflow property set, the relative value translates into fixed.    */
 /* Ex: parent element DIV with a class of tableContainer has an overflow property set to auto */
 thead.fixedHeader tr {
-	position: relative
+  position: relative
 }
  
 /* set THEAD element to have block level attributes. All other non-IE browsers            */
 /* this enables overflow to work on TBODY element. All other non-IE, non-Mozilla browsers */
 html>body thead.fixedHeader tr {
-	display: block
+  display: block
 }
  
 /* make the TH elements pretty */
 thead.fixedHeader th {
-	background: #000;
-	font-weight: normal;
-	padding: 4px 3px;
-	text-align: left
+  background: #000;
+  font-weight: normal;
+  padding: 4px 3px;
+  text-align: left
 }
  
 /* make the A elements pretty. makes for nice clickable headers                */
 thead.fixedHeader a, thead.fixedHeader a:link, thead.fixedHeader a:visited {
-	color: #FFF;
-	display: block;
-	text-decoration: none;
-	width: 100%
+  color: #FFF;
+  display: block;
+  text-decoration: none;
+  width: 100%
 }
  
 /* make the A elements pretty. makes for nice clickable headers                */
 /* WARNING: swapping the background on hover may cause problems in WinIE 6.x   */
 thead.fixedHeader a:hover {
-	color: #FFF;
-	display: block;
-	text-decoration: underline;
-	width: 100%
+  color: #FFF;
+  display: block;
+  text-decoration: underline;
+  width: 100%
 }
  
 /* define the table content to be scrollable                                              */
@@ -316,40 +320,40 @@ thead.fixedHeader a:hover {
 /* this enables overflow to work on TBODY element. All other non-IE, non-Mozilla browsers */
 /* induced side effect is that child TDs no longer accept width: auto                     */
 html>body tbody.scrollContent {
-	display: block;
-	height: 285px;
-	overflow: auto;
-	width: 100%
+  display: block;
+  height: 285px;
+  overflow: auto;
+  width: 100%
 }
 
-tbody.scrollContent td.subsection_header {
-	padding: 8px 5px;
-	border-top: 10px solid #000;
+tbody.scrollContent td.section_header {
+  padding: 5px 5px;
+  border-top: 10px solid #000;
 }
 
-tbody.scrollContent td.subsection_header .subsection_title {
-	float: left;
+tbody.scrollContent td.section_header .section_title {
+  float: left;
 }
 
-	tbody.scrollContent td.subsection_header .subsection_title p {
-		margin: 0 0 0 0;
-		font-size: 1.3em;
-		font-weight: bold;
-	}
+tbody.scrollContent td.section_header .section_title p {
+  margin: 0 0 0 0;
+  font-size: 1.3em;
+  font-weight: bold;
+}
 
-tbody.scrollContent td.subsection_header .error_severity {
-	float: right;
+tbody.scrollContent td.section_header .error_severity {
+  float: right;
 }
  
 /* make TD elements pretty. */
 /* http://www.alistapart.com/articles/zebratables/                             */
 tbody.scrollContent td, tbody.scrollContent tr.normalRow td {
-	border-bottom: none;
-	border-left: none;
-	border-right: 1px solid #CCC;
-	border-top: 1px solid #DDD;
-	padding: 2px 3px 3px 4px;
-	background: #FFF;
+  border-bottom: none;
+  border-left: none;
+  border-right: 1px solid #CCC;
+  border-top: 1px solid #DDD;
+  padding: 2px 3px 3px 4px;
+  background: #FFF;
 }
 
  
@@ -357,19 +361,19 @@ tbody.scrollContent td, tbody.scrollContent tr.normalRow td {
 /* Add 16px to last TH for scrollbar padding. All other non-IE browsers. */
 /* http://www.w3.org/TR/REC-CSS2/selector.html#adjacent-selectors        */
 html>body thead.fixedHeader th {
-	width: 200px
+  width: 160px
 }
  
 html>body thead.fixedHeader th + th {
-	width: 240px
+  width: 150px
 }
  
 html>body thead.fixedHeader th + th + th {
-	width: 316px
+  width: 429px
 }
 
 html>body thead.fixedHeader th + th + th + th {
-	width: 316px
+  width: 100px
 }
 
  
@@ -377,69 +381,79 @@ html>body thead.fixedHeader th + th + th + th {
 /* All other non-IE browsers.                                            */
 /* http://www.w3.org/TR/REC-CSS2/selector.html#adjacent-selectors        */
 html>body tbody.scrollContent td {
-	width: 180px
+  width: 160px
 }
  
 html>body tbody.scrollContent td + td {
-	width: 215px
+  width: 150px
 }
  
 html>body tbody.scrollContent td + td + td {
-	width: 285px
+  width: 429px
 }
 
 html>body tbody.scrollContent td + td + td + td{
-	width: 300px
+  width: 100px
 }
 
 tbody.scrollContent td p {
-	margin: 0;
+  margin: 0;
 }
 
+/*
 tbody.scrollContent tr td.error_type_details p {
-	float: left;
-	margin:10px 0 0 2px;
-	width: 100px;
+  float: left;
+  margin:10px 0 0 2px;
+  width: 100px;
 }
+*/
 
 .marker {
-	width: 25px;
-	height: 34px;
-	float: left;
-	margin: 2px;
+  width: 25px;
+  height: 34px;
+  float: left;
+  margin: 2px;
+}
+
+.result {
+  text-align: center;
+}
+
+.result select {
+  margin: 0;
 }
 
 /* PASSED */
 
-tr td.error_type_details.passed .marker {
+tr td.result.passed {
   background: green;
 }
 
-tr td.subsection_header.passed {
-	background: #36b03f;
-	color: #F2f2f2;
+tr td.section_header.passed {
+  background: #36b03f;
+  color: #F2f2f2;
 }
 
 /* FAILED */
 
-tr td.error_type_details.failed .marker{
+tr td.result.failed {
   background: red;
 }
 
-tr td.subsection_header.failed {
-	background: #FF0000;
-	color: #f2f2f2;
+tr td.section_header.failed {
+  background: #FF0000;
+  color: #f2f2f2;
 }
 
 /* REVIEW */
 
-tr td.error_type_details.review .marker{
-	background: orange;
+tr td.result.review {
+  background: orange;
 }
 
-tr td.subsection_header.review {
-	background: #ff9b2f;
-	color: #f2f2f2;
+tr td.section_header.review {
+  background: #ff9b2f;
+  color: #f2f2f2;
 }
 
 
@@ -447,33 +461,46 @@ tr td.subsection_header.review {
   background: #fed6ae;
 }
 
+/* Expected/Provided definition lists */
+dl.inline dt {
+  clear: left;
+  float: left;
+  width: 15em;
+  text-align: right;
+  font-weight: normal;
+}
 
-
+dl.inline dd {
+  clear: none;
+  float: left;
+  font-weight: bold;
+  margin-left: 5px;
+}
 
 /* DISABLED STYLING KEPT FOR REFERENCE */
 /* 
                                   
 #xml_window {
-	height: 220px; 
-	position: fixed; 
-	bottom: 0; 
-	left: 0; 
-	width: 100%; 
-	z-index: 1000; 
-	background: #446671 url('/images/xml_controls_bg.png') top left repeat-x; 
-	padding: 25px 0;
+  height: 220px; 
+  position: fixed; 
+  bottom: 0; 
+  left: 0; 
+  width: 100%; 
+  z-index: 1000; 
+  background: #446671 url('/images/xml_controls_bg.png') top left repeat-x; 
+  padding: 25px 0;
 }
 
 #xml_controls {
-	height: 50px; 
-	position: fixed; 
-	bottom: 0; 
-	left: 0; 
-	width: 100%; 
-	z-index: 1000; 
-	background: #333; 
-	padding: 5px 2px; 
-	text-align: center;
+  height: 50px; 
+  position: fixed; 
+  bottom: 0; 
+  left: 0; 
+  width: 100%; 
+  z-index: 1000; 
+  background: #333; 
+  padding: 5px 2px; 
+  text-align: center;
 }
 
 */
