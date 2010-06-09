@@ -286,7 +286,7 @@ module Validators
           :locator    => %q{cda:entryRelationship[@typeCode='REFR']/cda:observation[cda:templateId/@root='2.16.840.1.113883.10.20.1.47']/cda:statusCode/@code},
         },
         :order => {
-          :action     => :get_section,
+          :action     => :get_section_if_exists,
           :locator    => %q{cda:entryRelationship[@typeCode='REFR']/cda:supply[@moodCode='INT']},
           :subsections => [:quantity_ordered_value, :expiration_time] 
         },
@@ -493,18 +493,24 @@ module Validators
         # subsection.
         #
         # Otherwise a SectionNotFound error is generated. 
-        def get_section(section_key = section)
+        def get_section(section_key = section, must_exist = true)
           logger.debug("get_section: #{section_key}")
           locator = xpath(section_key)
           if node = extract_first_node(locator)
             errors << yield(node) if block_given?
             _descend_into_subsections(section_key, node)
           else
-            add_section_not_found_error(locator)
+            add_section_not_found_error(locator) if must_exist
           end
           return errors
         end
 
+        # Lookup a section absolutely and act on it just like get_section(), except that
+        # if no section is found, no error is entered.
+        def get_section_if_exists(section_key = section)
+          get_section(section_key, false)
+        end
+ 
         # Lookup a value in the current xml_component() and compare for
         # equality with a value from the current gold_model().
         def match_value(section_key = section)
@@ -806,7 +812,7 @@ module Validators
           REXML::XPath.send(command, node, xpath, namespaces)
         rescue REXML::ParseException => e
           logger.info("REXML::ParseException thrown attempting to follow: #{xpath} in node:\n#{xml_component.inspect}\nException: #{e}, #{e.backtrace}")
-          add_validation_error("Unparseable xml or bad xpath attempting: #{xpath} in node:\n#{xml_component.inspect}", :severity => :fatal, :exception => e)
+          add_validation_error("Unparseable xml or bad xpath: attempting #{xpath} in node:\n#{xml_component.inspect}", :severity => :fatal, :exception => e)
         end
       end
 
@@ -922,7 +928,7 @@ module Validators
       # passing in options in the args parameter.
       def add_section_not_found_error(locator, args = {})
         _add_error(Laika::SectionNotFound, {
-            :message => "Unable to find #{section_name} by following #{locator} in the current element.",
+            :message => "Unable to find any #{section_name}.  Tried following #{locator} in the current element.",
             :locator => locator,
           },
           args
@@ -934,7 +940,7 @@ module Validators
       # be overridden by passing in options in the args parameter.
       def add_no_matching_section_error(xpath, args = {})
         _add_error(Laika::NoMatchingSection, {
-            :message => "No #{section_name} section was found matching the given xpath: #{xpath}",
+            :message => "No matching #{section_name} was found. Searched for: #{xpath}",
             :expected_section => collect_expected_values, 
             :provided_sections => xml_section_nodes.map do |node|
               descend(:xml_component => node).collect_provided_values(section, xml_sections_hash.invert[node])
@@ -966,7 +972,7 @@ module Validators
 
       # Human readable section name.
       def section_name
-        section.to_s.humanize
+        section.to_s.humanize.titleize
       end
 
       # The root element of the XML document we are validating.
@@ -1114,17 +1120,19 @@ module Validators
           logger.debug("gold_model: #{gold_model}")
           logger.debug("gold_model_array: #{gold_model_array}")
 
-          ComponentScope.new(
-            :component_module => component_module,
-            :section          => component_module,
-            :gold_model       => gold_model,
-            :gold_model_array => gold_model_array,
-            :xml_component    => document,
-            :validation_type  => validation_type,
-            :logger           => logger,
-            :validator        => C32VALIDATOR,
-            :inspection_type  => ::CONTENT_INSPECTION
-          ).validate
+          unless association.respond_to?(:each) ? gold_model_array.empty? : gold_model.nil?
+            ComponentScope.new(
+              :component_module => component_module,
+              :section          => component_module,
+              :gold_model       => gold_model,
+              :gold_model_array => gold_model_array,
+              :xml_component    => document,
+              :validation_type  => validation_type,
+              :logger           => logger,
+              :validator        => C32VALIDATOR,
+              :inspection_type  => ::CONTENT_INSPECTION
+            ).validate
+          end
 
         end.flatten!.compact!
       end

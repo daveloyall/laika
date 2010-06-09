@@ -7,7 +7,7 @@ $j(document).ready(function(){
 
 	// Toggle review controls
 	$j(".manual-review").click(function(event) {
-			$j(this).text($j(this).text() == 'REVIEW' ? 'CLOSE' : 'REVIEW');
+			$j(this).text($j(this).text() == 'DETAILS' ? 'CLOSE' : 'DETAILS');
 			$j(this).next($j(".error_review")).slideToggle("slow");
 			return false;
 	})
@@ -59,9 +59,28 @@ $j(document).ready(function(){
 	//    $j('#xml_frame').scrollTo( $target, {axis:'x'});
 	//});
   
-
-	
-	
-
 });
 
+function update_error_class(content_error_id) {
+//  console.log('update');
+//  console.log(content_error_id);
+  var selector = '#' + content_error_id + ' .result';
+  var select_control = $j(selector + ' select');
+  set_error_class($j(selector), select_control.val());
+}
+
+function set_error_class(element, value) {
+//  console.log('set');
+//  console.log(value);
+//  console.log(element);
+  element.removeClass('review');
+  element.removeClass('passed');
+  element.removeClass('failed');
+  element.addClass(value);
+}
+
+function reset_error(content_error_id) {
+//  console.log('reset');
+//  console.log(content_error_id);
+  alert('failed to set state for ' + content_error_id)
+}

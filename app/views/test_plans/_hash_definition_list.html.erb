@@ -1,7 +1,8 @@
+              <hr/>
 <%- if hash_definition_list.nil? -%>
               <p class="nil">nil</p>
 <%- else -%>
-              <dl>
+              <dl class="inline">
               <%- hash_definition_list.each do |k,v| -%>
                 <dt><%= k %>:</dt>
                 <dd><%= v %></dd>

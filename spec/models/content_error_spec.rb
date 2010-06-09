@@ -39,13 +39,30 @@ describe ContentError do
     @error.tap(&:fail).state.should == 'failed'
   end
 
+  it "should flag that there are expected/provided details" do
+    @error.details?.should be_false
+    [[:expected_section, {}], [:provided_sections, []]].each do |m,v|
+      @error.send("#{m}=", v)
+      @error.details?.should be_true
+      @error.send("#{m}=", nil)
+      @error.details?.should be_false
+    end
+  end
+
+  it "should provide a summary of the error_message" do
+    @error.error_message = "This is an error message."
+    @error.summary == @error.error_message
+    @error.error_message = "This is an error message summary.  It has further details."
+    @error.summary == "This is an error message summary..."
+  end
+
   describe "from validation errors" do
 
     before do
       @validation_error = Laika::ValidationError.new(
-        :section         => 'section',
-        :subsection      => 'subsection',
-        :field_name      => 'field',
+        :section         => :section,
+        :subsection      => :subsection,
+        :field_name      => :field,
         :message         => 'foo',
         :location        => '//xpath',
         :severity        => 'error',
@@ -69,6 +86,7 @@ describe ContentError do
       content_error.error_type.should == 'ValidationError'
       content_error.exception.should == @exception
       content_error.children.should be_empty
+      content_error.state.should == 'failed'
     end
 
     it "should set expected and provided if methods are present" do
@@ -80,10 +98,16 @@ describe ContentError do
 
     it "should set expected_section and provided_sections if methods are present" do
       content_error = ContentError.from_validation_error!(Laika::NoMatchingSection.new(:validator => 'test', :expected_section => { :foo => :bar }, :provided_sections => []))
-      content_error.error_type.should == 'SectionMissing'
+      content_error.error_type.should == 'NoMatchingSection'
       content_error.expected_section.should == { :foo => :bar }
       content_error.provided_sections.should == []
     end
+
+    it "should set state to review of error is reviewable" do
+      content_error = ContentError.from_validation_error!(Laika::ReviewableError.new(:validator => 'test'))
+      content_error.state.should == 'review'
+    end
+
     describe "with nested errors" do
 
       before do

@@ -16,6 +16,7 @@ ActionController::Routing::Routes.draw do |map|
     :member => { :mark => :post, :checklist => :get, :clone => :post }
   # additional test-specific actions
   map.test_action '/test_plans/:id/:action', :controller => 'test_plans'
+  map.mark_content_error '/content_errors/:id/mark', :controller => 'content_errors', :action => 'mark'
 
   map.resources :patients,
       :has_one  => [:registration_information, :support, :information_source, :advance_directive, :pregnancy],
