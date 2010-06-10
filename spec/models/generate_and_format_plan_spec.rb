@@ -73,5 +73,41 @@ XML
       element.attributes['error_id'].should == '0'
     end
   end
+
+  describe "with content errors" do
+    before do
+      @passed = ContentError.factory.create(:state => 'passed', :inspection_type => ::CONTENT_INSPECTION) 
+      @failed = ContentError.factory.create(:state => 'failed', :inspection_type => ::CONTENT_INSPECTION) 
+      @pending = ContentError.factory.create(:state => 'review', :inspection_type => ::CONTENT_INSPECTION) 
+      @xml = ContentError.factory.create(:inspection_type => ::XML_VALIDATION_INSPECTION) 
+      @umls = ContentError.factory.create(:inspection_type => ::UMLS_CODESYSTEM_INSPECTION) 
+      @plan = GenerateAndFormatPlan.factory.create(:content_errors  => [@passed, @failed, @pending, @xml, @umls])
+    end
+
+    it "should present a list of xml errors" do
+      @plan.xml_validation_errors.should == [@xml]
+    end
+
+    it "should present a list of content inspection errors" do
+      @plan.content_inspection_errors.to_set.should == [@passed, @failed, @pending].to_set
+    end
+
+    it "should present a list of passed content inspection errors" do
+      @plan.content_inspection_errors.passed.should == [@passed]
+    end
+
+    it "should present a list of failed content inspection errors" do
+      @plan.content_inspection_errors.failed.should == [@failed]
+    end
+
+    it "should present a list of pending content inspection errors" do
+      @plan.content_inspection_errors.pending.should == [@pending]
+    end
+
+    it "should present a list of umls errors" do
+      @plan.umls_codesystem_errors.should == [@umls]
+    end
+
+  end
 end
 

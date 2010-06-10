@@ -4,6 +4,14 @@ class GenerateAndFormatPlan < TestPlan
   completed_actions 'Inspect' => :doc_inspect, 'Checklist' => :doc_checklist
   serialize :test_type_data, Hash
 
+  module ErrorStateExtension
+    ['passed', 'failed', 'pending'].each do |m|
+      define_method(m) do
+        find_all_by_state(m == 'pending' ? 'review' : m)
+      end
+    end
+  end
+
   # Use these relations to access content errors by inspection_type.
   # The *_INSPECTION constants are set in config/initializers/laika_globals.rb
   has_many :xml_validation_errors, :class_name => 'ContentError',
@@ -11,10 +19,12 @@ class GenerateAndFormatPlan < TestPlan
     :conditions => { :inspection_type => ::XML_VALIDATION_INSPECTION }
   has_many :content_inspection_errors, :class_name => 'ContentError',
     :foreign_key => 'test_plan_id',
-    :conditions => { :inspection_type => ::CONTENT_INSPECTION }
+    :conditions => { :inspection_type => ::CONTENT_INSPECTION },
+    :extend => ErrorStateExtension
   has_many :umls_codesystem_errors, :class_name => 'ContentError',
     :foreign_key => 'test_plan_id',
-    :conditions => { :inspection_type => ::UMLS_CODESYSTEM_INSPECTION }
+    :conditions => { :inspection_type => ::UMLS_CODESYSTEM_INSPECTION },
+    :extend => ErrorStateExtension
 
   class ValidationError < StandardError; end
 
