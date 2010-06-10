@@ -238,11 +238,11 @@ module Validators
         :substance_administrations => {
           Validation::C32_V2_5_TYPE => {
             :action          => :validate_dereferenced_sections,
-            :locator         => %q{//cda:substanceAdministration},
+            :locator         => %q{cda:entry/cda:substanceAdministration},
             :subsection_type => :medication,
           },
           :action          => :validate_sections,
-          :locator         => %q{//cda:substanceAdministration},
+          :locator         => %q{cda:entry/cda:substanceAdministration},
           :subsection_type => :medication,
         },
         :medication => {
@@ -306,7 +306,7 @@ module Validators
         }, 
         :acts => {
           :action          => :validate_sections,
-          :locator         => %q{//cda:act[cda:templateId/@root='2.16.840.1.113883.10.20.1.27']/cda:entryRelationship[@typeCode='SUBJ']/cda:observation[cda:templateId/@root='2.16.840.1.113883.10.20.1.18']},
+          :locator         => %q{cda:entry/cda:act[cda:templateId/@root='2.16.840.1.113883.10.20.1.27']/cda:entryRelationship[@typeCode='SUBJ']/cda:observation[cda:templateId/@root='2.16.840.1.113883.10.20.1.18']},
           :subsection_type => :adverse_events,
         },
         :adverse_events=> {
@@ -343,7 +343,7 @@ module Validators
         :child_act => {
           :action      => :match_section,
           :locator     => %q{.},
-          :subsections => [:group_number, :insurance_type],# :represented_organization, :insurance_provider_guarantor],
+          :subsections => [:group_number, :insurance_type, :represented_organization]#, :insurance_provider_guarantor],
         },
         :group_number => {
           :action  => :match_value_if_exists_in_model,
@@ -355,6 +355,10 @@ module Validators
           :matches     => :insurance_type,
           :subsections => [:code, :display_name],
         },
+        :represented_organization => {
+          :action      => :match_value_if_exists_in_model,
+          :locator     => %q{cda:performer[@typeCode='PRF']/cda:assignedEntity[@classCode='ASSIGNED']/cda:representedOrganization[@classCode='ORG']/cda:name},
+        }
         # Person Information Component Module validation
       }
 

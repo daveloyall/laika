@@ -25,7 +25,24 @@ describe "C32 Isurance Provider Validation" do
     flunk "finish insurance provider directives"
   end
 
-  it "should match group number if exists"
-  it "should match insurance type code if exists"
+  it "should match group number if exists" do
+    original_group_number = @insurance_provider.group_number
+    @insurance_provider.group_number = 12345
+    errors = @scope.validate
+    errors.size.should == 1
+    errors.first.should be_kind_of(Laika::ComparisonError)
+    @insurance_provider.group_number = original_group_number
+    @scope.errors.clear
+    @scope.validate.should == []
+  end
 
+  it "should match represented_organization if exists" do
+    @insurance_provider.represented_organization.should_not be_nil
+    @scope.validate.should == []
+  end
+
+  it "should match insurance_provider_guarantor" do
+    pp @insurance_provider.insurance_provider_guarantor
+    pp @insurance_provider.insurance_provider_guarantor.person_name
+  end
 end

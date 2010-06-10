@@ -51,7 +51,7 @@ describe "C32 Medication Validation" do
       errors = @scope.validate
       errors.size.should == 1
       errors.first.should be_kind_of(Laika::SectionNotFound)
-      errors.first.location.should == '/ClinicalDocument/component/structuredBody/component/section'
+      errors.first.location.should == '/ClinicalDocument/component/structuredBody/component/section/entry'
     end
 
     it "should fail if we cannot mach a substanceAdministration section" do
@@ -100,7 +100,10 @@ describe "C32 Medication Validation" do
         {:product_coded_display_name => "Augmentin",
          :free_text_brand_name => "Augmentin",
          :medication_type => nil,
-         :status => nil},
+         :status => nil,
+         :quantity_ordered_value => nil,
+         :expiration_time => "20151002",
+        },
         {:product_coded_display_name => "Aspirin",
          :free_text_brand_name => "Aspirin",
          :medication_type => nil,
