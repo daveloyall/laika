@@ -108,6 +108,8 @@ describe Validators::C32Validation do
             :free_text_brand_name => 'Augmentin', 
             :medication_type => nil,
             :status => nil, 
+            :quantity_ordered_value => nil, 
+            :expiration_time => '20151002',
           }
         end
 
@@ -230,6 +232,7 @@ EOS
 
   it "should validate a v2.5 C32 document" do
     puts @validator.validate(@patient, @document).inspect
+    flunk "haven't finished directives for all component modules yet"
   end
 
 end

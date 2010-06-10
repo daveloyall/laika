@@ -302,6 +302,16 @@
                                     <statusCode code="completed"/>
                                 </act>
                             </entryRelationship>
+                            <entryRelationship typeCode="REFR">
+                              <supply classCode="SPLY" moodCode="INT">
+                                <templateId root="2.16.840.1.113883.10.20.1.34" assigningAuthorityName="CCD"/>
+                                <templateId root="2.16.840.1.113883.3.88.11.32.11" assigningAuthorityName="HITSP/C32"/>
+                                <id/>
+                                <code nullFlavor="NA"/>
+                                <statusCode/>
+                                <effectiveTime value="20151002"/>
+                              </supply>
+                            </entryRelationship>
                         </substanceAdministration>
                         <substanceAdministration classCode="SBADM" moodCode="EVN">
                             <templateId root="2.16.840.1.113883.10.20.1.24"/>
