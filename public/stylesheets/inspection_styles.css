@@ -440,11 +440,15 @@ tbody.scrollContent tr td.error_type_details p {
   margin: 0;
 }
 
+#test_summary_breakdown .breakout,
 #content_inspection_status .status_code {
   -moz-border-radius: 6px;
-  font-size: larger;
   font-weight: bold;
   padding: 2px 27px 2px 4px;
+}
+
+#content_inspection_status .status_code {
+  font-size: larger;
 }
 
 /* PASSED */
@@ -453,12 +457,14 @@ tr.passed td.result {
   background: green;
 }
 
+#test_summary_breakdown .passed,
 .passed .status_code, 
 tr td.section_header.passed {
   background: #36b03f;
   color: #F2f2f2;
 }
 
+#test_summary_breakdown .passed,
 .passed .status_code {
   background: #36b03f url('/images/passed.png') no-repeat scroll right 0;
 }
@@ -469,12 +475,14 @@ tr.failed td.result {
   background: red;
 }
 
+#test_summary_breakdown .failed,
 .failed .status_code, 
 tr td.section_header.failed {
   background: #FF0000;
   color: #f2f2f2;
 }
 
+#test_summary_breakdown .failed,
 .failed .status_code {
   background: #ff0000 url('/images/failed.png') no-repeat scroll right 0;
 }
@@ -485,12 +493,14 @@ tr.review td.result {
   background: orange;
 }
 
+#test_summary_breakdown .pending,
 .review .status_code, 
 tr td.section_header.review {
   background: #ff9b2f;
   color: #f2f2f2;
 }
 
+#test_summary_breakdown .pending,
 .review .status_code {
   background: #ff9b2f url('/images/review.png') no-repeat scroll right 0;
 }

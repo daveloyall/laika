@@ -26,6 +26,7 @@ $j(document).ready(function(){
   });
 
   set_overall_content_inspection_status();
+  set_manual_assignment();
 
   // SCROLLING  
   //$j('a.error_link').click(function() {
@@ -43,6 +44,8 @@ function update_error_class(content_error_id) {
   var select_control = $j(selector + ' select');
   set_error_class($j(selector), select_control.val());
   set_overall_content_inspection_status();
+  set_content_inspection_summary();
+  set_manual_assignment();
 }
 
 function set_error_class(element, value) {
@@ -76,6 +79,25 @@ function set_overall_content_inspection_status() {
     status_code.text('Passed');
     set_error_class(inspection_status, 'passed');
   } 
+}
+
+function set_content_inspection_summary() {
+  var error_rows = $j('.scrollContent tr');
+  ['passed','failed','pending'].each( function(e) {
+    var error_state = (e == 'pending') ? 'review' : e;
+    var count = error_rows.filter('.' + error_state).size();
+    $j('#content_inspection_summary .' + e).text(count);
+  })
+}
+
+function set_manual_assignment() {
+  var failed = $j('.scrollContent tr').hasClass('failed');
+  var fields = $j('#assign_test_state_manually form :input');
+  if (failed) {
+    fields.attr('disabled','true');
+  } else {
+    fields.attr('disabled','');
+  }
 }
 
 function toggle_details(element) {

@@ -128,6 +128,7 @@ severity_terms supports telecoms users vaccines vendors zip_codes
       :error_type      => 'Testing',
       :exception       => nil,
       :suberrors       => [],
+      :review?         => false,
     }.merge(options)
     stub('laika-validation-error', attributes)
   end

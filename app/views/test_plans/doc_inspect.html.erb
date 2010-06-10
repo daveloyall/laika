@@ -19,17 +19,25 @@
           <div class="widget">
             <span class="number"><%= @test_plan.xml_validation_errors.count %></span> <a href="#xml_validation">XML Validation Errors</a>
           </div>
-          <div class="widget">
-            <span class="number"><%= @test_plan.content_inspection_errors.count %></span> <a href="#content_inspection">Content Inspection Warnings</a>
+          <div id="content_inspection_summary" class="widget container">
+            <div class="column">
+              <span class="number"><%= @test_plan.content_inspection_errors.count %></span> <a href="#content_inspection">Content Inspection Warnings</a>
+            </div>
+            <%= render :partial => 'errors_breakout', :locals => { :errors => @test_plan.content_inspection_errors } %> 
           </div>
           <% if @test_plan.umls_enabled? -%>
-          <div class="widget">
-            <span class="number"><%= @test_plan.umls_codesystem_errors.count %></span> <a href="#umls_validation">UMLS Code Warnings</a>
+          <div class="widget container">
+            <div class="column">
+              <span class="number"><%= @test_plan.umls_codesystem_errors.count %></span> <a href="#umls_validation">UMLS Code Warnings</a>
+            </div>
+            <%= render :partial => 'errors_breakout', :locals => { :errors => @test_plan.umls_codesystem_errors } %> 
           </div>
           <% end -%>
-          <small><strong>Validation Notes:</strong><br />
-          Content discrepancies between patient record assigned to test and C32 under validation will be flagged as warnings. Patient summary content will be validated by visual inspection of the xml and using a stylesheet. UMLS validation errors will be visually inspected and verified. Neither content inspection warnings nor UMLS validation errors automatically determine PASS/FAIL status.
-          </small>
+          <div>
+            <small><strong>Validation Notes:</strong><br />
+            Content discrepancies between patient record assigned to test and C32 under validation will be flagged as warnings. Patient summary content will be validated by visual inspection of the xml and using a stylesheet. UMLS validation errors will be visually inspected and verified. Neither content inspection warnings nor UMLS validation errors automatically determine PASS/FAIL status.
+            </small>
+          </div>
         </div><!-- End test summary breakdown-->
       </div>
       <div class="column span-8 prepend-2 last">

@@ -1,0 +1,8 @@
+<%- errors ||= [] %>
+          <%- unless errors.empty? %>
+            <div class="column">=>
+              <span class="breakout number passed"><%= errors.passed.count %></span>
+              <span class="breakout number pending"><%= errors.pending.count %></span>
+              <span class="breakout number failed"><%= errors.failed.count %></span>
+            </div>
+          <%- end %>
