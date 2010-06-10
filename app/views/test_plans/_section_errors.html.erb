@@ -26,7 +26,7 @@
 
     <!-- FIELD NAME -->
     <td>
-      <p><%= e.field_name %></p>
+      <p><%= e.field_name.try(:to_s).try(:humanize) %></p>
     </td>
 
     <!-- ERROR MESSAGE -->
@@ -39,7 +39,7 @@
     </td>
 
     <!-- ERROR RESULT -->
-    <td class="result <%= e.state %>">
+    <td class="result">
       <% form_for(e, :url => '') do |f| %>
         <%= f.select :state, { 'PASS' => 'passed', 'REVIEW' => 'review', 'FAIL' => 'failed' }, {},
           :onchange => remote_function(:url => mark_content_error_path(e), :with => 'Form.serialize(this.parentNode)', :success => "update_error_class('#{content_error_id}');", :failure => "reset_error('#{content_error_id}');") %>
@@ -47,11 +47,10 @@
     </td>
   </tr>
   
-  <tr class="<%= "#{e.state}" %>">
+  <%- if e.details? %>
+  <tr id="<%= content_error_id %>_details">
     <td colspan="4">
-      <%- if e.details? %>
-        <a class="manual-review" href="#">DETAILS</a>
-      <%- end -%>
+      <a class="manual-review" href="#">DETAILS</a>
       <div class="error_review" colspan="4">
         <%- case e.error_type -%>
           <%- when 'ComparisonError' -%>
@@ -85,6 +84,7 @@
       </div>
     </td>
   </tr>
+  <%- end -%>
     
   <!-- END ERROR TYPE & VALIDATOR -->
 

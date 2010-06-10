@@ -1,11 +1,15 @@
-  <div id="filter" class="column span-8">
-    <p class="emp">Filter warnings by status:</p>
-    <input name="pass" type="checkbox" id="fieldPass" value="0" class="" checked="checked" /><label for="passed">Passed</label>
-    <input name="review" type="checkbox" id="fieldReview" value="0" class="" checked="checked" /><label for="passed">Review</label>
-    <input name="fail" type="checkbox" id="fieldFailed" value="0" class="" checked="checked" /><label for="passed">Failed</label>
-    <input name="notest" type="checkbox" id="fieldNotTested" value="0" class="" checked="checked" /><label for="passed">Not Tested</label> 
-  </div><!-- END FILTER-->
-  
+    <div id="content_inspection_status">
+      <div class="emp column">Overall:</div>
+      <div class="status_code column"></div>
+    </div>
+
+    <div id="filter" class="column span-8">
+      <p class="emp">Filter warnings by status:</p>
+      <input name="passed" type="checkbox" id="fieldPass" value="0" class="" checked="checked" /><label for="fieldPass">Passed</label>
+      <input name="review" type="checkbox" id="fieldReview" value="0" class="" checked="checked" /><label for="fieldReview">Review</label>
+      <input name="failed" type="checkbox" id="fieldFailed" value="0" class="" checked="checked" /><label for="fieldFailed">Failed</label>
+      <!-- not implemented <input name="notest" type="checkbox" id="fieldNotTested" value="0" class="" checked="checked" /><label for="fieldNotTested">Not Tested</label> -->
+    </div><!-- END FILTER-->
   
     <div id="tableContainer" class="tableContainer"> 
       <table border="0" cellpadding="0" cellspacing="0" width="100%" class="scrollTable"> 

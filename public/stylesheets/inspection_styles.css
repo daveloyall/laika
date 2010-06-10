@@ -177,12 +177,21 @@ div.test_results {
   padding: 5px;
 }
 
+#content_inspection_status {
+  float: left;
+}
+
+#content_inspection_status,
 #filter {
-  float: right;
-  width: 430px;
   padding: 5px 0px 5px 15px;
 }
 
+#filter {
+  float: right;
+  width: 350px;
+}
+
+#content_inspection_status p,
 #filter p {
   margin: 0 0 0 0;
 }
@@ -315,10 +324,11 @@ thead.fixedHeader a:hover {
   width: 100%
 }
  
-/* define the table content to be scrollable                                              */
-/* set TBODY element to have block level attributes. All other non-IE browsers            */
-/* this enables overflow to work on TBODY element. All other non-IE, non-Mozilla browsers */
-/* induced side effect is that child TDs no longer accept width: auto                     */
+/* define the table content to be scrollable */
+/* set TBODY element to have block level attributes. All other non-IE browsers */
+/* this enables overflow to work on TBODY element. All other non-IE,
+ * non-Mozilla browsers induced side effect is that child TDs no longer accept
+ * width: auto  */
 html>body tbody.scrollContent {
   display: block;
   height: 285px;
@@ -329,6 +339,7 @@ html>body tbody.scrollContent {
 tbody.scrollContent td.section_header {
   padding: 5px 5px;
   border-top: 10px solid #000;
+  width: 839px;
 }
 
 tbody.scrollContent td.section_header .section_title {
@@ -423,42 +434,59 @@ tbody.scrollContent tr td.error_type_details p {
   margin: 0;
 }
 
+#content_inspection_status .status_code {
+  -moz-border-radius: 6px;
+  font-size: larger;
+  font-weight: bold;
+  padding: 2px 27px 2px 4px;
+}
+
 /* PASSED */
 
-tr td.result.passed {
+tr.passed td.result {
   background: green;
 }
 
+.passed .status_code, 
 tr td.section_header.passed {
   background: #36b03f;
   color: #F2f2f2;
 }
 
+.passed .status_code {
+  background: #36b03f url('/images/passed.png') no-repeat scroll right 0;
+}
+
 /* FAILED */
 
-tr td.result.failed {
+tr.failed td.result {
   background: red;
 }
 
+.failed .status_code, 
 tr td.section_header.failed {
   background: #FF0000;
   color: #f2f2f2;
 }
 
+.failed .status_code {
+  background: #ff0000 url('/images/failed.png') no-repeat scroll right 0;
+}
+
 /* REVIEW */
 
-tr td.result.review {
+tr.review td.result {
   background: orange;
 }
 
+.review .status_code, 
 tr td.section_header.review {
   background: #ff9b2f;
   color: #f2f2f2;
 }
 
-
-.pending {
-  background: #fed6ae;
+.review .status_code {
+  background: #ff9b2f url('/images/review.png') no-repeat scroll right 0;
 }
 
 /* Expected/Provided definition lists */
