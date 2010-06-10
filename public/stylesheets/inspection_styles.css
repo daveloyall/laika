@@ -232,15 +232,21 @@ div.test_results {
 
 a.manual-review {
   display: block;
-  background: #ccc;
-  padding: 3px;
+  padding: 3px 3px 3px 15px;
   text-align: center;
   color: #ee5420;
 }
 
+a.manual-review.closed {
+  background: #ccc url('/images/darkarrow.png') no-repeat scroll 0 0;
+}
+
+a.manual-review.open {
+  background: #ccc url('/images/darkarrow_up.png') no-repeat scroll 0 0;
+}
+
 a.manual-review:hover {
-  background: #333;
-  color: #FFF;
+  color: #000;
 }
 
 .error_review {
