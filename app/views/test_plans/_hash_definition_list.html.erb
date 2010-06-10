@@ -4,7 +4,7 @@
 <%- else -%>
               <dl class="inline">
               <%- hash_definition_list.each do |k,v| -%>
-                <dt><%= k %>:</dt>
+                <dt><%= k.to_s.humanize %>:</dt>
                 <dd><%= v %></dd>
               <%- end -%>
               </dl>
