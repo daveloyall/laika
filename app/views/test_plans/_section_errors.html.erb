@@ -14,6 +14,7 @@
   <%- subsection_errors.each_with_index do |e,index|
         content_error_id = "content_error_#{e.id}"
         error_id = @error_mapping[e.location] if e.location
+        error_type = "#{e.error_type}&nbsp;(#{e.msg_type})"
   -%>
 
   <!-- MODULE SUBSECTION ERRORS TABLE ROW -->
@@ -21,7 +22,13 @@
 
     <!-- ERROR TYPE & VALIDATOR -->
     <td class="error_type_details">
-      <p><%= e.error_type %>&nbsp;(<%= e.msg_type %>)</p>
+      <p>
+      <%- if e.details? %>
+        <a class="manual-review closed" href="#"><%= error_type %></a>
+      <%- else %>
+        <%= error_type %>
+      <%- end %>
+      </p>
     </td>
 
     <!-- FIELD NAME -->
@@ -50,7 +57,6 @@
   <%- if e.details? %>
   <tr id="<%= content_error_id %>_details">
     <td colspan="4">
-      <a class="manual-review" href="#">DETAILS</a>
       <div class="error_review" colspan="4">
         <%- case e.error_type -%>
           <%- when 'ComparisonError' -%>

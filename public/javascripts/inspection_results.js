@@ -7,8 +7,7 @@ $j(document).ready(function(){
 
   // Toggle review controls
   $j(".manual-review").click(function(event) {
-      $j(this).text($j(this).text() == 'DETAILS' ? 'CLOSE' : 'DETAILS');
-      $j(this).next($j(".error_review")).slideToggle("slow");
+      toggle_details(this);
       return false;
   })
 
@@ -50,9 +49,7 @@ function set_error_class(element, value) {
 //  console.log('set');
 //  console.log(value);
 //  console.log(element);
-  element.removeClass('review');
-  element.removeClass('passed');
-  element.removeClass('failed');
+  element.removeClass('review passed failed');
   element.addClass(value);
 }
 
@@ -66,9 +63,9 @@ function set_overall_content_inspection_status() {
   var error_rows = $j('.scrollContent tr');
   var inspection_status = $j('#content_inspection_status');
   var status_code = $j('#content_inspection_status .status_code');
-  console.log(error_rows)
-  console.log(inspection_status)
-  console.log(status_code)
+//  console.log(error_rows)
+//  console.log(inspection_status)
+//  console.log(status_code)
   if (error_rows.hasClass('review')) {
     status_code.text('Pending');
     set_error_class(inspection_status, 'review');
@@ -79,4 +76,10 @@ function set_overall_content_inspection_status() {
     status_code.text('Passed');
     set_error_class(inspection_status, 'passed');
   } 
+}
+
+function toggle_details(element) {
+  var content_error_row = $j(element).closest('tr');
+  $j(content_error_row).next('tr').find('.error_review').slideToggle("slow");
+  $j(element).toggleClass('open closed')
 }
