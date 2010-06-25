@@ -4,7 +4,6 @@
 module LaikaMedicalDocument
   module Document
     class NodeHash < Hash
-    
     end
   end
 end

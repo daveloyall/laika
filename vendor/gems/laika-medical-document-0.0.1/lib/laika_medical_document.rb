@@ -1,4 +1,4 @@
 # include this file to use the library
-require 'rexml/document'
-require 'validation'
-require 'validators/c62'
+require 'ruby_ext'
+require 'laika_medical_document/importation'
+require 'laika_medical_document/validation'

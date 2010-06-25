@@ -7,7 +7,7 @@ module LaikaMedicalDocument
     
       it "should instantiate" do
         node = NodeHash.new
-        node.should_not be_nil
+        node.should be_kind_of(Hash)
       end
     
     end
