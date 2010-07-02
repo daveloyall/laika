@@ -631,11 +631,6 @@ module Validators
 
       include DirectiveMap
 
-      DEFAULT_NAMESPACES = {
-        "cda"  => "urn:hl7-org:v3",
-        "sdtc" => "urn:hl7-org:sdtc",
-      }
-
       # Lookup the matching xpath from SECTION_DIRECTIVE_MAP and ensure that
       # any keys are evaluated.
       def xpath(section_key = section)
@@ -724,62 +719,6 @@ module Validators
         (node_hash || {})[key]
       end
 
-      # Extracts all the given sections from a passed REXML doc and return
-      # them as a hash keyed by the external free text associated with an
-      # internal reference id.
-      #
-      # For example, if given an array of substanceAdministration sections,
-      # this will produce a hash of all the medication component's
-      # substanceAdministration element's keyed by their own
-      # consumable/manufacturedProduct/manufacturedMaterial/code/reference@value's
-      # (which should key to the medication names in the free text table for
-      # a v2.5 C32 doc...)
-      def dereference(section_key = section, nodes = nil)
-        logger.debug("dereference(#{section_key}, #{nodes.inspect})")
-        nodes ||= xml_section_nodes
-        nodes.inject({}) do |hash,section|
-          logger.debug("dereference section: #{section.inspect}")
-          if reference = REXML::XPath.first(section, './/cda:reference[@value]', MatchHelper::DEFAULT_NAMESPACES)
-            logger.debug("dereference reference: #{reference.inspect}")
-            if name = REXML::XPath.first(root_element, "//[@ID=$id]/text()", MatchHelper::DEFAULT_NAMESPACES, { "id" => reference.attributes['value'].gsub("#",'')} )
-              logger.debug("dereference name: #{name.inspect}")
-              hash[name.value] = section
-            end
-          end
-          hash
-        end
-      end
-
-      # Return an array of all nodes the given xpath matches within the passed
-      # node (defaults to xml_component).
-      def extract_all_nodes(xpath, node = xml_component, namespaces = DEFAULT_NAMESPACES)
-        _extract_nodes(:match, xpath, node, namespaces)
-      end
-
-      # Returns the first node matched by the given xpath within the given node
-      # (defaults to xml_component), or returns nil.
-      def extract_first_node(xpath, node = xml_component, namespaces = DEFAULT_NAMESPACES) 
-        _extract_nodes(:first, xpath, node, namespaces)
-      end
-
-      # Returns the textual value of the node obtained by following the given
-      # locator in the current xml_component().
-      def extract_node_value(xpath, node = xml_component, namespaces = DEFAULT_NAMESPACES)
-        node = extract_first_node(xpath, node, namespaces)
-      
-        value = nil 
-        if node.kind_of?(String) ||
-          node.kind_of?(TrueClass)||
-          node.kind_of?(FalseClass) ||
-          node.kind_of?(NilClass)
-          value = node           
-        elsif node.respond_to?(:text)
-          value = node.text
-        else
-          value = node.value
-        end
-      end
-
       # Backs through the given section's locator to find the 
       # first non-nil Element node.  Given a locator such as 
       # 'foo/bar/baz' will try 'foo/bar/baz', then 'foo/bar'
@@ -808,17 +747,6 @@ module Validators
       end
  
       private
- 
-      def _extract_nodes(command, xpath, node = xml_component, namespaces = DEFAULT_NAMESPACES)
-        logger.debug("_extract_nodes: #{command}, #{xpath}, #{node.inspect}, #{namespaces.inspect}")
-        return ( command == :match ? [] : nil ) if xpath.blank? 
-        begin
-          REXML::XPath.send(command, node, xpath, namespaces)
-        rescue REXML::ParseException => e
-          logger.info("REXML::ParseException thrown attempting to follow: #{xpath} in node:\n#{xml_component.inspect}\nException: #{e}, #{e.backtrace}")
-          add_validation_error("Unparseable xml or bad xpath: attempting #{xpath} in node:\n#{xml_component.inspect}", :severity => :fatal, :exception => e)
-        end
-      end
 
       def _descend_into_subsections(section_key = key, node = xml_component)
         subsections.each do |subsection|
@@ -1118,9 +1046,11 @@ module Validators
             gold_model = association
 
           # temporary test for whether we have any directives set up for this component module
-          next unless C32Validation::DirectiveMap::SECTION_DIRECTIVES_MAP.key?(component_module)
+#          next unless C32Validation::DirectiveMap::SECTION_DIRECTIVES_MAP.key?(component_module)
+          next unless descriptors = Validators::C32.get_component(component_module)
 
           logger.debug("Validating component: #{component_module}, association_key: #{association_key}")
+          logger.debug("descriptors: #{descriptors.inspect}")
           logger.debug("gold_model: #{gold_model}")
           logger.debug("gold_model_array: #{gold_model_array}")
 
@@ -1131,6 +1061,7 @@ module Validators
               :gold_model       => gold_model,
               :gold_model_array => gold_model_array,
               :xml_component    => document,
+              :descriptors      => descriptors,
               :validation_type  => validation_type,
               :logger           => logger,
               :validator        => C32VALIDATOR,

@@ -6,7 +6,7 @@ module Validators
     # an array of similar elements
   
     components :languages do
-      section_array %q{//cda:recordTarget/cda:patientRole/cda:patient/cda:languageCommunication}, :matches_by => :language_code do
+      repeating_section %q{//cda:recordTarget/cda:patientRole/cda:patient/cda:languageCommunication}, :matches_by => :language_code do
         field :language_code => %q{cda:languageCode/@code}
         field :language_ability_mode => %q{cda:modeCode/@code}, :required => false
         field :preference_id => %q{cda:preferenceInd/@value}, :required => false
@@ -14,9 +14,9 @@ module Validators
     end
   
     components :healthcare_providers do
-      section_array %q{//cda:documentationOf/cda:serviceEvent/cda:performer}, :matches_by => [:first_name, :last_name] do
+      repeating_section %q{//cda:documentationOf/cda:serviceEvent/cda:performer}, :matches_by => [:first_name, :last_name] do
         section :provider_role => %q{cda:functionCode}, :required => false do
-          field :code
+          attribute :code
           field :name => %q{@displayName}
         end
         section :time do
@@ -25,7 +25,7 @@ module Validators
         end
         section :assigned_entity do
           section :provider_type => %q{cda:code}, :required => false do
-            field :code
+            attribute :code
             field :name => %q{@displayName}
           end
           section :assigned_person => %q{cda:assignedPerson/cda:name}, :required => false do
@@ -57,8 +57,7 @@ module Validators
     end
   
     components :medication, :template_id => '2.16.840.1.113883.10.20.1.8' do
-      section_array %q{cda:entry/cda:substanceAdministration}, :matches_by => :product_coded_display_name do
-        dereference :product_coded_display_name, :for_type => Validation::C32_V2_5_TYPE
+      repeating_section %q{cda:entry/cda:substanceAdministration}, :matches_by => :product_coded_display_name, Validation::C32_V2_5_TYPE => { :matches_by_reference => true } do
         field :product_coded_display_name => %q{cda:consumable/cda:manufacturedProduct/cda:manufacturedMaterial/cda:code/cda:originalText/text()}
         section :consumable do
           section :manufactured_product do
@@ -75,7 +74,7 @@ module Validators
     end
   
     components :allergies, :template_id => '2.16.840.1.113883.10.20.1.2' do
-      section_array %q{cda:entry/cda:act[cda:templateId/@root='2.16.840.1.113883.10.20.1.27']/cda:entryRelationship[@typeCode='SUBJ']/cda:observation[cda:templateId/@root='2.16.840.1.113883.10.20.1.18']}, :matches_by => :free_text_product do
+      repeating_section %q{cda:entry/cda:act[cda:templateId/@root='2.16.840.1.113883.10.20.1.27']/cda:entryRelationship[@typeCode='SUBJ']/cda:observation[cda:templateId/@root='2.16.840.1.113883.10.20.1.18']}, :matches_by => :free_text_product do
         field :free_text_product => %q{cda:participant[@typeCode='CSM']/cda:participantRole[@classCode='MANU']/cda:playingEntity[@classCode='MMAT']/cda:name/text()}
         field :start_event => %q{cda:effectiveTime/cda:low/@value}
         field :end_event => %q{cda:effectiveTime/cda:high/@value}
@@ -84,10 +83,10 @@ module Validators
     end
   
     components :insurance_providers, :template_id => '2.16.840.1.113883.10.20.1.9' do
-      section_array %q{cda:entry/cda:act[cda:templateId/@root='2.16.840.1.113883.10.20.1.20']/cda:entryRelationship/cda:act[cda:templateId/@root='2.16.840.1.113883.10.20.1.26']} do
+      repeating_section %q{cda:entry/cda:act[cda:templateId/@root='2.16.840.1.113883.10.20.1.20']/cda:entryRelationship/cda:act[cda:templateId/@root='2.16.840.1.113883.10.20.1.26']} do
         field :group_number => %q{cda:id/@root}, :required => false
         section :insurance_type => %q{cda:code[@codeSystem='2.16.840.1.113883.6.255.1336']}, :required => false do
-          field :code
+          attribute :code
           field :name => %q{@displayName}
         end
         field :represented_organization => %q{cda:performer[@typeCode='PRF']/cda:assignedEntity[@classCode='ASSIGNED']/cda:representedOrganization[@classCode='ORG']/cda:name}, :required => false

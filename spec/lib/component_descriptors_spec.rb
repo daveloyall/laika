@@ -6,11 +6,116 @@ end
 
 describe ComponentDescriptors do
 
+  after do
+    Testing.descriptors.clear
+  end
+
   it "should create a lazily initalized accessor for a descriptors hash" do
-    flunk "fails if whole test is run because descriptors is not reset between tests..."
     Testing.descriptors.should == {}
     Testing.descriptors[:foo] = :bar
     Testing.descriptors.should == {:foo => :bar}
+  end
+
+  describe "HashExtensions" do
+
+    class TestHash < Hash
+      include ComponentDescriptors::HashExtensions
+      include ComponentDescriptors::NodeTraversal
+    end
+    class TestLeaf; include ComponentDescriptors::NodeTraversal; end
+
+    before do
+      @r = TestHash.new
+      @r.store(:child, @c = TestHash[:child => TestLeaf.new])
+    end
+
+    it "should raise an error if node has no parent method" do
+      lambda { @r.store(:foo, :bar) }.should raise_error(NoMethodError)
+    end
+
+    it "should reference parent" do
+      @c.parent.should == @r
+    end
+
+    it "should allow a child to find the root node" do
+      @c.root.should == @r
+    end
+    
+    it "should allow a descendent to find the root node" do
+      @c.store(:grandchild, d = TestHash.new)
+      d.parent.should == @c
+      d.root.should == @r
+    end
+
+    it "should allow root to find the root node" do
+      @r.root.should == @r
+    end
+
+    it "should find a particular descendant" do
+      @r.descendant(:child).should == @c
+    end
+
+    it "should return nil if no descendant matches" do
+      @r.descendant(:foo).should be_nil
+    end
+
+    it "should handle non-hash leaves" do
+      @r[:foo] = TestLeaf.new
+      @r.descendant(:dingo).should be_nil
+    end
+
+    it "should find a particular descendant at arbitrary depth" do
+      @c.store(:grandchild1, g1 = TestHash[:grandchild1 => TestLeaf.new])
+      @c.store(:grandchild2, g2 = TestHash[:grandchild2 => TestLeaf.new])
+      g2.store(:greatgrandchild1, gg1 = TestHash[:greatgrandchild1 => TestLeaf.new])
+      g2.store(:greatgrandchild2, gg2 = TestHash[:greatgrandchild2 => TestLeaf.new])
+      @r.descendant(:grandchild1).should == g1
+      @r.descendant(:grandchild2).should == g2
+      @r.descendant(:greatgrandchild1).should == gg1
+      @r.descendant(:greatgrandchild2).should == gg2
+      @c.descendant(:grandchild1).should == g1
+      @c.descendant(:grandchild2).should == g2
+      @c.descendant(:greatgrandchild1).should == gg1
+      @c.descendant(:greatgrandchild2).should == gg2
+    end
+  end
+
+  describe "Logging" do
+
+    class TestLogging < Hash
+      include ComponentDescriptors::HashExtensions
+      include ComponentDescriptors::NodeTraversal
+      include ComponentDescriptors::Logging
+    end
+
+    before do
+      @l = TestLogging.new
+      @mock_logger = mock("logger")
+    end
+
+    it "should use logger if logger is set" do
+      @l.logger = @mock_logger
+      @mock_logger.should_receive(:debug).once.with("ComponentDescriptors : foo")
+      @l.debug("foo")
+    end
+
+    it "should print to STDERR if logger is not set" do
+      silence_warnings do
+        old_fallback = ComponentDescriptors::Logging::FALLBACK
+        ComponentDescriptors::Logging::FALLBACK = @mock_logger
+        @mock_logger.should_receive(:puts).once.with("DEBUG : ComponentDescriptors : foo")
+        @l.debug("foo")
+        ComponentDescriptors::Logging::FALLBACK = old_fallback
+      end
+    end
+
+    it "should use logger if root logger is set" do
+      @l.logger = @mock_logger
+      @mock_logger.should_receive(:debug).once.with("ComponentDescriptors : foo")
+      @l.store(:bar, c = TestLogging.new)
+      c.debug("foo")
+    end
+
   end
 
   describe "parse_args" do
@@ -43,6 +148,10 @@ describe ComponentDescriptors do
       @component.parse_args([{:foo => :bar, :option => :baz}], [:option]).should == [:foo, :bar, {:option => :baz}]
     end
 
+    it "should parse original arguments with injected options" do
+      @component.parse_args([[{:foo => :bar, :option => :baz}], {:injected => :option}], [:option]).should == [:foo, :bar, {:option => :baz, :injected => :option}]
+    end
+
     it "should raise an error if unable to determine the key/locator pair" do
       lambda { @component.parse_args([{:foo => :bar, :option => :baz}], []).should == [:foo, :bar, {:option => :baz}] }.should raise_error(ComponentDescriptors::DescriptorArgumentError)
     end
@@ -59,9 +168,9 @@ describe ComponentDescriptors do
 
   describe "components" do
 
-    it "should create a components hash" do
+    it "should create a component definitions hash" do
       Testing.components(:foo).should be_true
-      Testing.descriptors.should == { :foo => {} }
+      Testing.descriptors[:foo].should be_kind_of(ComponentDescriptors::ComponentDefinition)
     end
 
     it "should parse options" do
@@ -70,6 +179,64 @@ describe ComponentDescriptors do
       Testing.components(:foo, :bar => :dingo)
     end
 
+    it "should be possible to instantiate a defined component" do
+      Testing.components(:foo) do
+        store(:bar, :baz)
+      end
+      Testing.get_component(:foo).should == { :bar => :baz }
+    end
+
+  end
+
+  describe "ComponentDefinition" do
+    
+    it "should retain all the component definition arguments" do
+      i = 0
+      cd = ComponentDescriptors::ComponentDefinition.new(:foo) do 
+        i += 1 
+      end
+      cd.name.should == :foo
+      c = cd.instantiate
+      i.should == 1
+    end
+
+  end
+
+  describe "Descriptors" do
+
+    class Foo; include ComponentDescriptors::DescriptorInitialization; end
+
+    before do
+      @template_id = '1.2.3.4.5'
+    end
+  
+    it "should identify template_id from key" do
+      foo = Foo.new(@template_id, nil, nil)
+      foo.key.should == @template_id
+      foo.template_id.should == @template_id
+    end
+ 
+    it "should identify template_id from options" do
+      foo = Foo.new(:a_section, nil, :template_id => @template_id)
+      foo.key.should == :a_section
+      foo.template_id.should == @template_id
+    end
+
+    it "should construct a locator based on template_id if there is no locator" do
+      foo = Foo.new(@template_id, nil, nil)
+      foo.locator.should == "//cda:section[./cda:templateId[@root = '#{@template_id}']]"
+    end
+
+    it "should construct a locator based on key as element" do
+      foo = Foo.new(:element_name, nil, nil)
+      foo.locator.should == "cda:elementName"
+    end
+
+    it "should construct a locator based on key as attribute" do
+      foo = Foo.new(:element_name, nil, {:locate_by => :attribute})
+      foo.locator.should == "@elementName"
+    end
+ 
   end
 
   describe "Component" do
@@ -104,10 +271,17 @@ describe ComponentDescriptors do
 
   end
 
-  describe "SectionArray" do
+  describe "RepeatingSection" do
 
     it "should initialize" do
-      ComponentDescriptors::SectionArray.new('foo', nil, nil).should be_kind_of(ComponentDescriptors::SectionArray)
+      ComponentDescriptors::RepeatingSection.new('foo', nil, nil).should be_kind_of(ComponentDescriptors::RepeatingSection)
+    end
+
+    it "should instantiate a template subsection" do
+      rs = ComponentDescriptors::RepeatingSection.new('foo', nil, nil) do
+        field :bar
+      end
+      rs.should == { :_repeating_section_template => { :bar => ComponentDescriptors::Field.new(:bar,nil,nil) } } 
     end
 
   end
@@ -117,7 +291,7 @@ describe ComponentDescriptors do
     it "should initialize" do
       ComponentDescriptors::Section.new(:bar, nil, nil).should be_kind_of(ComponentDescriptors::Section)
     end
- 
+
   end
 
   describe "Field" do
@@ -132,4 +306,62 @@ describe ComponentDescriptors do
     end
   end
 
+  describe "attaching" do
+    
+    before do
+      @xml = REXML::Document.new(%Q{<patient xmlns='urn:hl7-org:v3'><foo id='1'><bar baz='dingo'>biscuit</bar></foo><foo id='2'/></patient>})
+      @foo, @foo2 = REXML::XPath.match(@xml, '//cda:foo', ComponentDescriptors::NodeManipulation::DEFAULT_NAMESPACES)
+      @foo.should_not be_nil
+      @logger = nil#TestLoggerDevNull.new
+    end
+  
+    it "should attach an xml node to a section" do
+      section = ComponentDescriptors::Section.new(:foo, nil, :logger => @logger)
+      section.attach(@xml.root)
+      section.extracted_value.should == @foo 
+    end
+
+    it "should use custom locators" do
+      section = ComponentDescriptors::Section.new(:foo, %Q{//cda:foo[@id='2']}, :logger => @logger)
+      section.attach(@xml)
+      section.extracted_value.should == @foo2
+    end
+
+    it "should extract a text value for a field" do
+      field = ComponentDescriptors::Field.new(:bar, nil, :logger => @logger)
+      field.attach(@foo)
+      field.extracted_value.should == 'biscuit'
+    end
+
+    it "should extract a text value for a field with a custom locator" do
+      field = ComponentDescriptors::Field.new(:bar, %q{cda:bar/@baz}, :logger => @logger)
+      field.attach(@foo)
+      field.extracted_value.should == 'dingo'
+    end
+
+    it "should extract an array of sections for a repating section" do
+      repeating = ComponentDescriptors::RepeatingSection.new(:foo, nil, :logger => @logger)
+      repeating.attach(@xml.root)
+      repeating.extracted_value.should == [@foo, @foo2]
+    end
+
+    it "should handle a nested set of descriptors" do
+      repeating = ComponentDescriptors::RepeatingSection.new(:foo, nil, :logger => @logger) do
+        attribute :id
+        field :bar
+        field :baz => %q{cda:bar/@baz}
+      end
+      repeating.attach(@xml.root)
+      repeating.extracted_value.should == [@foo, @foo2]
+      repeating['cda:foo[1]'].extracted_value.should == @foo
+      repeating['cda:foo[1]'][:id].extracted_value.should == '1'
+      repeating['cda:foo[1]'][:bar].extracted_value.should == 'biscuit'
+      repeating['cda:foo[1]'][:baz].extracted_value.should == 'dingo'
+      repeating['cda:foo[2]'].extracted_value.should == @foo2
+      repeating['cda:foo[2]'][:id].extracted_value.should == '2'
+      repeating['cda:foo[2]'][:bar].extracted_value.should be_nil 
+      repeating['cda:foo[2]'][:baz].extracted_value.should be_nil 
+    end
+
+  end 
 end
