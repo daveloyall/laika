@@ -51,32 +51,32 @@ describe ComponentDescriptors do
       @r.root.should == @r
     end
 
-    it "should find a particular descendant" do
-      @r.descendant(:child).should == @c
+    it "should find a particular descendent" do
+      @r.descendent(:child).should == @c
     end
 
-    it "should return nil if no descendant matches" do
-      @r.descendant(:foo).should be_nil
+    it "should return nil if no descendent matches" do
+      @r.descendent(:foo).should be_nil
     end
 
     it "should handle non-hash leaves" do
-      @r[:foo] = TestLeaf.new
-      @r.descendant(:dingo).should be_nil
+      @r.store(:foo, TestLeaf.new)
+      @r.descendent(:dingo).should be_nil
     end
 
-    it "should find a particular descendant at arbitrary depth" do
+    it "should find a particular descendent at arbitrary depth" do
       @c.store(:grandchild1, g1 = TestHash[:grandchild1 => TestLeaf.new])
       @c.store(:grandchild2, g2 = TestHash[:grandchild2 => TestLeaf.new])
       g2.store(:greatgrandchild1, gg1 = TestHash[:greatgrandchild1 => TestLeaf.new])
       g2.store(:greatgrandchild2, gg2 = TestHash[:greatgrandchild2 => TestLeaf.new])
-      @r.descendant(:grandchild1).should == g1
-      @r.descendant(:grandchild2).should == g2
-      @r.descendant(:greatgrandchild1).should == gg1
-      @r.descendant(:greatgrandchild2).should == gg2
-      @c.descendant(:grandchild1).should == g1
-      @c.descendant(:grandchild2).should == g2
-      @c.descendant(:greatgrandchild1).should == gg1
-      @c.descendant(:greatgrandchild2).should == gg2
+      @r.descendent(:grandchild1).should == g1
+      @r.descendent(:grandchild2).should == g2
+      @r.descendent(:greatgrandchild1).should == gg1
+      @r.descendent(:greatgrandchild2).should == gg2
+      @c.descendent(:grandchild1).should == g1
+      @c.descendent(:grandchild2).should == g2
+      @c.descendent(:greatgrandchild1).should == gg1
+      @c.descendent(:greatgrandchild2).should == gg2
     end
   end
 
@@ -181,9 +181,9 @@ describe ComponentDescriptors do
 
     it "should be possible to instantiate a defined component" do
       Testing.components(:foo) do
-        store(:bar, :baz)
+        field(:bar)
       end
-      Testing.get_component(:foo).should == { :bar => :baz }
+      Testing.get_component(:foo).should == { :bar => ComponentDescriptors::Field.new(:bar, nil, nil) }
     end
 
   end
@@ -210,6 +210,18 @@ describe ComponentDescriptors do
       @template_id = '1.2.3.4.5'
     end
   
+    it "should be required if no required option set" do
+      Foo.new(:foo, nil, nil).required?.should be_true 
+    end
+
+    it "should not be required if required option is false" do
+      Foo.new(:foo, nil, :required => false).required?.should be_false
+    end
+
+    it "should be requied if required option is true" do
+      Foo.new(:foo, nil, :required => true).required?.should be_true 
+    end
+
     it "should identify template_id from key" do
       foo = Foo.new(@template_id, nil, nil)
       foo.key.should == @template_id
@@ -235,6 +247,54 @@ describe ComponentDescriptors do
     it "should construct a locator based on key as attribute" do
       foo = Foo.new(:element_name, nil, {:locate_by => :attribute})
       foo.locator.should == "@elementName"
+    end
+
+    it "should assume key as locator if key seems to be an xpath expression" do
+      foo = Foo.new('ns:element', nil, nil)
+      foo.locator.should == 'ns:element'
+    end
+
+    TEST_XML = <<-EOS
+<?xml version="1.0" encoding="UTF-8"?>
+<ClinicalDocument
+   xmlns="urn:hl7-org:v3" xmlns:sdct="urn:hl7-org:sdct">
+   <recordTarget>
+      <patientRole>
+         <patient>
+            <languageCommunication>
+               <templateId root='2.16.840.1.113883.3.88.11.32.2' />
+               <languageCode code="en-US" />
+               <modeCode code='RWR' displayName='Recieve Written'
+                  codeSystem='2.16.840.1.113883.5.60'
+                  codeSystemName='LanguageAbilityMode' />
+               <preferenceInd value='true' />
+            </languageCommunication>
+            <languageCommunication>
+               <templateId root='2.16.840.1.113883.3.88.11.32.2' />
+               <languageCode code="de-DE" />
+               <modeCode code='RSP' displayName='Recieve Spoken'
+                  codeSystem='2.16.840.1.113883.5.60'
+                  codeSystemName='LanguageAbilityMode' />
+               <preferenceInd value='false' />
+            </languageCommunication>
+         </patient>
+      </patientRole>
+   </recordTarget>
+</ClinicalDocument>
+EOS
+
+    it "should find the innermost element" do
+      document = @document = REXML::Document.new(TEST_XML)
+      foo = Foo.new(:foo, nil, nil)
+      foo.find_innermost_element('/foo/bar', @document.root).xpath.should == '/ClinicalDocument'
+      foo.find_innermost_element('//foo/bar', @document.root).xpath.should == '/ClinicalDocument'
+      foo.find_innermost_element('foo/bar', @document.root).xpath.should == '/ClinicalDocument'
+
+      language = foo.find_innermost_element('//cda:recordTarget/cda:patientRole/cda:patient/cda:languageCommunication/bar', @document.root)
+
+      foo.find_innermost_element("cda:languageCode[@code='en-US']", language).xpath.should == '/ClinicalDocument/recordTarget/patientRole/patient/languageCommunication[1]/languageCode'
+      foo.find_innermost_element("cda:languageCode[@code='foo']", language).xpath.should == '/ClinicalDocument/recordTarget/patientRole/patient/languageCommunication[1]/languageCode'
+      foo.find_innermost_element("cda:modeCode/@code]", language).xpath.should == '/ClinicalDocument/recordTarget/patientRole/patient/languageCommunication[1]/modeCode'
     end
  
   end
@@ -339,8 +399,14 @@ describe ComponentDescriptors do
       field.extracted_value.should == 'dingo'
     end
 
-    it "should extract an array of sections for a repating section" do
+    it "should extract an array of sections for a repeating section" do
       repeating = ComponentDescriptors::RepeatingSection.new(:foo, nil, :logger => @logger)
+      repeating.attach(@xml.root)
+      repeating.extracted_value.should == [@foo, @foo2]
+    end
+
+    it "should extract an array of sections for a repeating section keyed by xpath" do
+      repeating = ComponentDescriptors::RepeatingSection.new('cda:foo', nil, :logger => @logger)
       repeating.attach(@xml.root)
       repeating.extracted_value.should == [@foo, @foo2]
     end

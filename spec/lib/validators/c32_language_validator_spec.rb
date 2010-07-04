@@ -35,15 +35,17 @@ EOS
   before(:each) do
     @document = REXML::Document.new(C32_LANGUAGES_XML)
     @language = languages(:joe_smith_english_language)
+    @component = Validators::C32Descriptors.get_component(:languages).attach(@document) 
     @scope = Validators::C32Validation::ComponentScope.new(
       :validation_type => Validation::C32_V2_5_TYPE,
-      :logger => TestLoggerDevNull.new,
+      :logger => TestLogger.new, #DevNull.new,
       :validator => "ComponentScopeTest",
       :inspection_type => "Testing",
       :component_module => :languages,
       :section => :languages,
-      :gold_model_array => [@language],
-      :xml_component => @document
+      :gold_model => [@language],
+      :xml_component => @document,
+      :descriptor => @component 
     )
   end
 
