@@ -1,3 +1,5 @@
+require 'forwardable'
+
 # Initial cut at separating the C32 validation routines form the models.  All
 # this currently does is to reinject the models with the validation classes.
 # The C32Validator then just calls the validate 32 method on the pateint data
@@ -9,386 +11,36 @@ module Validators
 
   # Raised if a C83 component section has not been defined in the
   # SECTION_DIRECTIVES_MAP yet.
-  class SectionDirectiveException < ValidatorException; end
+#  class SectionDirectiveException < ValidatorException; end
  
   module C32Validation
     C32VALIDATOR = "C32Validator"
   
-    # Maps sections to the actions which should be taken to validate them.
-    #
-    # Each section is defined by a lookup key related to its C32 section.
-    # It points to a hash which should have an action, a locator and other
-    # optional keys depending on the action and any subsections which need
-    # to be checked afterwords.
-    #
-    # :action => the command which should be performed when this section
-    #   is reached in the validation process.
-    # :locator => xpath expression used by the :action to identify the
-    #   node or nodes we are currently validating.
-    # :template_id => C83 component template id may be given in place of a full
-    #   xpath expression to locate a C83 section. 
-    # :keys => if present, this is hash of keys that may be used
-    #   to specify values to be looked up from the current gold_model and
-    #   substituted back into the locator to identify an element matching
-    #   the current gold_model.  (This is how we tell which of many sections
-    #   of a given type match a specific gold_model object of the same type)
-    #   The values should be the xpath of the corresponding key in the xml for
-    #   reverse lookups when building validation error output when no matching
-    #   section is found.
-    # :subsection_type => identifies the section type returned by the current
-    #   :validate_sections call.  This key must map back to the
-    #   SECTION_DIRECTIVES_MAP. 
-    # :subsections => array specifying the set of sections within the current
-    #   section to be evaluated next.  These keys must map back to the 
-    #   SECTION_DIRECTIVES_MAP. 
-    # :matches => a String expression or method Symbol that will be evaled or
-    #   sent against the current gold_model() when processing a :match_value 
-    #   action for a section.
-    # :field_name => field name to use in a comparison error after a failed
-    #   match action.  If not given, defaults to matches.to_s.
-    #
-    # A directive entry may be configured for different C32 versions by subkeying 
-    # the hash by Validation::C32_* constants:
-    #
-    # :some_section => {
-    #   Validation::C32_V2_5_TYPE => {
-    #     :action => :foo,
-    #   },
-    #   :action => :bar,
-    # }
-    #
-    # Will default to performing the :bar action on C32's unless they are v2.5
-    # in which case the :foo action will be performed instead.
     module DirectiveMap
+      extend Forwardable
 
-      SECTION_DIRECTIVES_MAP = {
-        # Language Component Module validation
-        :languages => {
-          :action  => :validate_sections,
-          :locator => %q{//cda:recordTarget/cda:patientRole/cda:patient/cda:languageCommunication},
-          :subsection_type => :language_communication,
-        },
-        :language_communication => {
-          :action  => :match_section,
-          :locator => %q{cda:languageCode[@code='${language_code}']},
-          :keys    => {
-            :language_code => 'cda:languageCode/@code',
-          },
-          :subsections => [:mode_code, :preference_ind],
-        },
-        :mode_code => {
-          :action  => :match_value_if_exists_in_model,
-          :locator => "cda:modeCode/@code",
-          :matches => "language_ability_mode.try(:code)",
-          :field_name => "language_ability_mode",
-        },
-        :preference_ind => {
-          :action  => :match_value_if_exists_in_model,
-          :locator => "cda:preferenceInd/@value",
-          :matches => :preference,
-        },
-        # Healthcare Providers Component Module validation
-        :healthcare_providers => {
-          :action => :validate_sections,
-          :locator => %q{//cda:documentationOf/cda:serviceEvent/cda:performer},
-          :subsection_type => :performer,
-        },
-        :performer => {
-          :action  => :match_section,
-          :locator => %q{cda:assignedEntity/cda:assignedPerson/cda:name[cda:given='${first_name}' and cda:family='${last_name}']},
-          :keys    => {
-            :first_name => nil,
-            :last_name  => nil,
-          },
-          :subsections => [:provider_role, :time, :assigned_entity], 
-        },
-        :provider_role => {
-          :action       => :get_section_if_exists_in_model,
-          :locator      => %q{cda:functionCode},
-          :matches      => :provider_role,
-          :subsections  => [:code, :display_name],
-        },
-        :time => {
-          :action      => :get_section,
-          :locator     => %q{cda:time},
-          :subsections => [:low, :high],
-        },
-        :low => {
-          :action  => :match_value,
-          :locator => %q{cda:low/@value},
-          :matches => :start_service,
-        },
-        :high => {
-          :action  => :match_value,
-          :locator => %q{cda:high/@value},
-          :matches => :end_service,
-        },
-        :assigned_entity => {
-          :action      => :get_section,
-          :locator     => %q{cda:assignedEntity},
-          :subsections => [:provider_type, :assigned_person, :addr, :telecom, :patient],
-        },
-        :code => {
-          :action  => :match_value,
-          :locator => %q{@code},
-        },
-        :display_name => {
-          :action   => :match_value,
-          :locator => %q{@displayName},
-          :matches  => :name,
-        },
-        :provider_type => {
-          :action      => :get_section_if_exists_in_model,
-          :locator     => %q{cda:code},
-          :matches     => :provider_type,
-          :subsections => [:code, :display_name],
-        },
-        :assigned_person => {
-          :action      => :get_section_if_exists_in_model,
-          :locator     => %q{cda:assignedPerson/cda:name},
-          :matches     => :person_name,
-          :subsections => [:name_prefix, :first_name, :middle_name, :last_name, :name_suffix]
-        },
-        :name_prefix => {
-          :action   => :match_value,
-          :locator  => %q{cda:prefix'},
-        },
-        :first_name => {
-          :action   => :match_value,
-          :locator  => %q{cda:given[1]'},
-          :matches  => :first_name,
-        },
-        :middle_name => {
-          :action   => :match_value,
-          :locator  => %q{cda:given[2]'},
-        },
-        :last_name => {
-          :action   => :match_value,
-          :locator  => %q{cda:family'},
-        },
-        :name_suffix => {
-          :action   => :match_value,
-          :locator  => %q{cda:suffix'},
-        },
-        :addr => {
-          :action      => :get_section_if_exists_in_model,
-          :locator     => %q{cda:addr},
-          :matches     => :address,
-          :subsections => [:street_address_line_one, :street_address_line_two, :city, :state, :postal_code, :iso_country_code],
-        },
-        :street_address_line_one => {
-          :action   => :match_value,
-          :locator  => %q{cda:streetAddressLine[1]},
-        }, 
-        :street_address_line_two => {
-          :action   => :match_value,
-          :locator  => %q{cda:streetAddressLine[2]},
-        }, 
-        :city => {
-          :action   => :match_value,
-          :locator  => %q{cda:city},
-        }, 
-        :state => {
-          :action   => :match_value,
-          :locator  => %q{cda:state},
-        }, 
-        :postal_code => {
-          :action   => :match_value,
-          :locator  => %q{cda:postalCode},
-        }, 
-        :iso_country_code => {
-          :action     => :match_value_if_exists_in_model,
-          :locator    => %q{cda:country},
-          :matches    => "iso_country.code",
-          :field_name => :iso_country,
-        }, 
-        :telecom => {
-          :action      => :get_sections_if_exists_in_model,
-          :locator     => %q{cda:telecom},
-          :matches     => :telecom,
-          :subsections => [:home_phone, :work_phone, :mobile_phone, :vacation_home_phone, :email],
-        },
-        :home_phone => {
-          :action     => :match_telecom_as_hp,
-        },
-        :work_phone => {
-          :action     => :match_telecom_as_wp,
-        },
-        :mobile_phone => {
-          :action     => :match_telecom_as_mc,
-        },
-        :vacation_home_phone => {
-          :action     => :match_telecom_as_hv,
-        },
-        :email => {
-          :action     => :match_telecom_as_email,
-        },
-        :patient => {
-          :action      => :match_value_if_exists_in_model,
-          :locator     => %q{sdtc:patient/sdtc:id/@root},
-          :matches     => :patient_identifier,
-          :field_name  => "id",
-        },
-        # Medication Component Module validation
-        :medications => {
-          :action      => :get_section,
-          :template_id => '2.16.840.1.113883.10.20.1.8',
-          :subsections => [:substance_administrations],
-        }, 
-        :substance_administrations => {
-          Validation::C32_V2_5_TYPE => {
-            :action          => :validate_dereferenced_sections,
-            :locator         => %q{cda:entry/cda:substanceAdministration},
-            :subsection_type => :medication,
-          },
-          :action          => :validate_sections,
-          :locator         => %q{cda:entry/cda:substanceAdministration},
-          :subsection_type => :medication,
-        },
-        :medication => {
-          Validation::C32_V2_5_TYPE => {
-            :action      => :match_section,
-            :keys        => {
-              :product_coded_display_name => :dereferenced_key,
-            },
-            :subsections => [:consumable, :medication_type, :status, :order],
-          },
-          :action      => :match_section,
-          :locator     => %q{cda:consumable/cda:manufacturedProduct/cda:manufacturedMaterial/cda:code[cda:originalText/text() = '${product_coded_display_name}']},
-          :keys        => {
-            :product_coded_display_name => %q{cda:consumable/cda:manufacturedProduct/cda:manufacturedMaterial/cda:code/cda:originalText/text()},
-          },
-          :subsections => [:consumable, :medication_type, :status, :order],
-        },
-        :consumable => {
-          :action      => :get_section,
-          :locator     => %q{cda:consumable},
-          :subsections => [:manufactured_product],
-        },
-        :manufactured_product => {
-          :action       => :get_section,
-          :locator      => %q{cda:manufacturedProduct},
-          :subsections  => [:manufactured_material],
-        },
-        :manufactured_material => {
-          :action     => :match_value,
-          :locator    => %q{cda:manufacturedMaterial/cda:name},
-          :matches    => :free_text_brand_name, 
-        },
-        :medication_type => {
-          :action     => :match_value,
-          :locator    => %q{cda:entryRelationship[@typeCode='SUBJ']/cda:observation[cda:templateId/@root='2.16.840.1.113883.3.88.11.32.10']/cda:code/@displayName},
-          :matches    => "medication_type.try(:name)",
-          :field_name => :medication_type
-        },
-        :status => {
-          :action     => :match_value,
-          :locator    => %q{cda:entryRelationship[@typeCode='REFR']/cda:observation[cda:templateId/@root='2.16.840.1.113883.10.20.1.47']/cda:statusCode/@code},
-        },
-        :order => {
-          :action     => :get_section_if_exists,
-          :locator    => %q{cda:entryRelationship[@typeCode='REFR']/cda:supply[@moodCode='INT']},
-          :subsections => [:quantity_ordered_value, :expiration_time] 
-        },
-        :quantity_ordered_value => {
-          :action   => :match_value,
-          :locator  => %q{cda:quantity/@value},
-        },
-        :expiration_time => {
-          :action   => :match_value,
-          :locator  => %q{cda:effectiveTime/@value"},
-        },
-        # Allergy Component Module validation
-        :allergies => {
-          :action      => :get_section,
-          :template_id => '2.16.840.1.113883.10.20.1.2',
-          :subsections => [:acts],
-        }, 
-        :acts => {
-          :action          => :validate_sections,
-          :locator         => %q{cda:entry/cda:act[cda:templateId/@root='2.16.840.1.113883.10.20.1.27']/cda:entryRelationship[@typeCode='SUBJ']/cda:observation[cda:templateId/@root='2.16.840.1.113883.10.20.1.18']},
-          :subsection_type => :adverse_events,
-        },
-        :adverse_events=> {
-          :action       => :match_section,
-          :locator      => %q{cda:participant[@typeCode='CSM']/cda:participantRole[@classCode='MANU']/cda:playingEntity[@classCode='MMAT']/cda:name[text() = '${free_text_product}']},
-          :keys => {
-            :free_text_product => %q{cda:participant[@typeCode='CSM']/cda:participantRole[@classCode='MANU']/cda:playingEntity[@classCode='MMAT']/cda:name/text()},
-          },
-          :subsections  => [:start_event, :end_event, :product_code],
-        },
-        :start_event => {
-          :action  => :match_value,
-          :locator =>  %q{cda:effectiveTime/cda:low/@value},
-        },
-        :end_event => {
-          :action  => :match_value,
-          :locator =>  %q{cda:effectiveTime/cda:high/@value},
-        },
-        :product_code => {
-          :action  => :match_value,
-          :locator => %q{cda:participant[@typeCode='CSM']/cda:participantRole[@classCode='MANU']/cda:playingEntity[@classCode='MMAT']/cda:code[@codeSystem='2.16.840.1.113883.6.88']/@code},
-        },
-        # Insurance Provider Component Module validation
-        :insurance_providers => {
-          :action      => :get_section,
-          :template_id => '2.16.840.1.113883.10.20.1.9',
-          :subsections => [:parent_act],
-        },
-        :parent_act => {
-          :action      => :validate_sections,
-          :locator     => %q{cda:entry/cda:act[cda:templateId/@root='2.16.840.1.113883.10.20.1.20']/cda:entryRelationship/cda:act[cda:templateId/@root='2.16.840.1.113883.10.20.1.26']},
-          :subsection_type => :child_act,
-        },
-        :child_act => {
-          :action      => :match_section,
-          :locator     => %q{.},
-          :subsections => [:group_number, :insurance_type, :represented_organization]#, :insurance_provider_guarantor],
-        },
-        :group_number => {
-          :action  => :match_value_if_exists_in_model,
-          :locator => %q{cda:id/@root}, 
-        },
-        :insurance_type => {
-          :action      => :get_section_if_exists_in_model,
-          :locator     => %q{cda:code[@codeSystem='2.16.840.1.113883.6.255.1336']},
-          :matches     => :insurance_type,
-          :subsections => [:code, :display_name],
-        },
-        :represented_organization => {
-          :action      => :match_value_if_exists_in_model,
-          :locator     => %q{cda:performer[@typeCode='PRF']/cda:assignedEntity[@classCode='ASSIGNED']/cda:representedOrganization[@classCode='ORG']/cda:name},
-        }
-        # Person Information Component Module validation
-      }
+      def_delegators :descriptor, :key, :locator, :template_id, :field_name, :find_innermost_element
 
-      def section_directives_map_entry(section_key = section)
-        section_directives = SECTION_DIRECTIVES_MAP[section_key]
-        section_directives = section_directives[validation_type] if section_directives.try(:key?, validation_type)
-        raise(SectionDirectiveException, "SECTION_DIRECTIVES_MAP entry missing or malformed for the given key: #{section_key}, validation_type: #{validation_type}") if section_directives.nil? || !section_directives.kind_of?(Hash)
-        return section_directives
-      end
-
-      [:action, :locator, :template_id, :matches, :subsection_type].each do |m|
-        define_method(m) do |*args|
-          section_key = args.shift || self.section
-          section_directives_map_entry(section_key)[m]
-        end
-      end
-
-      def field_name(section_key = section)
-        field = section_directives_map_entry(section_key)[:field_name]
-        field ||= (matches(section_key).nil? ? nil : matches(section_key).to_s)
-        field ||= section_key.to_s
-        return field
-      end
-
-      [[:keys, Hash], [:subsections, Array]].each do |m,default_class|
-        define_method(m) do |*args|
-          section_key = args.shift || self.section
-          section_directives_map_entry(section_key)[m] || default_class.new
-        end
-      end
+#      [:action, :locator, :template_id, :matches, :subsection_type].each do |m|
+#        define_method(m) do |*args|
+#          section_key = args.shift || self.section
+#          section_directives_map_entry(section_key)[m]
+#        end
+#      end
+#
+#      def field_name(section_key = section)
+#        field = section_directives_map_entry(section_key)[:field_name]
+#        field ||= (matches(section_key).nil? ? nil : matches(section_key).to_s)
+#        field ||= section_key.to_s
+#        return field
+#      end
+#
+#      [[:keys, Hash], [:subsections, Array]].each do |m,default_class|
+#        define_method(m) do |*args|
+#          section_key = args.shift || self.section
+#          section_directives_map_entry(section_key)[m] || default_class.new
+#        end
+#      end
 
     end
 
@@ -515,24 +167,12 @@ module Validators
           get_section(section_key, false)
         end
  
-        # Lookup a value in the current xml_component() and compare for
-        # equality with a value from the current gold_model().
-        def match_value(section_key = section)
-          logger.debug("match_value: #{section_key}")
-          locator = xpath(section_key) || "@#{section_key.to_s.camelcase(:lower)}"
-          expected_value = gold_expected_value(section_key, true)
-          if desired_node = extract_first_node(locator)
-            actual_value = extract_node_value(locator)
-            add_comparison_error(field_name, expected_value.to_s, actual_value) unless _equal_values?(expected_value, actual_value)
-
-          elsif !expected_value.nil?
-            add_section_not_found_error(locator, :field_name => field_name)
-          else
-            # If expected_value is nil and desired_node is nil, we assume
-            # that there is no error because the node is not required.
-            # If the node is in fact required, it's up to the schematron rules
-            # to point this out. 
-          end
+        # See if the current gold_model matches the descriptor's extracted_value. 
+        def match_value
+          logger.debug("match_value")
+          expected_value = gold_model
+          actual_value = descriptor.extracted_value
+          add_comparison_error(field_name, expected_value.to_s, actual_value) unless _equal_values?(expected_value, actual_value)
         end
 
         # Handles: <action>_if_exists_in_model and match_telecom<_as_use_code>
@@ -719,33 +359,6 @@ module Validators
         (node_hash || {})[key]
       end
 
-      # Backs through the given section's locator to find the 
-      # first non-nil Element node.  Given a locator such as 
-      # 'foo/bar/baz' will try 'foo/bar/baz', then 'foo/bar'
-      # then 'foo' looking for a non-nil Element to return.
-      #
-      # If no match is made, returns the node we've been 
-      # searching in.
-      #
-      # This is useful to pinpoint validation errors as close
-      # to their problem source as possible.
-      def find_innermost_element(locator = xpath, search_node = xml_component)
-        logger.debug("find_innermost_element using #{locator} in #{search_node.inspect}")
-        until node = extract_first_node(locator, search_node)
-          # clip off the left most [*] predicate or /* path
-          md = %r{
-            \[[^\]]+\]$ |
-            /[^/\[]*$
-          }x.match(locator)
-          break if md.nil? || md.pre_match == '/'
-          locator = md.pre_match
-        end
-        node = node || search_node
-        node = node.element if node.kind_of?(REXML::Attribute)
-        node = node.parent if node.kind_of?(REXML::Text)
-        return node || search_node
-      end
- 
       private
 
       def _descend_into_subsections(section_key = key, node = xml_component)
@@ -760,6 +373,34 @@ module Validators
       end
 
     end
+
+#    # Decorate the Descriptor classes with validator logic.
+#    module Descriptors
+#     
+#      def self.decorate(descriptor)
+#        klass = descriptor.class.to_s.demodulize
+#        raise(ValidatorException, "Unknown decorator class #{klass} for #{descriptor}") unless constants.include?(klass)
+#        klass.constantize.new(descriptor)
+#      end
+# 
+#      class ValidationDecorator < SimpleDelegator
+#        def validate
+#          raise RuntimeError("Implement me.")
+#        end
+#      end
+#
+#      class Component < ValidationDecorator
+#      end
+#      
+#      class RepeatingSection < ValidationDecorator
+#      end
+#
+#      class Section < ValidationDecorator
+#      end
+#
+#      class Field < ValidationDecorator
+#      end
+#    end
 
     # Holds the scope and general helper routines needed to validate a
     # C83 xml component against the values in a gold model object.
@@ -779,8 +420,13 @@ module Validators
       # The model of section values that we are validating the xml against.
       attr_hash_accessor :gold_model
 
-      # An array of gold models to be validated in turn.
-      attr_hash_accessor :gold_model_array
+#      # An array of gold models to be validated in turn.
+#      attr_hash_accessor :gold_model_array
+
+      # A ComponentDescriptors::SectionDescriptor instance detailing the model
+      # key, xpath locator and exact node or text value for the the current
+      # document element in scope.
+      attr_hash_accessor :descriptor
 
       # XML object for the section being validated in the current scope.
       attr_hash_accessor :xml_component
@@ -821,6 +467,11 @@ module Validators
           node.root :
           node
       end
+
+#      alias :original_descriptor_accessor :descriptor
+#      def descriptor
+#        Descriptors.decorate(original_descriptor_accessor)
+#      end
 
       # Descend into a new component scope enclosed by the current scope,
       # with scope attributes overridden as specified in the passed options.
@@ -912,15 +563,58 @@ module Validators
         (xml_component || xml_section_nodes.first).try(:root)
       end
 
-      # The validation to be performed against the current section in scope.
-      def current_action
-        action(section) || raise(ValidatorException, "No Action set in directive mapping for current section: #{section}")
+      def validate_repeating_section
+        raise(ValidatorException, "Cannot validate repeating section #{descriptor}.  Gold model does not appear to be an array: #{gold_model}") unless gold_model.respond_to?(:each)
+        gold_model.each do |g|
+          if section = descriptor.find_matching_section_for(g)
+            options = {
+              :section => section.key,
+              :descriptor => section,
+              :gold_model => g 
+            }
+            errors << descend(options).validate
+          else
+            add_no_matching_section_error(descriptor.get_section_key_hash_from(g))
+          end
+        end
+      end
+
+      def validate_section
+        # we have a section
+        descriptor.subdescriptors.each do |d|
+          options = {
+            :section => d.key,
+            :descriptor => d,
+          }
+          if gm = _gold_model_matching(d)
+            options.merge!(:gold_model => gm)
+          end
+          errors << descend(options).validate
+        end
+      end
+
+      def validate_component
+        validate_section
       end
 
       def validate
-        logger.debug("validating: #{current_action}(#{section}, #{xml_component.inspect})")
+        logger.debug("validating: #{descriptor}(#{section}, #{xml_component.inspect})")
         begin
-          send(current_action)
+
+          if descriptor.kind_of?(ComponentDescriptors::Component)
+            validate_component
+          elsif descriptor.error?
+            add_validation_error((e = descriptor.error.dup).delete(:message), e)
+          elsif descriptor.required? && descriptor.extracted_value.nil?
+            add_section_not_found_error(locator, (descriptor.field? ? { :field_name => field_name } : {})) if gold_model
+          elsif descriptor.repeats?
+            validate_repeating_section
+          elsif descriptor.field?
+            match_value            
+          else 
+            validate_section
+          end
+  
         rescue ValidatorException => e
           raise e # just repropagate
         rescue RuntimeError => e
@@ -930,7 +624,7 @@ module Validators
           # evil? Basically just looking to get the original trace in a more
           # specific exception type
         end
-        logger.debug("done validating: #{current_action}(#{section}, #{xml_component.inspect})")
+        logger.debug("done validating: #{descriptor}(#{section}, #{xml_component.inspect})")
         return errors.flatten.compact
       end
 
@@ -995,6 +689,10 @@ module Validators
 
       private
 
+      def _gold_model_matching(descriptor)
+        gold_model.send(descriptor.key) if gold_model.respond_to?(descriptor.key)
+      end
+
       def _location_by_error_type(klass)
         logger.debug("_location_by_error_type for #{klass}")
         case 
@@ -1040,28 +738,24 @@ module Validators
         self.logger = patient.logger if logger.nil?
         logger.debug("#{self.class}.validate()\n  -> patient: #{patient}\n  -> document: #{document.inspect}")
         errors = Patient.c32_modules.each.map do |component_module, association_key|
-          association = patient.send(association_key)
-          association.respond_to?(:each) ?
-            gold_model_array = association :
-            gold_model = association
+          gold_model = patient.send(association_key)
 
           # temporary test for whether we have any directives set up for this component module
 #          next unless C32Validation::DirectiveMap::SECTION_DIRECTIVES_MAP.key?(component_module)
-          next unless descriptors = Validators::C32.get_component(component_module)
+          next unless descriptor = Validators::C32Descriptors.get_component(component_module)
 
           logger.debug("Validating component: #{component_module}, association_key: #{association_key}")
-          logger.debug("descriptors: #{descriptors.inspect}")
+          descriptor.attach(document.root)
+          logger.debug("descriptor: #{descriptor.inspect}")
           logger.debug("gold_model: #{gold_model}")
-          logger.debug("gold_model_array: #{gold_model_array}")
 
-          unless association.respond_to?(:each) ? gold_model_array.empty? : gold_model.nil?
+          unless gold_model.nil? || gold_model.empty?
             ComponentScope.new(
               :component_module => component_module,
               :section          => component_module,
               :gold_model       => gold_model,
-              :gold_model_array => gold_model_array,
               :xml_component    => document,
-              :descriptors      => descriptors,
+              :descriptor      => descriptor,
               :validation_type  => validation_type,
               :logger           => logger,
               :validator        => C32VALIDATOR,

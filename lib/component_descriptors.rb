@@ -43,11 +43,12 @@ module ComponentDescriptors
     end
 
     def get_component(name)
-      descriptors[name].instantiate
+      descriptors[name].instantiate if descriptors.key?(name)
     end
 
   end
 
+  # Included by all classes which describe some section of an xml patient document.
   module SectionDescriptors
 
     # Adds a subsection to this section.
@@ -72,12 +73,13 @@ module ComponentDescriptors
     end
 
     # Associates a REXML node with this Descriptor.  The tree of subdescriptors
-    # will be walked and values will be set wherever we are able to match locators in
-    # the given document.
+    # will be walked and values will be set wherever we are able to match
+    # locators in the given document.
     def attach(xml)
       self.xml = xml
       extract_values_from_xml
       each_value { |v| v.attach(extracted_value) } if respond_to?(:each_value)
+      self
     end
 
     # Parses the different argument styles accepted by section/field methods.
@@ -291,23 +293,24 @@ module ComponentDescriptors
       parent.nil?
     end
 
-    # Returns the first descendant matching the given key or nil.
-    def descendant(key)
+    # Returns the first descendent matching the given key or nil.
+    def descendent(key)
       return nil unless respond_to?(:fetch)
-      descendant = fetch(key) if self.key?(key)
+      descendent = fetch(key) if self.key?(key)
       values.each do |v|
-        raise(NoMethodError, "Node #{v} does not respond to descendant()") unless v.respond_to?(:descendant)
-        descendant = v.descendant(key)
-        break unless descendant.nil?
-      end unless descendant
-      return descendant 
+        raise(NoMethodError, "Node #{v} does not respond to descendent()") unless v.respond_to?(:descendent)
+        descendent = v.descendent(key)
+        break unless descendent.nil?
+      end unless descendent
+      return descendent 
     end
     
   end
 
   # Extensions to Hash used by node descriptors to keep track of parents.
   module HashExtensions
-    # Ensure that we keep a reference to the parent hash when new elements are stored. 
+    # Ensure that we keep a reference to the parent hash when new elements are
+    # stored. 
     def store(key, value)
       value.parent = self
       super
@@ -344,6 +347,33 @@ module ComponentDescriptors
       self.extracted_value = xml.nil? ? nil : extract_first_node(locator) unless self.extracted_value
     end
 
+    # Backs through the given section's locator to find the 
+    # first non-nil Element node.  Given a locator such as 
+    # 'foo/bar/baz' will try 'foo/bar/baz', then 'foo/bar'
+    # then 'foo' looking for a non-nil Element to return.
+    #
+    # If no match is made, returns the node we've been 
+    # searching in.
+    #
+    # This is useful to pinpoint validation errors as close
+    # to their problem source as possible.
+    def find_innermost_element(locator = self.locator, search_node = xml)
+      debug("DescriptorInitialization:find_innermost_element using #{locator} in #{search_node.inspect}")
+      until node = extract_first_node(locator, search_node)
+        # clip off the left most [*] predicate or /* path
+        md = %r{
+          \[[^\]]+\]$ |
+          /[^/\[]*$
+        }x.match(locator)
+        break if md.nil? || md.pre_match == '/'
+        locator = md.pre_match
+      end
+      node ||= search_node 
+      node = node.element if node.kind_of?(REXML::Attribute)
+      node = node.parent if node.kind_of?(REXML::Text)
+      return node
+    end
+ 
     def template_id
       unless @template_id_established
         @template_id = options[:template_id]
@@ -367,17 +397,50 @@ module ComponentDescriptors
           @locator = %Q{//#{NodeManipulation::CDA_NAMESPACE}:section[./#{NodeManipulation::CDA_NAMESPACE}:templateId[@root = '#{template_id}']]}
         elsif locate_by == :attribute
           @locator = "@#{key.to_s.camelcase(:lower)}"
+        elsif key =~ /[^\w]/
+          # non word characters--asume an xpath locator is the key
+          @locator = key
         else
           @locator = "#{NodeManipulation::CDA_NAMESPACE}:#{key.to_s.camelcase(:lower)}"
         end 
       end
       @locator
     end
+
+    # True if this descriptor describes a section which must be present.
+    def required?
+      unless @required
+        @required = options[:required]
+        @required = true if @required.nil?
+      end
+      return @required
+    end
+
+    # True if this descriptor may occur one or more times.
+    def repeats?
+      false
+    end
+
+    # True if this is a field leaf node.
+    def field?
+      false 
+    end
+
+    def field_name
+      key if field?
+    end
+  end
+
+  # Base Hash implementation used by all descriptors which contain other
+  # descriptors.
+  class DescriptorHash < Hash
+    include HashExtensions
+    alias :subdescriptors :values
   end
 
   # Describes the mapping for key fields and subsections of a section
   # of a component module.
-  class Section < Hash
+  class Section < DescriptorHash 
     include DescriptorInitialization
 
     # Array of field keys used to uniquely identify a section. 
@@ -392,16 +455,28 @@ module ComponentDescriptors
       options[:matches_by_reference]
     end
 
+    # Returns a hash of the section's matches_by keys and their values.
+    def section_key_hash
+      matches_by.inject({}) do |hash,k| 
+        hash[k] = descendent(k).extracted_value
+        hash
+      end
+    end
+
     # Returns a string built from matches_by keys (optionally dereferenced) used
     # to uniquely identify a section.
-    def matches_key
+    def section_key 
       if matches_by_reference?
         raise('implement me')
       elsif !matches_by.empty?
-        matches_by.map do |key|
-          "#{key}:#{descendent(key).extracted_value}"
-        end.join("__")
+        Section.section_key(section_key_hash)
       end
+    end
+
+    def self.section_key(key_values)
+      key_values.keys.sort.map do |key|
+        "#{key}:#{key_values[key]}"
+      end.join("__")
     end
   end
 
@@ -416,13 +491,14 @@ module ComponentDescriptors
       self.xml = xml
       extract_values_from_xml
       instantiate_section_nodes
+      self
     end
 
     # If an xml node has been set for the descriptor, extract all the matching
     # nodes using the descriptor's locator and store the result in the
-    # @extracted_value attribute.  We then clear and rebuild the sections based on the
-    # actual document nodes.  Returns the newly stored extracted_value or
-    # nil.
+    # @extracted_value attribute.  We then clear and rebuild the sections based
+    # on the actual document nodes.  Returns the newly stored extracted_value
+    # or nil.
     def extract_values_from_xml
       debug("RepeatingSection#extract_values_from_xml xml: #{xml.inspect}")
       self.extracted_value = (xml.nil? ? nil : extract_all_nodes(locator))
@@ -435,15 +511,36 @@ module ComponentDescriptors
       clear
       self.extracted_value.each_with_index do |node,i|
         node_position = i + 1
-        debug("RepeatingSection#instantiate_section_node node ##{node_position} -> #{node}")
+        debug("RepeatingSection#instantiate_section_node node ##{node_position} -> #{node.inspect}")
         section = _instantiate(:section, nil, nil, :matches_by => matches_by, :matches_by_reference => matches_by_reference?, &descriptors)
         section.extracted_value = node 
         section.attach(xml)
         section.locator = "#{locator}[#{node_position}]"
-        key = section.matches_key || section.locator
+        key = section.section_key || section.locator
         section.key = key 
         store(key, section)
+      end if extracted_value
+    end
+
+    # Returns a hash of key values from the passed model; one value
+    # for each entry in matches_by() which the model responds to.
+    def get_section_key_hash_from(model)
+      matches_by.inject({}) do |hash,k| 
+        v = model.send(k) if model.respond_to?(k)
+        hash[k] = v
+        hash
       end
+    end
+
+    # Looks up matches_by key value(s) in the passed model and returns
+    # the section whose key matches or nil if there is no match.
+    def find_matching_section_for(model)
+      fetch(Section.section_key(get_section_key_hash_from(model)))
+    end
+
+    # True if this descriptor may occur one or more times.
+    def repeats?
+      true 
     end
   end
 
@@ -460,6 +557,11 @@ module ComponentDescriptors
     def extract_values_from_xml
       debug("Field#extract_values_from_xml xml: #{xml.inspect}")
       self.extracted_value = xml.nil? ? nil : extract_node_value(locator) unless self.extracted_value
+    end
+
+    # True if this is a field leaf node.
+    def field?
+      true 
     end
   end
 
@@ -484,7 +586,7 @@ module ComponentDescriptors
 
   # Describes the mapping between key sections and fields of one component module
   # from a patient document. 
-  class Component < Hash
+  class Component < DescriptorHash
     include SectionDescriptors
     include NodeTraversal
     include Logging
@@ -506,11 +608,22 @@ module ComponentDescriptors
     end
 
     # Associates a REXML document with this component.  The tree of descriptors
-    # will be walked and values will be set wherever we are able to match locators in
-    # the given document.
+    # will be walked and values will be set wherever we are able to match
+    # locators in the given document.
     def attach(document)
       self.document = document
       each_value { |v| v.attach(document) }
+      self
+    end
+
+    # No xml parsing for the base component.
+    def error?
+      false
+    end
+
+    # Component Modules are required.
+    def required?
+      true
     end
 
   end

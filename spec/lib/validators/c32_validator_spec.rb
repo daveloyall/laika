@@ -152,6 +152,16 @@ EOS
         @scope.update_attributes(:xml_component => @document)
       end
 
+#      it "should decorate descriptor" do
+#        @scope.update_attributes(:descriptor => ComponentDescriptors::Component.new(:foo))
+#        @scope.descriptor.class
+#      end
+#
+#      it "should raise a ValidatorException if asked to decorate an unknown class" do
+#        @scope.update_attributes(:descriptor => :foo)
+#        lambda { @scope.descriptor }.should raise_error(ValidatorException)
+#      end
+ 
       it "should provide access to the root element" do
         @scope.root_element.should == @document.root
         @scope.descend(:xml_component => nil, :xml_section_nodes => [@scope.xml_component]).root_element.should == @document.root
@@ -197,18 +207,6 @@ EOS
         @scope.location.should == '/ClinicalDocument' 
       end
   
-      it "should find the innermost element" do
-        @scope.find_innermost_element('/foo/bar', @document.root).xpath.should == '/ClinicalDocument'
-        @scope.find_innermost_element('//foo/bar', @document.root).xpath.should == '/ClinicalDocument'
-        @scope.find_innermost_element('foo/bar', @document.root).xpath.should == '/ClinicalDocument'
-
-        language = @scope.find_innermost_element('//cda:recordTarget/cda:patientRole/cda:patient/cda:languageCommunication/bar', @document.root)
-
-        @scope.find_innermost_element("cda:languageCode[@code='en-US']", language).xpath.should == '/ClinicalDocument/recordTarget/patientRole/patient/languageCommunication[1]/languageCode'
-        @scope.find_innermost_element("cda:languageCode[@code='foo']", language).xpath.should == '/ClinicalDocument/recordTarget/patientRole/patient/languageCommunication[1]/languageCode'
-        @scope.find_innermost_element("cda:modeCode/@code]", language).xpath.should == '/ClinicalDocument/recordTarget/patientRole/patient/languageCommunication[1]/modeCode'
-      end
-
       it "should return nil if extract_first_node is given a nil locator" do
         @scope.extract_first_node("", @document.root).should be_nil
         @scope.extract_first_node(nil, @document.root).should be_nil
