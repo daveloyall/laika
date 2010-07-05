@@ -75,11 +75,27 @@ module ComponentDescriptors
     # Associates a REXML node with this Descriptor.  The tree of subdescriptors
     # will be walked and values will be set wherever we are able to match
     # locators in the given document.
-    def attach(xml)
-      self.xml = xml
-      extract_values_from_xml
-      each_value { |v| v.attach(extracted_value) } if respond_to?(:each_value)
+    def attach_xml(xml)
+      attach(:xml, xml)
+    end
+
+    def attach_model(model)
+      attach(:model, model)
+    end
+
+    def attach(mode, source)
+      raise(DescriptorError, "SectionDescriptors#attach accepts only two modes: :xml or :model") unless [:xml, :model].include?(mode)
+      debug "SectionDescriptors:attach mode: #{mode}, source: #{source.inspect}"
+      self.send("#{mode}=", source)
+      self.send("extract_values_from_#{mode}")
+      each_value { |v| v.attach(mode, extracted_value || source) } if respond_to?(:each_value)
       self
+    end
+
+    # Produces an unattached but instantiated copy of this descriptor and its
+    # children. 
+    def copy
+      self.class.new(key, locator, options, &descriptors)
     end
 
     # Parses the different argument styles accepted by section/field methods.
@@ -89,9 +105,9 @@ module ComponentDescriptors
     # method(:key => :locator, :option => :foo)
     # method([...original arguments...], :injected => :options)
     #
-    # (The last variation is used internally by methods which need to inject additional
-    # options into the call.  The original arguments are passed as an array, with additional
-    # options as a final hash argument)
+    # (The last variation is used internally by methods which need to inject
+    # additional options into the call.  The original arguments are passed as
+    # an array, with additional options as a final hash argument)
     #
     # Any other combination will raise an error.
     #
@@ -296,12 +312,13 @@ module ComponentDescriptors
     # Returns the first descendent matching the given key or nil.
     def descendent(key)
       return nil unless respond_to?(:fetch)
-      descendent = fetch(key) if self.key?(key)
-      values.each do |v|
-        raise(NoMethodError, "Node #{v} does not respond to descendent()") unless v.respond_to?(:descendent)
-        descendent = v.descendent(key)
-        break unless descendent.nil?
-      end unless descendent
+      unless descendent = fetch(key, nil)
+        values.each do |v|
+          raise(NoMethodError, "Node #{v} does not respond to descendent()") unless v.respond_to?(:descendent)
+          descendent = v.descendent(key)
+          break unless descendent.nil?
+        end
+      end
       return descendent 
     end
     
@@ -321,7 +338,7 @@ module ComponentDescriptors
 
     def self.included(base)
       base.class_eval do
-        attr_accessor :key, :options, :descriptors, :xml, :extracted_value
+        attr_accessor :key, :options, :descriptors, :xml, :model, :extracted_value
         attr_writer :locator
         include SectionDescriptors
         include NodeManipulation
@@ -339,12 +356,21 @@ module ComponentDescriptors
       _initialize_subsections
     end
 
-    # If an xml node has been set for the descriptor, use the descriptor's
-    # locator on it and store the result in the @extracted_value attribute.
-    # Returns the newly stored extracted_value or nil.
+    # If an xml node has been set for the descriptor, use the
+    # descriptor's locator or key on it and store the result in the
+    # @extracted_value attribute.  Returns the newly stored extracted_value or
+    # nil.
     def extract_values_from_xml
       debug "DescriptorInitialization:extract_values_from_xml xml: #{xml.inspect}"
       self.extracted_value = xml.nil? ? nil : extract_first_node(locator) unless self.extracted_value
+    end
+
+    # If a modle node has been set for the descriptor, call the descriptor's
+    # key on it and store the result in the @extracted_value attribute.
+    # Returns the newly stored extracted_value or nil
+    def extract_values_from_model
+      debug "DescriptorInitialization:extract_values_from_model model: #{model.inspect}"
+      self.extracted_value = model.nil? ? nil : model.send(key) unless self.extracted_value || !model.respond_to?(key)
     end
 
     # Backs through the given section's locator to find the 
@@ -410,6 +436,7 @@ module ComponentDescriptors
     # True if this descriptor describes a section which must be present.
     def required?
       unless @required
+        pp 'required', options
         @required = options[:required]
         @required = true if @required.nil?
       end
@@ -431,11 +458,58 @@ module ComponentDescriptors
     end
   end
 
+  # Used for returning nested hashes of descriptor keys and extracted values
+  # for comparison and error reporting.
+  class ValuesHash < Hash
+
+    # Collapses all nested section hashes, merging their leaf nodes into
+    # a single hash.  Duplicated keys are avoided by adding the parent 
+    # hash's key to the child's.  This is not foolproof but should work
+    # for most descriptor schemes that don't go out of their way to violate
+    # it.  This returns a new hash, it does not alter original.
+    def flatten
+      inject(ValuesHash.new) do |hash,pair|
+        key, value = pair
+        case value
+          when ValuesHash then
+            value.flatten.each do |child_key,child_value|
+              if key?(child_key) || hash.key?(child_key)
+                child_key = "#{key}_#{child_key}".to_sym
+                raise(DescriptorError, "Duplicate key #{child_key} found in #{self.inspect} while attempting to flatten a ValuesHash.") if key?(child_key) || hash.key?(child_key)
+              end
+              hash[child_key] = child_value
+            end
+          else hash[key] = value
+        end
+        hash
+      end
+    end
+
+  end
+
   # Base Hash implementation used by all descriptors which contain other
   # descriptors.
   class DescriptorHash < Hash
     include HashExtensions
     alias :subdescriptors :values
+
+    # Convert from a hash of descriptors to a hash of keys and 
+    # extracted values.  Useful for error reporting and comparisons.
+    def to_values_hash
+      values_hash = inject(ValuesHash.new) do |hash,pair|
+        k, v = pair
+        hash[k] = case v
+          when DescriptorHash then v.to_values_hash
+          else v.try(:extracted_value)
+        end
+        hash
+      end 
+    end
+
+    # A flattened values hash (no nested hashes).
+    def to_field_hash
+      to_values_hash.flatten
+    end
   end
 
   # Describes the mapping for key fields and subsections of a section
@@ -487,17 +561,18 @@ module ComponentDescriptors
       section(:_repeating_section_template, &descriptors) if descriptors 
     end
   
-    def attach(xml)
-      self.xml = xml
-      extract_values_from_xml
-      instantiate_section_nodes
+    def attach(mode, source)
+      raise(DescriptorError, "RepeatingSection#attach accepts only two modes: :xml or :model") unless [:xml, :model].include?(mode)
+      debug "RepeatingSection:attach mode: #{mode}, source: #{source.inspect}"
+      self.send("#{mode}=", source)
+      self.send("extract_values_from_#{mode}")
+      instantiate_section_nodes(mode)
       self
     end
 
     # If an xml node has been set for the descriptor, extract all the matching
     # nodes using the descriptor's locator and store the result in the
-    # @extracted_value attribute.  We then clear and rebuild the sections based
-    # on the actual document nodes.  Returns the newly stored extracted_value
+    # @extracted_value attribute. Returns the newly stored extracted_value
     # or nil.
     def extract_values_from_xml
       debug("RepeatingSection#extract_values_from_xml xml: #{xml.inspect}")
@@ -507,19 +582,21 @@ module ComponentDescriptors
     # Clears the hash (dropping any existing sections) and creates a new
     # section for each node in extracted_values.  Each node will be attached
     # and injected with associated xml values. 
-    def instantiate_section_nodes
+    def instantiate_section_nodes(mode)
+      raise(DescriptorError, "RepeatingSection#instantiate_section_nodes accepts only two modes: :xml or :model") unless [:xml, :model].include?(mode)
+      debug "RepeatingSection:instantiate_section_nodes mode: #{mode}"
       clear
-      self.extracted_value.each_with_index do |node,i|
+      (extracted_value || send(mode)).try(:each_with_index) do |node,i|
         node_position = i + 1
         debug("RepeatingSection#instantiate_section_node node ##{node_position} -> #{node.inspect}")
         section = _instantiate(:section, nil, nil, :matches_by => matches_by, :matches_by_reference => matches_by_reference?, &descriptors)
         section.extracted_value = node 
-        section.attach(xml)
+        section.attach(mode, node)
         section.locator = "#{locator}[#{node_position}]"
         key = section.section_key || section.locator
         section.key = key 
         store(key, section)
-      end if extracted_value
+      end
     end
 
     # Returns a hash of key values from the passed model; one value
@@ -535,7 +612,7 @@ module ComponentDescriptors
     # Looks up matches_by key value(s) in the passed model and returns
     # the section whose key matches or nil if there is no match.
     def find_matching_section_for(model)
-      fetch(Section.section_key(get_section_key_hash_from(model)))
+      fetch(Section.section_key(get_section_key_hash_from(model)), nil)
     end
 
     # True if this descriptor may occur one or more times.
@@ -591,7 +668,7 @@ module ComponentDescriptors
     include NodeTraversal
     include Logging
 
-    attr_accessor :name, :template_id, :validation_type, :document, :descriptors
+    attr_accessor :name, :template_id, :validation_type, :xml, :model, :descriptors
 
     def initialize(name, *args, &descriptors)
       options = args.first || {}
@@ -607,12 +684,14 @@ module ComponentDescriptors
       end
     end
 
-    # Associates a REXML document with this component.  The tree of descriptors
-    # will be walked and values will be set wherever we are able to match
-    # locators in the given document.
-    def attach(document)
-      self.document = document
-      each_value { |v| v.attach(document) }
+    # Associates a REXML document or gold modle with this component.  The tree
+    # of descriptors will be walked and values will be set wherever we are able
+    # to match locators/keys in the given document.
+    def attach(mode, source)
+      raise(DescriptorError, "Component#attach accepts only two modes: :xml or :model") unless [:xml, :model].include?(mode)
+      debug "Component:attach mode: #{mode}, source: #{source.inspect}"
+      self.send("#{mode}=", source)
+      each_value { |v| v.attach(mode, source) }
       self
     end
 

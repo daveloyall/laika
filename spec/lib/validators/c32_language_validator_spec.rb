@@ -35,7 +35,7 @@ EOS
   before(:each) do
     @document = REXML::Document.new(C32_LANGUAGES_XML)
     @language = languages(:joe_smith_english_language)
-    @component = Validators::C32Descriptors.get_component(:languages).attach(@document) 
+    @component = Validators::C32Descriptors.get_component(:languages).attach_xml(@document) 
     @scope = Validators::C32Validation::ComponentScope.new(
       :validation_type => Validation::C32_V2_5_TYPE,
       :logger => TestLogger.new, #DevNull.new,
@@ -55,6 +55,8 @@ EOS
 
   it "should fail if there are no languageCommunication sections" do
     @document.elements.delete_all('//languageCommunication')
+    @component = Validators::C32Descriptors.get_component(:languages).attach(@document) 
+    @scope.update_attributes(:descriptor => @component)
     errors = @scope.validate
     errors.size.should == 1
     errors.first.should be_kind_of(Laika::SectionNotFound)
@@ -64,6 +66,7 @@ EOS
   it "should fail if we cannot match a languageCommunication section" do
     @language.stub!(:language_code).and_return('foo')
     errors = @scope.validate
+    pp errors
     errors.size.should == 1
     errors.first.should be_kind_of(Laika::NoMatchingSection)
     errors.first.location.should == '/ClinicalDocument/recordTarget/patientRole/patient/languageCommunication[1]'

@@ -18,8 +18,7 @@ describe ComponentDescriptors do
 
   describe "HashExtensions" do
 
-    class TestHash < Hash
-      include ComponentDescriptors::HashExtensions
+    class TestHash < ComponentDescriptors::DescriptorHash
       include ComponentDescriptors::NodeTraversal
     end
     class TestLeaf; include ComponentDescriptors::NodeTraversal; end
@@ -211,6 +210,7 @@ describe ComponentDescriptors do
     end
   
     it "should be required if no required option set" do
+      Foo.new(:foo, nil, nil)
       Foo.new(:foo, nil, nil).required?.should be_true 
     end
 
@@ -296,7 +296,7 @@ EOS
       foo.find_innermost_element("cda:languageCode[@code='foo']", language).xpath.should == '/ClinicalDocument/recordTarget/patientRole/patient/languageCommunication[1]/languageCode'
       foo.find_innermost_element("cda:modeCode/@code]", language).xpath.should == '/ClinicalDocument/recordTarget/patientRole/patient/languageCommunication[1]/modeCode'
     end
- 
+
   end
 
   describe "Component" do
@@ -367,7 +367,7 @@ EOS
   end
 
   describe "attaching" do
-    
+   
     before do
       @xml = REXML::Document.new(%Q{<patient xmlns='urn:hl7-org:v3'><foo id='1'><bar baz='dingo'>biscuit</bar></foo><foo id='2'/></patient>})
       @foo, @foo2 = REXML::XPath.match(@xml, '//cda:foo', ComponentDescriptors::NodeManipulation::DEFAULT_NAMESPACES)
@@ -377,57 +377,136 @@ EOS
   
     it "should attach an xml node to a section" do
       section = ComponentDescriptors::Section.new(:foo, nil, :logger => @logger)
-      section.attach(@xml.root)
+      section.attach_xml(@xml.root)
       section.extracted_value.should == @foo 
     end
 
     it "should use custom locators" do
       section = ComponentDescriptors::Section.new(:foo, %Q{//cda:foo[@id='2']}, :logger => @logger)
-      section.attach(@xml)
+      section.attach_xml(@xml)
       section.extracted_value.should == @foo2
     end
 
     it "should extract a text value for a field" do
       field = ComponentDescriptors::Field.new(:bar, nil, :logger => @logger)
-      field.attach(@foo)
+      field.attach_xml(@foo)
       field.extracted_value.should == 'biscuit'
     end
 
     it "should extract a text value for a field with a custom locator" do
       field = ComponentDescriptors::Field.new(:bar, %q{cda:bar/@baz}, :logger => @logger)
-      field.attach(@foo)
+      field.attach_xml(@foo)
       field.extracted_value.should == 'dingo'
     end
 
     it "should extract an array of sections for a repeating section" do
       repeating = ComponentDescriptors::RepeatingSection.new(:foo, nil, :logger => @logger)
-      repeating.attach(@xml.root)
+      repeating.attach_xml(@xml.root)
       repeating.extracted_value.should == [@foo, @foo2]
     end
 
     it "should extract an array of sections for a repeating section keyed by xpath" do
       repeating = ComponentDescriptors::RepeatingSection.new('cda:foo', nil, :logger => @logger)
-      repeating.attach(@xml.root)
+      repeating.attach_xml(@xml.root)
       repeating.extracted_value.should == [@foo, @foo2]
     end
 
-    it "should handle a nested set of descriptors" do
-      repeating = ComponentDescriptors::RepeatingSection.new(:foo, nil, :logger => @logger) do
-        attribute :id
-        field :bar
-        field :baz => %q{cda:bar/@baz}
+    describe "with nested descriptors" do
+
+      class DummyModel 
+        attr_accessor :id, :bar, :baz
+        def initialize(id, bar, baz)
+          self.id = id
+          self.bar =  bar
+          self.baz = baz
+        end
       end
-      repeating.attach(@xml.root)
-      repeating.extracted_value.should == [@foo, @foo2]
-      repeating['cda:foo[1]'].extracted_value.should == @foo
-      repeating['cda:foo[1]'][:id].extracted_value.should == '1'
-      repeating['cda:foo[1]'][:bar].extracted_value.should == 'biscuit'
-      repeating['cda:foo[1]'][:baz].extracted_value.should == 'dingo'
-      repeating['cda:foo[2]'].extracted_value.should == @foo2
-      repeating['cda:foo[2]'][:id].extracted_value.should == '2'
-      repeating['cda:foo[2]'][:bar].extracted_value.should be_nil 
-      repeating['cda:foo[2]'][:baz].extracted_value.should be_nil 
+ 
+      before do
+        @repeating = ComponentDescriptors::RepeatingSection.new(:foo, nil, :logger => @logger) do
+          attribute :id
+          field :bar
+          field :baz => %q{cda:bar/@baz}
+        end
+      end
+
+      it "should handle a nested set of descriptors" do
+        @repeating.attach_xml(@xml.root)
+        @repeating.extracted_value.should == [@foo, @foo2]
+        @repeating['cda:foo[1]'].extracted_value.should == @foo
+        @repeating['cda:foo[1]'][:id].extracted_value.should == '1'
+        @repeating['cda:foo[1]'][:bar].extracted_value.should == 'biscuit'
+        @repeating['cda:foo[1]'][:baz].extracted_value.should == 'dingo'
+        @repeating['cda:foo[2]'].extracted_value.should == @foo2
+        @repeating['cda:foo[2]'][:id].extracted_value.should == '2'
+        @repeating['cda:foo[2]'][:bar].extracted_value.should be_nil 
+        @repeating['cda:foo[2]'][:baz].extracted_value.should be_nil 
+      end
+
+      it "should produce a values hash" do
+        @repeating.attach_xml(@xml.root)
+        values_hash = @repeating.to_values_hash
+        values_hash.should be_kind_of(ComponentDescriptors::ValuesHash)
+        values_hash.should == {"cda:foo[1]"=>{:id=>"1", :bar=>"biscuit", :baz=>"dingo"}, "cda:foo[2]"=>{:id=>"2", :bar=>nil, :baz=>nil}}
+      end
+
+      it "should produce a flattened values hash do" do
+        @repeating.attach_xml(@xml.root)
+        field_hash = @repeating.to_field_hash
+        field_hash.should be_kind_of(ComponentDescriptors::ValuesHash)
+        field_hash.should == {:id=>"1", :bar=>"biscuit", :baz=>"dingo", :"cda:foo[2]_id"=>"2", :"cda:foo[2]_bar"=>nil, :"cda:foo[2]_baz"=>nil}
+      end
+
+      it "should be possible to make an unattached deep copy of a descriptor" do
+        clone = @repeating.copy
+        clone.should == @repeating
+        clone.should_not be_equal(@repeating) 
+      end 
+
+      it "should atach_model" do
+        @repeating.attach_xml(@xml.root)
+        f1 = DummyModel.new("1", "biscuit", "dingo")
+        f2 = DummyModel.new("2", nil, nil)
+        clone = @repeating.copy
+        puts "attaching model now\n\n\n"
+        clone.attach_model([f1, f2])
+        clone.to_values_hash.should == @repeating.to_values_hash
+      end
     end
 
   end 
+
+  describe "ValuesHash" do
+    
+    before do
+      @vh = ComponentDescriptors::ValuesHash[
+        :foo => :bar, 
+        :baz => ComponentDescriptors::ValuesHash[
+          :foo => :dingo,
+          1 => 2,
+        ],
+        :rupert => ComponentDescriptors::ValuesHash[
+          3 => 4,
+          1 => :collision,
+          5 => ComponentDescriptors::ValuesHash[:bob => 5],
+        ],
+      ]
+    end
+
+    it "should flatten" do
+      @vh.flatten.should == ComponentDescriptors::ValuesHash[ 
+        :foo => :bar,
+        :baz_foo => :dingo,
+        1 => 2,
+        :rupert_1 => :collision,
+        3 => 4,
+        :bob => 5,
+      ]
+    end
+
+    it "should raise an error if keys collide" do
+      @vh[:baz_foo] = :oopsie
+      lambda { @vh.flatten }.should raise_error(ComponentDescriptors::DescriptorError)
+    end
+  end
 end
