@@ -365,8 +365,9 @@ module Validators
         subsections.each do |subsection|
           options = {
             :section => subsection,
+            :xml_component => node,
           }
-          options[node.kind_of?(Array) ? :xml_section_nodes : :xml_component] = node
+          #options[node.kind_of?(Array) ? :xml_section_nodes : :xml_component] = node
           options[:gold_model] = gold_model.send(matches(section_key)) if matches(section_key)
           errors << descend(options).validate
         end
@@ -431,15 +432,6 @@ module Validators
       # XML object for the section being validated in the current scope.
       attr_hash_accessor :xml_component
 
-      # If we have evaluated a section that repeats, any nodes of the matching
-      # section type will be found here.
-      attr_hash_accessor :xml_section_nodes
-
-      # If we need to dereference a set of section nodes, this hash will
-      # provide a lookup keyed by the freetext associated with each node's
-      # reference id.
-      attr_hash_accessor :xml_sections_hash
-
       # The parent section scope, if any.
       attr_hash_accessor :enclosing_scope
 
@@ -457,8 +449,6 @@ module Validators
 
       def initialize(options)
         self.attributes=(options)
-        self.xml_section_nodes = [] if self.xml_section_nodes.nil?
-        self.xml_sections_hash = {} if self.xml_sections_hash.nil?
       end
 
       alias :unguarded_xml_component= :xml_component=
@@ -525,9 +515,7 @@ module Validators
         _add_error(Laika::NoMatchingSection, {
             :message => "No matching #{section_name} was found. Searched for: #{xpath}",
             :expected_section => collect_expected_values, 
-            :provided_sections => xml_section_nodes.map do |node|
-              descend(:xml_component => node).collect_provided_values(section, xml_sections_hash.invert[node])
-            end,
+            :provided_sections => collect_provided_values,
           },
           args
         )
@@ -560,7 +548,7 @@ module Validators
 
       # The root element of the XML document we are validating.
       def root_element
-        (xml_component || xml_section_nodes.first).try(:root)
+        (xml_component).try(:root)
       end
 
       def validate_repeating_section
@@ -631,47 +619,52 @@ module Validators
       # Collect a hash of all the expected values from the current gold_model().
       def collect_expected_values(section_key = section)
         logger.debug("collect_expected_values: #{section_key}, #{gold_model.inspect}")
-        expected_section = {}
-        keys(section_key).each do |field_name,value_xpath|
-          expected_section[field_name.to_sym] = gold_model.send(field_name) if value_xpath
-        end 
-        if action(section_key).to_s =~ /match_value/ && field = field_name(section_key)
-          expected_section[field.to_sym] = gold_expected_value(section_key)
-        end
-        subsections(section_key).inject(expected_section) do |hash,subsection|
-          logger.debug("subsection: #{subsection}, hash: #{hash.inspect}")
-          options = { :section => subsection }
-          options[:gold_model] = gold_model.send(matches(section_key)) if matches(section_key)
-          hash.merge!(descend(options).collect_expected_values)
-        end
-        return expected_section 
+        descriptor.copy.attach_model(gold_model).to_field_hash
+# 
+#         expected_section = {}
+#         keys(section_key).each do |field_name,value_xpath|
+#           expected_section[field_name.to_sym] = gold_model.send(field_name) if value_xpath
+#         end 
+#         if action(section_key).to_s =~ /match_value/ && field = field_name(section_key)
+#           expected_section[field.to_sym] = gold_expected_value(section_key)
+#         end
+#         subsections(section_key).inject(expected_section) do |hash,subsection|
+#           logger.debug("subsection: #{subsection}, hash: #{hash.inspect}")
+#           options = { :section => subsection }
+#           options[:gold_model] = gold_model.send(matches(section_key)) if matches(section_key)
+#           hash.merge!(descend(options).collect_expected_values)
+#         end
+#         return expected_section 
       end
 
       # Collect a hash of all the values in the current xml_component().
       def collect_provided_values(section_key = section, key_value = nil)
         logger.debug("collect_provided_values: #{section_key}, #{xml_component.inspect}")
-        provided_section = {}
-        if key_value
-          provided_section[keys(section_key).keys.first] = key_value
-        else
-          keys(section_key).each do |field_name,value_xpath|
-            provided_section[field_name.to_sym] = extract_node_value(value_xpath, xml_component) if value_xpath
-          end
-        end
-        if action(section_key).to_s =~ /match_value/ && field = field_name(section_key)
-          provided_section[field.to_sym] = extract_node_value(xpath(section_key), xml_component)
-        end
-        subsections(section_key).inject(provided_section) do |hash,subsection|
-          logger.debug("subsection: #{subsection}, hash: #{hash.inspect}")
-          options = { :section => subsection }
-          if action(section_key).to_s =~ /get_section($|_)/
-            options[:xml_component] = extract_first_node(xpath(section_key))
-            hash.merge!(descend(options).collect_provided_values) unless options[:xml_component].nil?
-          else
-            hash.merge!(descend(options).collect_provided_values)
-          end
-        end
-        return provided_section
+        pp descriptor
+        pp descriptor.values
+        descriptor.values.map { |v| v.to_field_hash }
+#        provided_section = {}
+#        if key_value
+#          provided_section[keys(section_key).keys.first] = key_value
+#        else
+#          keys(section_key).each do |field_name,value_xpath|
+#            provided_section[field_name.to_sym] = extract_node_value(value_xpath, xml_component) if value_xpath
+#          end
+#        end
+#        if action(section_key).to_s =~ /match_value/ && field = field_name(section_key)
+#          provided_section[field.to_sym] = extract_node_value(xpath(section_key), xml_component)
+#        end
+#        subsections(section_key).inject(provided_section) do |hash,subsection|
+#          logger.debug("subsection: #{subsection}, hash: #{hash.inspect}")
+#          options = { :section => subsection }
+#          if action(section_key).to_s =~ /get_section($|_)/
+#            options[:xml_component] = extract_first_node(xpath(section_key))
+#            hash.merge!(descend(options).collect_provided_values) unless options[:xml_component].nil?
+#          else
+#            hash.merge!(descend(options).collect_provided_values)
+#          end
+#        end
+#        return provided_section
       end
 
       def inspect
@@ -699,7 +692,7 @@ module Validators
           when klass == Laika::SectionNotFound
             find_innermost_element.try(:xpath)
           when klass == Laika::NoMatchingSection
-            xml_section_nodes.first.try(:xpath)
+            xml_component.first.try(:xpath)
           when klass == Laika::ComparisonError
             find_innermost_element.try(:xpath)
           else
@@ -745,7 +738,7 @@ module Validators
           next unless descriptor = Validators::C32Descriptors.get_component(component_module)
 
           logger.debug("Validating component: #{component_module}, association_key: #{association_key}")
-          descriptor.attach(document.root)
+          descriptor.attach_xml(document.root)
           logger.debug("descriptor: #{descriptor.inspect}")
           logger.debug("gold_model: #{gold_model}")
 
