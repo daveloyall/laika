@@ -3,24 +3,27 @@
 # the document such that we can extract key fields for comparison with or
 # export to some other model.
 #
-# components - a base component module of a patient document, like medications or allergies.
+# components - a base component module of a patient document, like medications
+# or allergies.
 #
 # section - a node in the document which may contain other sections or fields.
 #
-# repeating_section - a section which may occur one or more times, keyed by a value or set of values.
+# repeating_section - a section which may occur one or more times, keyed by a
+# value or set of values.
 #
 # field - a value in the document.
 #
 # attribute - shortcut for a field whose xpath locator is simply the key value
 # as an attribute of the current node ("@#{key}").
 #
-# Every descriptor has a key which uniquely identifies it within its current section.  This key
-# serves as the method used to look up a matching element in an object model of the patient
-# document.  Every descriptor also has an xpath locator, either explictly
-# declared or implicit from the key, which is used to identify a node within
-# the document.  These locators nest.  So a descriptor's locator is within the
-# context of it's parent's xml node (as identified by the parent's locator),
-# and so on, up to the root section, whose context is the document.
+# Every descriptor has a key which uniquely identifies it within its current
+# section.  This key serves as the method used to look up a matching element in
+# an object model of the patient document.  Every descriptor also has an xpath
+# locator, either explictly declared or implicit from the key, which is used to
+# identify a node within the document.  These locators nest.  So a descriptor's
+# locator is within the context of it's parent's xml node (as identified by the
+# parent's locator), and so on, up to the root section, whose context is the
+# document.
 module ComponentDescriptors
 
   def self.included(base)
@@ -76,7 +79,7 @@ module ComponentDescriptors
     # will be walked and values will be set wherever we are able to match
     # locators in the given document.
     def attach_xml(xml)
-      attach(:xml, xml)
+      attach(:xml, xml.kind_of?(REXML::Document) ? xml.root : xml)
     end
 
     def attach_model(model)
@@ -182,29 +185,21 @@ module ComponentDescriptors
       SDTC_NAMESPACE => "urn:hl7-org:sdtc",
     }
 
-    # Extracts all the given sections from a passed REXML doc and return
-    # them as a hash keyed by the external free text associated with an
-    # internal reference id.
+    # Returns the external free text associated with the given node's internal
+    # reference id.
     #
-    # For example, if given an array of substanceAdministration sections,
-    # this will produce a hash of all the medication component's
-    # substanceAdministration element's keyed by their own
-    # consumable/manufacturedProduct/manufacturedMaterial/code/reference@value's
-    # (which should key to the medication names in the free text table for
-    # a v2.5 C32 doc...)
-    def dereference_sections(section_key = section, nodes = nil)
-      debug("dereference(#{section_key}, #{nodes.inspect})")
-      nodes ||= xml_section_nodes
-      nodes.inject({}) do |hash,section|
-        debug("dereference section: #{section.inspect}")
-        if reference = extract_first_node(".//#{CDA_NAMESPACE}:reference[@value]", section)
-          debug("dereference reference: #{reference.inspect}")
-          if name = extract_first_node("//[@ID=#{reference.attributes['value'].gsub("#",'')}]/text()", root_element)
-            debug("dereference name: #{name.inspect}")
-            hash[name.value] = section
-          end
+    # For example, if given a substanceAdministration section, this will find
+    # consumable/manufacturedProduct/manufacturedMaterial/code/reference@value,
+    # and use it to lookup the medication name in the free text table for 
+    # a v2.5 C32 doc.
+    def dereference(node = xml)
+      debug("dereference(#{node.inspect})")
+      if reference = extract_first_node(".//#{CDA_NAMESPACE}:reference[@value]", node)
+        debug("dereference reference: #{reference.inspect}")
+        if name = extract_first_node("//[@ID='#{reference.attributes['value'].gsub("#",'')}']/text()", root_element)
+          debug("dereference name: #{name.inspect}")
+          name.value
         end
-        hash
       end
     end
 
@@ -262,37 +257,6 @@ module ComponentDescriptors
 
   end
 
-  module Logging
-
-    FALLBACK = STDERR
-
-    def self.included(base)
-      base.send(:attr_writer, :logger)
-    end
-
-    [:debug, :info, :warn, :error, :fatal].each do |level|
-      define_method(level) do |message|
-        _log(level, message)
-      end
-    end
-  
-    def logger
-      @logger || (root? ? nil : root.logger)
-    end
- 
-    private
-
-    def _log(severity, original_message)
-      message = "ComponentDescriptors : #{original_message}"
-      if logger
-        logger.send(severity, message)
-      else
-        FALLBACK.puts "#{severity.to_s.upcase} : #{message}"
-      end
-    end
-
-  end
-
   # Methods needed by descriptors to travel up and down the descriptor tree.
   module NodeTraversal
     def self.included(base)
@@ -307,6 +271,11 @@ module ComponentDescriptors
     # True if this is the root component
     def root?
       parent.nil?
+    end
+
+    # Returns the root xml element
+    def root_element
+      root.xml 
     end
 
     # Returns the first descendent matching the given key or nil.
@@ -455,6 +424,10 @@ module ComponentDescriptors
 
     def field_name
       key if field?
+    end
+
+    def to_s
+      "<#{self.class}:#{self.object_id} #{key} => #{locator} #{' {...} ' if descriptors}>"
     end
   end
 
@@ -668,10 +641,10 @@ module ComponentDescriptors
     include NodeTraversal
     include Logging
 
-    attr_accessor :name, :template_id, :validation_type, :xml, :model, :descriptors
+    attr_accessor :name, :options, :template_id, :validation_type, :xml, :model, :descriptors
 
     def initialize(name, *args, &descriptors)
-      options = args.first || {}
+      self.options = args.first || {}
       self.name = name
       self.template_id = options[:template_id]
       self.validation_type = options[:validation_type]
@@ -703,6 +676,10 @@ module ComponentDescriptors
     # Component Modules are required.
     def required?
       true
+    end
+
+    def copy
+      Component.new(name, options, &descriptors)
     end
 
   end

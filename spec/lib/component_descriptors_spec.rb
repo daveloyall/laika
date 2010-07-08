@@ -79,40 +79,46 @@ describe ComponentDescriptors do
     end
   end
 
-  describe "Logging" do
-
-    class TestLogging < Hash
-      include ComponentDescriptors::HashExtensions
-      include ComponentDescriptors::NodeTraversal
-      include ComponentDescriptors::Logging
-    end
+  describe "NodeManipulation" do
 
     before do
-      @l = TestLogging.new
-      @mock_logger = mock("logger")
+      @document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/c32v2.5.xml'))
+      @section = ComponentDescriptors::Section.new(:foo, nil, nil)
     end
 
-    it "should use logger if logger is set" do
-      @l.logger = @mock_logger
-      @mock_logger.should_receive(:debug).once.with("ComponentDescriptors : foo")
-      @l.debug("foo")
+    it "should return nil if extract_first_node is given a nil locator" do
+      @section.extract_first_node("", @document.root).should be_nil
+      @section.extract_first_node(nil, @document.root).should be_nil
     end
 
-    it "should print to STDERR if logger is not set" do
-      silence_warnings do
-        old_fallback = ComponentDescriptors::Logging::FALLBACK
-        ComponentDescriptors::Logging::FALLBACK = @mock_logger
-        @mock_logger.should_receive(:puts).once.with("DEBUG : ComponentDescriptors : foo")
-        @l.debug("foo")
-        ComponentDescriptors::Logging::FALLBACK = old_fallback
+    it "should return empty array if extract_all_nodes is given a nil locator" do
+      @section.extract_all_nodes("", @document.root).should == []
+      @section.extract_all_nodes(nil, @document.root).should == []
+    end
+
+    describe "dereference" do
+  
+      before do
+        @nodes = REXML::XPath.match(@document.root, '//substanceAdministration')
+        @nodes.should_not be_empty
+        @section = ComponentDescriptors::Section.new(:foo, nil, nil)
+        @section.xml = @nodes.first
+        @section.stub!(:root_element).and_return(@document.root)
       end
-    end
-
-    it "should use logger if root logger is set" do
-      @l.logger = @mock_logger
-      @mock_logger.should_receive(:debug).once.with("ComponentDescriptors : foo")
-      @l.store(:bar, c = TestLogging.new)
-      c.debug("foo")
+  
+      it "should be able to produce a hash of dereferenced subsections" do
+        @section.dereference.should == 'Augmentin'
+      end
+  
+      it "should handle attempts to dereference a section without referenced content" do
+        @document.elements.delete_all('//text')
+        @section.dereference.should be_nil 
+      end
+  
+      it "should handle attempts to dereference a section without references" do
+        @document.elements.delete_all('//reference')
+        @section.dereference.should be_nil 
+      end
     end
 
   end
