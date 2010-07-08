@@ -56,7 +56,7 @@ module Validators
       end
     end
   
-    components :medication, :template_id => '2.16.840.1.113883.10.20.1.8' do
+    components :medications, :template_id => '2.16.840.1.113883.10.20.1.8' do
       repeating_section %q{cda:entry/cda:substanceAdministration}, :matches_by => :product_coded_display_name, Validation::C32_V2_5_TYPE => { :matches_by_reference => true } do
         field :product_coded_display_name => %q{cda:consumable/cda:manufacturedProduct/cda:manufacturedMaterial/cda:code/cda:originalText/text()}
         section :consumable do

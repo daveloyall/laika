@@ -44,7 +44,6 @@ EOS
       :component_module => :languages,
       :section => :languages,
       :gold_model => [@language],
-      :xml_component => @document,
       :descriptor => @component 
     )
   end

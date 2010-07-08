@@ -14,39 +14,11 @@ describe Validators::C32Validation do
       )
     end
 
-    describe "dereference" do
-  
-      before do
-        @document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/c32v2.5.xml'))
-        @scope.update_attributes(:xml_component => @document)
-        @nodes = REXML::XPath.match(@document.root, '//substanceAdministration')
-        @nodes.should_not be_empty
-      end
-  
-      it "should be able to produce a hash of dereferenced subsections" do
-        references = @scope.dereference(nil, @nodes)
-        references.keys.should == ['Augmentin', 'Aspirin']
-        references.values.each { |v| 'substanceAdministration'.should == v.name }
-      end
-  
-      it "should handle attempts to dereference a section without referenced content" do
-        @document.elements.delete_all('//text')
-        references = @scope.dereference(nil, @nodes)
-        references.should == {}
-      end
-  
-      it "should handle attempts to dereference a section without references" do
-        @document.elements.delete_all('//reference')
-        references = @scope.dereference(nil, @nodes)
-        references.should == {}
-      end
-    end
-
     describe "expected and provided values" do
 
       before do
         @document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/c32v2.5.xml'))
-        @scope.update_attributes(:xml_component => @document)
+        @scope.update_attributes(:document => @document)
       end
 
       describe "for a flat component" do
@@ -56,7 +28,7 @@ describe Validators::C32Validation do
           @scope.update_attributes(
             :component_module => :languages,
             :section          => :language_communication,
-            :gold_model       => @language
+            :gold_model       => [@language]
           )
         end
 
@@ -69,12 +41,11 @@ describe Validators::C32Validation do
         end
       
         it "should collect provided hash for language" do
-          @scope.update_attributes(:xml_component => REXML::XPath.first(@document.root, '//languageCommunication'))
-          @scope.collect_provided_values.should == {
+          @scope.collect_provided_values.should == [{
             :language_code => "en",
             :language_ability_mode => nil,
             :preference => nil,
-          }
+          }]
         end
       end
 
@@ -85,7 +56,7 @@ describe Validators::C32Validation do
           @scope.update_attributes(
             :component_module => :medications,
             :section          => :medication,
-            :gold_model       => @medication
+            :gold_model       => [@medication]
           )
         end
 
@@ -102,15 +73,14 @@ describe Validators::C32Validation do
         end
 
         it "should collect provided hashes for medication" do
-          @scope.update_attributes(:xml_component => REXML::XPath.first(@document.root, '//substanceAdministration'))
-          @scope.collect_provided_values(:medication, 'foo').should == {
+          @scope.collect_provided_values.should == [{
             :product_coded_display_name => "foo", 
             :free_text_brand_name => 'Augmentin', 
             :medication_type => nil,
             :status => nil, 
             :quantity_ordered_value => nil, 
             :expiration_time => '20151002',
-          }
+          }]
         end
 
       end
@@ -149,40 +119,16 @@ EOS
 
       before do
         @document = REXML::Document.new(TEST_XML)
-        @scope.update_attributes(:xml_component => @document)
+        @scope.update_attributes(
+          :component_module => :languages,
+          :document => @document
+        )
       end
 
-#      it "should decorate descriptor" do
-#        @scope.update_attributes(:descriptor => ComponentDescriptors::Component.new(:foo))
-#        @scope.descriptor.class
-#      end
-#
-#      it "should raise a ValidatorException if asked to decorate an unknown class" do
-#        @scope.update_attributes(:descriptor => :foo)
-#        lambda { @scope.descriptor }.should raise_error(ValidatorException)
-#      end
- 
-      it "should provide access to the root element" do
-        @scope.root_element.should == @document.root
-        @scope.descend(:xml_component => nil, :xml_section_nodes => [@scope.xml_component]).root_element.should == @document.root
+      it "should raise an error if unable to find descriptor" do
+        lambda { @scope.descriptor }.should raise_error(Validators::ValidatorException)
       end
 
-      it "should pull directives by version" do
-        Validators::C32Validation::DirectiveMap::SECTION_DIRECTIVES_MAP[:by_version_test] = {
-          Validation::C32_V2_5_TYPE => {
-            :action => :foo,
-          },
-          :action => :bar,
-        }
-        @scope.action(:by_version_test).should == :foo
-        @scope.validation_type = Validation::C32_V2_1_2_3_TYPE
-        @scope.action(:by_version_test).should == :bar
-      end
-      
-      it "should raise a SectionDirectiveException when key is unknown" do
-        lambda { @scope.section_directives_map_entry(:testing_no_key) }.should raise_error(Validators::SectionDirectiveException)
-      end
- 
       it "should determine equality between expected and provided" do
         @scope.send(:_equal_values?, "foo", "foo").should be_true
         @scope.send(:_equal_values?, :foo, "foo").should be_true
@@ -193,29 +139,10 @@ EOS
         @scope.send(:_equal_values?, Date.new(2010,5,27), "20100527").should be_true
       end
 
-      it "should catch requests to *_if_exists_in_model" do
-        @scope.stub!(:gold_expected_value).and_return(true)
-        @scope.should_receive(:foo)
-        @scope.foo_if_exists_in_model
-      end
-
-      it "should set xml_component to Document.root if given a Document" do
-        @scope.xml_component.should == @document.root
-      end
-  
       it "should provide the xpath location of the current xml in scope" do
         @scope.location.should == '/ClinicalDocument' 
       end
   
-      it "should return nil if extract_first_node is given a nil locator" do
-        @scope.extract_first_node("", @document.root).should be_nil
-        @scope.extract_first_node(nil, @document.root).should be_nil
-      end
-
-      it "should return empty array if extract_all_nodes is given a nil locator" do
-        @scope.extract_all_nodes("", @document.root).should == []
-        @scope.extract_all_nodes(nil, @document.root).should == []
-      end
     end
 
   end
