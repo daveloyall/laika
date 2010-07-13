@@ -11,8 +11,7 @@ describe "C32 Medication Validation" do
       :validator => "ComponentScopeTest",
       :inspection_type => "Testing",
       :component_module => :medications,
-      :section => :medications,
-      :gold_model_array => [@medication]
+      :reference_model => [@medication]
     )
   end
 
@@ -21,7 +20,7 @@ describe "C32 Medication Validation" do
     before do
       @document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/medications/jenny_medication.xml'))
       @scope.update_attributes(
-        :xml_component => @document,
+        :document => @document,
         :validation_type => Validation::C32_V2_1_2_3_TYPE
       )
     end
@@ -38,11 +37,12 @@ describe "C32 Medication Validation" do
     before do
       @medication.quantity_ordered_value = 30.0
       @document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/medications/jenny_medication_2.5.xml'))
-      @scope.update_attributes( :xml_component => @document )
+      @scope.update_attributes( :document => @document )
     end
 
     it "should verify a medication in a C32 doc version 2.5" do
       errors = @scope.validate
+      pp errors
       errors.should be_empty
     end
   
@@ -65,13 +65,13 @@ describe "C32 Medication Validation" do
         :free_text_brand_name => nil, 
         :medication_type => "Over the counter product", 
         :status => nil, 
-        :quantity_ordered_value => "30.0", 
-        :expiration_time => "October 02, 2015",
+        :quantity_ordered_value => 30.0, 
+        :expiration_time => Date.new(2015,10,2),
       }
       errors.first.provided_sections.should == [
         {
           :product_coded_display_name => "Prednisone", 
-          :free_text_brand_name => nil, 
+          :free_text_brand_name => "Intensol", 
           :medication_type => "Over the counter product", 
           :status => nil, 
           :quantity_ordered_value => "30.0", 
@@ -82,7 +82,7 @@ describe "C32 Medication Validation" do
 
     it "should return multiple provider sections when no matching section found" do
       @document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/c32v2.5.xml'))
-      @scope.update_attributes( :xml_component => @document )
+      @scope.update_attributes( :document => @document )
       @medication.stub!(:product_coded_display_name).and_return('foo')
       errors = @scope.validate
       errors.size.should == 1
@@ -93,8 +93,8 @@ describe "C32 Medication Validation" do
         :free_text_brand_name => nil, 
         :medication_type => "Over the counter product", 
         :status => nil, 
-        :quantity_ordered_value => "30.0", 
-        :expiration_time => "October 02, 2015",
+        :quantity_ordered_value => 30.0, 
+        :expiration_time => Date.new(2015,10,2),
       }
       errors.first.provided_sections.should == [
         {:product_coded_display_name => "Augmentin",
@@ -107,7 +107,10 @@ describe "C32 Medication Validation" do
         {:product_coded_display_name => "Aspirin",
          :free_text_brand_name => "Aspirin",
          :medication_type => nil,
-         :status => nil}
+         :status => nil,
+         :quantity_ordered_value => nil,
+         :expiration_time => nil,
+        }
       ]
     end
 

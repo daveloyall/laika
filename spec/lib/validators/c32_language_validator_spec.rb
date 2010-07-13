@@ -35,16 +35,14 @@ EOS
   before(:each) do
     @document = REXML::Document.new(C32_LANGUAGES_XML)
     @language = languages(:joe_smith_english_language)
-    @component = Validators::C32Descriptors.get_component(:languages).attach_xml(@document) 
     @scope = Validators::C32Validation::ComponentScope.new(
       :validation_type => Validation::C32_V2_5_TYPE,
-      :logger => TestLogger.new, #DevNull.new,
+      :logger => TestLoggerDevNull.new,
       :validator => "ComponentScopeTest",
       :inspection_type => "Testing",
       :component_module => :languages,
-      :section => :languages,
-      :gold_model => [@language],
-      :descriptor => @component 
+      :reference_model => [@language],
+      :document => @document
     )
   end
 
@@ -54,8 +52,6 @@ EOS
 
   it "should fail if there are no languageCommunication sections" do
     @document.elements.delete_all('//languageCommunication')
-    @component = Validators::C32Descriptors.get_component(:languages).attach(@document) 
-    @scope.update_attributes(:descriptor => @component)
     errors = @scope.validate
     errors.size.should == 1
     errors.first.should be_kind_of(Laika::SectionNotFound)
@@ -65,14 +61,13 @@ EOS
   it "should fail if we cannot match a languageCommunication section" do
     @language.stub!(:language_code).and_return('foo')
     errors = @scope.validate
-    pp errors
     errors.size.should == 1
     errors.first.should be_kind_of(Laika::NoMatchingSection)
     errors.first.location.should == '/ClinicalDocument/recordTarget/patientRole/patient/languageCommunication[1]'
     errors.first.expected_section.should == {
       :language_code => "foo",
       :language_ability_mode => 'RWR',
-      :preference => 'true',
+      :preference => true,
     }
     errors.first.provided_sections.should == [
       {
@@ -105,6 +100,7 @@ EOS
   it "should fail if preference does not match" do
     @language.preference = false
     errors = @scope.validate
+    #pp errors
     errors.size.should == 1
     e = errors.first
     e.should be_kind_of(Laika::ComparisonError)
@@ -115,13 +111,15 @@ EOS
 
   it "should not fail if language_ability_mode is absent" do
     @language.language_ability_mode = nil
-    @scope.validate.size.should == 0
+    errors = @scope.validate
+    #pp errors
+    errors.size.should == 0
   end
 
   it "should not fail if preference is absent" do
     @language.preference = nil
     errors = @scope.validate
-    #puts errors.inspect
+    #pp errors
     errors.size.should == 0
   end
 
@@ -129,17 +127,16 @@ EOS
     
     before do
       @german = languages(:emily_jones_german_language)
+      @scope.update_attributes(:reference_model  => [@language, @german])
     end
 
     it "should handle multiple languages" do
-      @scope.update_attributes(:gold_model_array => [@language, @german])
       @scope.validate.size.should == 0
     end
   
     it "should provide matching errors if unable to match amid multiple languages" do
       @german.preference = true
       @language.stub!(:language_code).and_return('foo')
-      @scope.update_attributes(:gold_model_array => [@language, @german])
       errors = @scope.validate
       errors.size.should == 2
       match_error = errors.first

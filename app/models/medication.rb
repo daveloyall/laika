@@ -22,6 +22,10 @@ class Medication < ActiveRecord::Base
     }
   end
 
+  def medication_type_name
+    medication_type.try(:name)
+  end
+
   # Generates a reference id used within C32 generation to point to the product name. 
   def c32_medication_id
     "medication-" + id.to_s

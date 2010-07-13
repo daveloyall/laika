@@ -27,16 +27,15 @@ describe Validators::C32Validation do
           @language = languages(:joe_smith_english_language)
           @scope.update_attributes(
             :component_module => :languages,
-            :section          => :language_communication,
-            :gold_model       => [@language]
+            :reference_model  => [@language]
           )
         end
 
         it "should collect expected hash for language" do
           @scope.collect_expected_values.should == {
-            :language_code => "en-US",
+            :language_code => 'en-US',
             :language_ability_mode => 'RWR',
-            :preference => 'true',
+            :preference => true,
           } 
         end
       
@@ -55,8 +54,8 @@ describe Validators::C32Validation do
           @medication = medications(:jennifer_thompson_medication)
           @scope.update_attributes(
             :component_module => :medications,
-            :section          => :medication,
-            :gold_model       => [@medication]
+            :key => :medications_medication,
+            :reference_model => [@medication]
           )
         end
 
@@ -68,18 +67,26 @@ describe Validators::C32Validation do
             :medication_type => "Over the counter product", 
             :status => nil, 
             :quantity_ordered_value => nil, 
-            :expiration_time => "October 02, 2015",
+            :expiration_time => Date.new(2015,10,2),
           } 
         end
 
         it "should collect provided hashes for medication" do
           @scope.collect_provided_values.should == [{
-            :product_coded_display_name => "foo", 
+            :product_coded_display_name => 'Augmentin', 
             :free_text_brand_name => 'Augmentin', 
             :medication_type => nil,
             :status => nil, 
             :quantity_ordered_value => nil, 
             :expiration_time => '20151002',
+          },
+          {
+            :product_coded_display_name => 'Aspirin', 
+            :free_text_brand_name => 'Aspirin', 
+            :medication_type => nil,
+            :status => nil, 
+            :quantity_ordered_value => nil, 
+            :expiration_time => nil,
           }]
         end
 
@@ -118,15 +125,27 @@ describe Validators::C32Validation do
 EOS
 
       before do
+        @module = :languages
         @document = REXML::Document.new(TEST_XML)
         @scope.update_attributes(
-          :component_module => :languages,
+          :component_module => @module,
           :document => @document
         )
       end
 
+      it "should lazily initialize simple attributes" do
+        @scope.unguarded_key.should be_nil
+        @scope.key.should == @scope.component_module
+      end
+
+      it "should lazily initialize complex attributes" do
+        @scope.unguarded_component_descriptors.should be_nil
+        @scope.component_descriptors == Validators::C32Descriptors.get_component(@module) 
+      end
+
       it "should raise an error if unable to find descriptor" do
-        lambda { @scope.descriptor }.should raise_error(Validators::ValidatorException)
+        @scope.component_module = :foo
+        lambda { @scope.component_descriptors }.should raise_error(Validators::ValidatorException)
       end
 
       it "should determine equality between expected and provided" do
@@ -142,7 +161,27 @@ EOS
       it "should provide the xpath location of the current xml in scope" do
         @scope.location.should == '/ClinicalDocument' 
       end
-  
+
+      it "should determine if xml was located for a non-array" do
+        @scope.stub!(:xml_value).and_return(true)
+        @scope.xml_located?.should be_true
+      end
+
+      it "should determine if xml was not located for a non-array" do
+        @scope.stub!(:xml_value).and_return(nil)
+        @scope.xml_located?.should be_false
+      end
+
+      it "should determine if xml was located for an array" do
+        @scope.stub!(:xml_value).and_return([true])
+        @scope.xml_located?.should be_true
+      end
+
+      it "should determine if xml was not located for an array" do
+        @scope.stub!(:xml_value).and_return([])
+        @scope.xml_located?.should be_false
+      end
+ 
     end
 
   end
@@ -156,7 +195,7 @@ EOS
   end
 
   it "should validate a v2.5 C32 document" do
-    puts @validator.validate(@patient, @document).inspect
+    @validator.validate(@patient, @document).should == []
     flunk "haven't finished directives for all component modules yet"
   end
 

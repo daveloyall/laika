@@ -1,3 +1,5 @@
+require 'delegate'
+
 # In order to be able to parse and validate a particular form of XML based
 # medical document, we need to be able to describe the logical components of
 # the document such that we can extract key fields for comparison with or
@@ -16,43 +18,160 @@
 # attribute - shortcut for a field whose xpath locator is simply the key value
 # as an attribute of the current node ("@#{key}").
 #
-# Every descriptor has a key which uniquely identifies it within its current
-# section.  This key serves as the method used to look up a matching element in
-# an object model of the patient document.  Every descriptor also has an xpath
-# locator, either explictly declared or implicit from the key, which is used to
-# identify a node within the document.  These locators nest.  So a descriptor's
-# locator is within the context of it's parent's xml node (as identified by the
-# parent's locator), and so on, up to the root section, whose context is the
-# document.
+# Every descriptor has a section_key which uniquely identifies it within its
+# current section.  This key serves as the method used to look up a matching
+# element in an object model of the patient document.  Every descriptor also
+# has an xpath locator, either explictly declared or implicit from the
+# section_key, which is used to identify a node within the document.  These
+# locators nest.  So a descriptor's locator is within the context of it's
+# parent's xml node (as identified by the parent's locator), and so on, up to
+# the root section, whose context is the document.
+#
+# Every descriptor also has an index_key which uniquely identifies it within
+# the nested hash of descriptors that it is a part of.
 module ComponentDescriptors
-
-  def self.included(base)
-    base.extend(ClassMethods)
-  end
 
   class DescriptorError < RuntimeError; end
   class DescriptorArgumentError < DescriptorError; end
 
-  module ClassMethods
+  module OptionsParser
 
-    def descriptors
-      @descriptors_map = {} unless @descriptors_map
-      return @descriptors_map
-    end
+    KNOWN_KEYS = [:required, :repeats, :template_id, :matches_by, :matches_by_reference, :locate_by, :reference]
+
+    # Parses the different argument styles accepted by section/field methods.
+    #
+    # method(:key)
+    # method(:key, :option => :foo)
+    # method(:key => :locator, :option => :foo)
+    # method([...original arguments...], :injected => :options)
+    #
+    # (The last variation is used internally by methods which need to inject
+    # additional options into the call.  The original arguments are passed as
+    # an array, with additional options as a final hash argument)
+    #
+    # Any other combination will raise an error.
+    #
+    # In the case of a key, locator pair, this special argument is isolated by
+    # removing all of the known_keys from the hash.  The remaining key is taken
+    # to be the key, locator pair.  If there are multiple keys remaining, an
+    # error is raised.
+    #
+    # Returns [key, locator = nil, options = {}]
+    def parse_args(args, known_keys = KNOWN_KEYS)
+      local_args = args.dclone
+      known_keys = Array(known_keys)
+
+      validate = lambda do |arguments|
+        raise(DescriptorArgumentError, "No arguments given.") if arguments.empty?
+        raise(DescriptorArgumentError, "Two many arguments given (expected two at most): #{arguments.inspect}") if arguments.size > 2
+      end
+      validate.call(local_args)
+
+      first, options = local_args
+      locator, key, injected_options = nil, nil, nil
+      if first.kind_of?(Array)
+        # original arguments were stashed in an array so that additional options could be added
+        validate.call(first)
+        injected_options = options
+        first, options = first
+      end  
+      options ||= {}
+      raise(DescriptorArgumentError, "Expected an options hash; got: #{options.inspect}") unless options.kind_of?(Hash)
+  
+      case first
+        when Hash 
+        then 
+          known_keys.each do |k|
+            options[k] = first.delete(k) if first.key?(k)
+          end
+          first.each do |k,v|
+            # Allows for VALIDATION_TYPE => {} overrides
+            options[k] = first.delete(k) if v.kind_of?(Hash)
+          end
+          raise(DescriptorArgumentError, "Ambiguous arguments.  Too many options left in #{first.inspect} to identify the key and locator values.") if first.size > 1
+          key, locator = first.shift
+        else key = first
+      end
  
-    # Declares a component module.
-    def components(name, *args, &descriptors)
-      self.descriptors[name] = ComponentDefinition.new(name, *args, &descriptors)
-    end
-
-    def get_component(name)
-      descriptors[name].instantiate if descriptors.key?(name)
+      options.merge!(injected_options) if injected_options
+      return key, locator, options
     end
 
   end
 
-  # Included by all classes which describe some section of an xml patient document.
-  module SectionDescriptors
+  # Include this in your module to enable creation of ComponentDescriptors.
+  # 
+  # Then begin generating descriptors by making calls to components()
+  module Mapping
+    def self.included(base)
+      base.extend(ClassMethods)
+    end
+  
+    module ClassMethods
+      include ComponentDescriptors::OptionsParser
+ 
+      def descriptors
+        @descriptors_map = {} unless @descriptors_map
+        return @descriptors_map
+      end
+   
+      # Declares a component module that repeats.  The associated block may be used to define
+      # sections and fields within the component, as shown in ComponentDescriptors::DSL.
+      # This block of descriptors may occur one or more times, so components() is the
+      # way to begin a module that is a repeating_section(), such as the C83 Languages
+      # module
+      # 
+      # components :languages => %q{//cda:recordTarget/cda:patientRole/cda:patient/cda:languageCommunication}, :matches_by => :language_code do
+      #   field :language_code => %q{cda:languageCode/@code}
+      #   field :language_ability_mode => %q{cda:modeCode/@code}, :required => false
+      #   field :preference_id => %q{cda:preferenceInd/@value}, :required => false
+      # end
+      # 
+      def components(*args, &descriptors)
+        _component_definition(args, :repeats => true, &descriptors)
+      end
+ 
+      # Declares a component module that starts with a single, non-repeating base section.
+      # That section may contain a repeating_section however.
+      #
+      # component :allergies, :template_id => '2.16.840.1.113883.10.20.1.2' do
+      #   repeating_section :allergy => %q{cda:entry/cda:act[cda:templateId/@root='2.16.840.1.113883.10.20.1.27']/cda:entryRelationship[@typeCode='SUBJ']/cda:observation[cda:templateId/@root='2.16.840.1.113883.10.20.1.18']}, :matches_by => :free_text_product do
+      #     field :free_text_product => %q{cda:participant[@typeCode='CSM']/cda:participantRole[@classCode='MANU']/cda:playingEntity[@classCode='MMAT']/cda:name/text()}
+      #     field :start_event => %q{cda:effectiveTime/cda:low/@value}
+      #     ...
+      #   end
+      # end
+      #
+      def component(*args, &descriptors)
+        _component_definition(args, :repeats => false, &descriptors)
+      end
+  
+      def get_component(name, options = {})
+        descriptors[name].instantiate(options) if descriptors.key?(name)
+      end
+ 
+      private
+
+      def _component_definition(descriptor_args, component_options, &descriptors)
+        key, locator, options = parse_args(descriptor_args)
+        definition = ComponentDefinition.new(descriptor_args, component_options, &descriptors)
+        self.descriptors[key] = definition
+      end 
+    end
+  end
+
+  # These methods can be used to construct nested descriptors.
+  #
+  # repeating_section :insurance_provider => %q{cda:entry/cda:act[cda:templateId/@root='2.16.840.1.113883.10.20.1.20']/cda:entryRelationship/cda:act[cda:templateId/@root='2.16.840.1.113883.10.20.1.26']} do
+  #   field :group_number => %q{cda:id/@root}, :required => false
+  #   section :insurance_type => %q{cda:code[@codeSystem='2.16.840.1.113883.6.255.1336']}, :required => false do
+  #     attribute :code
+  #     field :name => %q{@displayName}
+  #   end
+  #   field :represented_organization => %q{cda:performer[@typeCode='PRF']/cda:assignedEntity[@classCode='ASSIGNED']/cda:representedOrganization[@classCode='ORG']/cda:name}, :required => false
+  # end
+  module DSL
+    include OptionsParser
 
     # Adds a subsection to this section.
     def section(*args, &descriptors)
@@ -75,84 +194,9 @@ module ComponentDescriptors
       _instantiate_and_store(:field, args, :locate_by => :attribute)
     end
 
-    # Associates a REXML node with this Descriptor.  The tree of subdescriptors
-    # will be walked and values will be set wherever we are able to match
-    # locators in the given document.
-    def attach_xml(xml)
-      attach(:xml, xml.kind_of?(REXML::Document) ? xml.root : xml)
-    end
-
-    def attach_model(model)
-      attach(:model, model)
-    end
-
-    def attach(mode, source)
-      raise(DescriptorError, "SectionDescriptors#attach accepts only two modes: :xml or :model") unless [:xml, :model].include?(mode)
-      debug "SectionDescriptors:attach mode: #{mode}, source: #{source.inspect}"
-      self.send("#{mode}=", source)
-      self.send("extract_values_from_#{mode}")
-      each_value { |v| v.attach(mode, extracted_value || source) } if respond_to?(:each_value)
-      self
-    end
-
-    # Produces an unattached but instantiated copy of this descriptor and its
-    # children. 
-    def copy
-      self.class.new(key, locator, options, &descriptors)
-    end
-
-    # Parses the different argument styles accepted by section/field methods.
-    #
-    # method(:key)
-    # method(:key, :option => :foo)
-    # method(:key => :locator, :option => :foo)
-    # method([...original arguments...], :injected => :options)
-    #
-    # (The last variation is used internally by methods which need to inject
-    # additional options into the call.  The original arguments are passed as
-    # an array, with additional options as a final hash argument)
-    #
-    # Any other combination will raise an error.
-    #
-    # In the case of a key, locator pair, this special argument is isolated by
-    # removing all of the known_keys from the hash.  The remaining key is taken
-    # to be the key, locator pair.  If there are multiple keys remaining, an
-    # error is raised.
-    #
-    # Returns [key, locator = nil, options = {}]
-    def parse_args(args, known_keys)
-      known_keys = Array(known_keys)
-
-      validate = lambda do |arguments|
-        raise(DescriptorArgumentError, "No arguments given.") if arguments.empty?
-        raise(DescriptorArgumentError, "Two many arguments given (expected two at most): #{arguments.inspect}") if arguments.size > 2
-      end
-      validate.call(args)
-
-      first, options = args
-      locator, key, injected_options = nil, nil, nil
-      if first.kind_of?(Array)
-        # original arguments were stashed in an array so that additional options could be added
-        validate.call(first)
-        injected_options = options
-        first, options = first
-      end  
-      options ||= {}
-      raise(DescriptorArgumentError, "Expected an options hash; got: #{options.inspect}") unless options.kind_of?(Hash)
-  
-      case first
-        when Hash 
-        then 
-          known_keys.each do |k|
-            options[k] = first.delete(k) if first.key?(k)
-          end
-          raise(DescriptorArgumentError, "Ambiguous arguments.  Too any options left in #{first.inspect} to identify the key and locator values.") if first.size > 1
-          key, locator = first.shift
-        else key = first
-      end
- 
-      options.merge!(injected_options) if injected_options
-      return key, locator, options
+    # Factory creation method for descriptors of :type.
+    def self.create(type, key, locator, options, &descriptors)
+      "ComponentDescriptors::#{type.to_s.classify}".constantize.send(:new, key, locator, options, &descriptors)
     end
 
     private
@@ -162,17 +206,16 @@ module ComponentDescriptors
     end
 
     def _instantiate_and_store(type, *args, &descriptors)
-      key, locator, options = parse_args(args, :required)
-      store(key, _instantiate(type, key, locator, options, &descriptors))
+      key, locator, options = parse_args(args)
+      options[:logger] = logger unless options.key?(:logger) || logger.nil?
+      debug("_instantiate_and_store: #{key} => #{type} in #{self}")
+      store(key, DSL.create(type, key, locator, options, &descriptors))
       self
     end
 
-    def _instantiate(type, key, locator, options, &descriptors)
-      "ComponentDescriptors::#{type.to_s.classify}".constantize.send(:new, key, locator, options, &descriptors)
-    end
   end
 
-  module NodeManipulation
+  module XMLManipulation
 
     def self.included(base)
       base.send(:attr_accessor, :error)
@@ -193,6 +236,7 @@ module ComponentDescriptors
     # and use it to lookup the medication name in the free text table for 
     # a v2.5 C32 doc.
     def dereference(node = xml)
+      return unless node
       debug("dereference(#{node.inspect})")
       if reference = extract_first_node(".//#{CDA_NAMESPACE}:reference[@value]", node)
         debug("dereference reference: #{reference.inspect}")
@@ -278,19 +322,72 @@ module ComponentDescriptors
       root.xml 
     end
 
-    # Returns the first descendent matching the given key or nil.
-    def descendent(key)
+    # Walks up the chain of ancestors, returning the first non-nil
+    # result for the given method, or nil if no result.
+    def first_ancestors(method)
+      return nil if root?
+      if value = parent.send(method)
+        return value
+      end
+      parent.first_ancestors(method) 
+    end
+
+    # Returns the first descendent matching the given section_key or nil.
+    def descendent(section_key)
       return nil unless respond_to?(:fetch)
-      unless descendent = fetch(key, nil)
+      unless descendent = fetch(section_key, nil)
         values.each do |v|
           raise(NoMethodError, "Node #{v} does not respond to descendent()") unless v.respond_to?(:descendent)
-          descendent = v.descendent(key)
+          descendent = v.descendent(section_key)
           break unless descendent.nil?
         end
       end
       return descendent 
     end
-    
+
+    # Array of all the descendent descriptors of the current descriptor.
+    def descendents
+      respond_to?(:values) ? values.map { |d| d.branch }.flatten : []
+    end
+
+    def parent_section_key
+      parent.try(:section_key)
+    end
+  
+    def parent_index_key
+      parent.try(:index_key)
+    end
+ 
+    # Looks up a descriptor in the tree by index_key.
+    def find(index_key)
+      index[index_key]
+    end
+
+    # Self plus all descendent descriptors.
+    def branch
+      descendents.unshift(self)
+    end
+
+    # Array of all descriptor tree members.
+    def all
+      root.branch
+    end
+
+    # Lazily initialized index of all tree members by index_key().
+    def index
+      unless @descriptor_index
+        @descriptor_index = all.inject({}) do |hash,d|
+          hash[d.index_key] = d
+          hash
+        end
+      end
+      @descriptor_index
+    end
+
+    # Clears the index hash.
+    def clear_index
+      @descriptor_index.clear if @descriptor_index
+    end
   end
 
   # Extensions to Hash used by node descriptors to keep track of parents.
@@ -303,131 +400,305 @@ module ComponentDescriptors
     end
   end
 
+  # All Descriptors have a number of important attributes.
+  #
+  # * @section_key => uniquely identifies the descriptor within it's parent Hash.
+  #
+  # * @locator => xpath locator indicating how to find the associated xml value
+  #   for this descriptor within the xml node of it's parent.
+  #
+  # * @reference => the method to call to find the associated value from an attached
+  #   model.  Defaults to section_key.
+  #
+  # * @descriptors => a block of ComponentDescriptors::DSL code describing any
+  #   subsections or fields of this descriptor.
+  #
+  # * @xml => an xml node attached to the descriptor.  This is the node we would
+  #   search in to produce an @extracted_value using the @locator.
+  #
+  # * @model => a document model element attached to the descriptor.  This is the 
+  #   element we would send @method to to look up an associated model value.
+  #
+  # * @extracted_value => if we have attached an xml node or model element to this
+  #   descriptor.  @extracted_value will hold the results of applying the @locator
+  #   or @section_key to it.
+  #
+  # * @options => the hash of options first passed to the descriptor 
   module DescriptorInitialization
 
     def self.included(base)
       base.class_eval do
-        attr_accessor :key, :options, :descriptors, :xml, :model, :extracted_value
-        attr_writer :locator
-        include SectionDescriptors
-        include NodeManipulation
-        include NodeTraversal
+        attr_accessor :section_key, :locator, :reference, :options, :descriptors, :extracted_value
+        attr_reader :xml, :model
         include Logging
+        include XMLManipulation
+        include NodeTraversal
+        include DSL
+
+        include InstanceMethods
+        alias_method :unguarded_locator, :locator
+        def locator
+          guarded_locator
+        end
+        alias_method :unguarded_reference, :reference
+        def reference
+          guarded_reference
+        end
       end
     end
 
-    def initialize(key, locator, options, &descriptors)
-      self.key = key
-      self.locator = locator
-      self.options = options || {}
-      self.logger = self.options[:logger]
-      self.descriptors = descriptors
-      _initialize_subsections
-    end
-
-    # If an xml node has been set for the descriptor, use the
-    # descriptor's locator or key on it and store the result in the
-    # @extracted_value attribute.  Returns the newly stored extracted_value or
-    # nil.
-    def extract_values_from_xml
-      debug "DescriptorInitialization:extract_values_from_xml xml: #{xml.inspect}"
-      self.extracted_value = xml.nil? ? nil : extract_first_node(locator) unless self.extracted_value
-    end
-
-    # If a modle node has been set for the descriptor, call the descriptor's
-    # key on it and store the result in the @extracted_value attribute.
-    # Returns the newly stored extracted_value or nil
-    def extract_values_from_model
-      debug "DescriptorInitialization:extract_values_from_model model: #{model.inspect}"
-      self.extracted_value = model.nil? ? nil : model.send(key) unless self.extracted_value || !model.respond_to?(key)
-    end
-
-    # Backs through the given section's locator to find the 
-    # first non-nil Element node.  Given a locator such as 
-    # 'foo/bar/baz' will try 'foo/bar/baz', then 'foo/bar'
-    # then 'foo' looking for a non-nil Element to return.
-    #
-    # If no match is made, returns the node we've been 
-    # searching in.
-    #
-    # This is useful to pinpoint validation errors as close
-    # to their problem source as possible.
-    def find_innermost_element(locator = self.locator, search_node = xml)
-      debug("DescriptorInitialization:find_innermost_element using #{locator} in #{search_node.inspect}")
-      until node = extract_first_node(locator, search_node)
-        # clip off the left most [*] predicate or /* path
-        md = %r{
-          \[[^\]]+\]$ |
-          /[^/\[]*$
-        }x.match(locator)
-        break if md.nil? || md.pre_match == '/'
-        locator = md.pre_match
+    module InstanceMethods
+      def initialize(section_key, locator, options, &descriptors)
+        self.section_key = section_key
+        self.locator = locator
+        self.options = options || {}
+        self.logger = self.options[:logger]
+        self.descriptors = descriptors
+        _initialize_subsections
       end
-      node ||= search_node 
-      node = node.element if node.kind_of?(REXML::Attribute)
-      node = node.parent if node.kind_of?(REXML::Text)
-      return node
-    end
+
+      def validation_type
+        options[:validation_type] || first_ancestors(:validation_type)
+      end
+
+      # Hash of options specific to the current validation_type.  Typically empty.
+      def validation_type_overrides
+        options[validation_type] || {}
+      end
+
+      # First checks to see if the options was specified specially for the
+      # current validation_type.  If so, returns it, if not, returns the base
+      # option.
+      def options_by_type(key)
+        validation_type_overrides[key] || options[key]
+      end
+
+      # Sets and attaches the given xml node to the descriptor, extracting a value
+      # based on locator. 
+      def xml=(value)
+        @model, @extracted_value = nil, nil
+        @xml = value.kind_of?(REXML::Document) ? value.root : value
+        attach_xml
+        @xml
+      end
+
+      # Sets and attaches the given model node to the descriptor, extracting a 
+      # value based on the section_key.
+      def model=(value)
+        @xml, @extracted_value = nil, nil
+        @model = value
+        attach_model
+        @model
+      end
  
-    def template_id
-      unless @template_id_established
-        @template_id = options[:template_id]
-        @template_id ||= key.to_s if key.to_s =~ /(?:\d+\.\d+)+/
-        @template_id_established = true
+      # True if an xml or model node has been attached to this Descriptor.
+      # Useful for distinguishing between a Descriptor with a nil
+      # extracted_value and one which has never been attached.
+      def attached?
+        xml || model 
       end
-      @template_id
-    end
 
-    # If a locator has not been specified, we can assume a locator based on the 
-    # key, but we need to know whether to construct xpath as an element or an 
-    # attribute.  This returns either :element, or :attribute as a guide for
-    # how to construct the locator.
-    def locate_by
-      options[:locate_by] || :element
-    end
+      # A model may be flat.  Or a model may provide an accessor for a 
+      # a section of a document, rather than just for fields. 
+      #
+      # Raises an error if no model attached.
+      def model_has_section?
+        raise(DescriptorError, "No model attached.") unless model
+        model_has_section = reference && model.respond_to?(reference.to_s)
+        model_has_section ||= model.kind_of?(Hash) && model.key?[reference.to_s]
+      end
+ 
+      def index_key
+        key = [parent_index_key, section_key].compact.join('_')
+        key.blank? ? nil : key.to_sym
+      end
+  
+      # If an xml node has been set for the descriptor, use the
+      # descriptor's locator on it and store the result in the
+      # @extracted_value attribute.  Returns the newly stored extracted_value or
+      # nil.
+      def extract_values_from_xml
+        debug "DescriptorInitialization#extract_values_from_xml xml: #{xml.inspect}"
+        self.extracted_value = xml.nil? ? nil : extract_first_node(locator) unless self.extracted_value
+      end
+  
+      # If a model node has been set for the descriptor, call the descriptor's
+      # section_key on it, or if the model is a Hash, look up the section_key,
+      # and store the result in the @extracted_value attribute.
+      # Returns the newly stored extracted_value or nil.
+      def extract_values_from_model
+        debug "DescriptorInitialization#extract_values_from_model model: #{model.inspect}"
+        unless extracted_value || model.nil?
+          self.extracted_value = model.send(reference.to_s) if reference && model.respond_to?(reference.to_s)
+          self.extracted_value ||= model[reference] if model.kind_of?(Hash)
+          debug "DescriptorInitialization#extract_values_from_model extracted: #{extracted_value}" if extracted_value
+        end
+        extracted_value
+      end
+  
+      # Backs through the given section's locator to find the 
+      # first non-nil Element node.  Given a locator such as 
+      # 'foo/bar/baz' will try 'foo/bar/baz', then 'foo/bar'
+      # then 'foo' looking for a non-nil Element to return.
+      #
+      # If no match is made, returns the node we've been 
+      # searching in.
+      #
+      # This is useful to pinpoint validation errors as close
+      # to their problem source as possible.
+      def find_innermost_element(locator = self.locator, search_node = xml)
+        debug("DescriptorInitialization:find_innermost_element using #{locator} in #{search_node.inspect}")
+        until node = extract_first_node(locator, search_node)
+          # clip off the left most [*] predicate or /* path
+          md = %r{
+            \[[^\]]+\]$ |
+            /[^/\[]*$
+          }x.match(locator)
+          break if md.nil? || md.pre_match == '/'
+          locator = md.pre_match
+        end
+        node ||= search_node 
+        node = node.element if node.kind_of?(REXML::Attribute)
+        node = node.parent if node.kind_of?(REXML::Text)
+        return node
+      end
+   
+      def template_id
+        unless @template_id_established
+          @template_id = options_by_type(:template_id)
+          @template_id ||= section_key.to_s if section_key.to_s =~ /(?:\d+\.\d+)+/
+          @template_id_established = true
+        end
+        @template_id
+      end
+  
+      # If a locator has not been specified, we can assume a locator based on
+      # the section_key, but we need to know whether to construct xpath as an
+      # element or an attribute.  This returns either :element, or :attribute
+      # as a guide for how to construct the locator.
+      def locate_by
+        options_by_type(:locate_by) || :element
+      end
 
-    def locator
-      unless @locator
-        if template_id   
-          @locator = %Q{//#{NodeManipulation::CDA_NAMESPACE}:section[./#{NodeManipulation::CDA_NAMESPACE}:templateId[@root = '#{template_id}']]}
-        elsif locate_by == :attribute
-          @locator = "@#{key.to_s.camelcase(:lower)}"
-        elsif key =~ /[^\w]/
-          # non word characters--asume an xpath locator is the key
-          @locator = key
-        else
-          @locator = "#{NodeManipulation::CDA_NAMESPACE}:#{key.to_s.camelcase(:lower)}"
+      # Note that the original locator accessor is aliased to :unguarded_locator
+      # when DescriptorInitialization is included. 
+      def guarded_locator
+        return unguarded_locator if unguarded_locator
+        self.locator = case 
+          when template_id   
+            then %Q{//#{XMLManipulation::CDA_NAMESPACE}:section[./#{XMLManipulation::CDA_NAMESPACE}:templateId[@root = '#{template_id}']]}
+          when locate_by == :attribute
+            then "@#{section_key.to_s.camelcase(:lower)}"
+          when section_key =~ /[^\w]/
+            # non word characters--asume an xpath locator is the section_key
+            then section_key
+          when section_key.to_s =~ /^\w+/
+            # all word characters--assume an element reference
+            then "#{XMLManipulation::CDA_NAMESPACE}:#{section_key.to_s.camelcase(:lower)}"
         end 
       end
-      @locator
-    end
-
-    # True if this descriptor describes a section which must be present.
-    def required?
-      unless @required
-        pp 'required', options
-        @required = options[:required]
-        @required = true if @required.nil?
+ 
+      # Note that the original reference accessor is aliased to 
+      # :unguarded_reference when DescriptorInitialization is included.
+      def guarded_reference
+        return unguarded_reference if unguarded_reference
+        self.reference = options[:reference] || section_key
       end
-      return @required
-    end
 
-    # True if this descriptor may occur one or more times.
-    def repeats?
-      false
-    end
+      # True if this descriptor describes a section which must be present.
+      def required?
+        unless @required
+          @required = options_by_type(:required)
+          @required = true if @required.nil?
+        end
+        return @required
+      end
+  
+      # True if this descriptor may occur one or more times.
+      def repeats?
+        false
+      end
+  
+      # True if this is a field leaf node.
+      def field?
+        false 
+      end
+  
+      def field_name
+        section_key if field?
+      end
+  
+      def to_s
+        "<#{self.class.to_s.demodulize}:#{self.object_id} #{section_key.inspect} => #{locator.inspect}#{' {...} ' if descriptors}>"
+      end
+      
+      def pretty_print(pp)
+        had_attributes, had_descriptors = false, false 
+        pp.group(2, "<#{self.class.to_s.demodulize}:#{self.object_id} #{section_key.inspect} => #{locator.inspect} :index_key => #{index_key.inspect}") do
+          had_attributes = _pretty_print_attributes(pp)
+          had_descriptors = _pretty_print_descriptors(pp)
+        end
+        pp.breakable if had_attributes || had_descriptors
+        pp.text ">"
+      end
+  
+      # Produces an unattached but instantiated copy of this descriptor and its
+      # children.  (This is different than dup or clone.)
+      def copy
+        self.class.new(section_key, locator, options, &descriptors)
+      end
 
-    # True if this is a field leaf node.
-    def field?
-      false 
-    end
+      protected
 
-    def field_name
-      key if field?
-    end
+      # Associates a REXML node with this Descriptor.  The tree of subdescriptors
+      # will be walked and values will be set wherever we are able to match
+      # locators in the given document.
+      def attach_xml
+        attach(:xml, xml)
+      end
 
-    def to_s
-      "<#{self.class}:#{self.object_id} #{key} => #{locator} #{' {...} ' if descriptors}>"
+      def attach_model
+        attach(:model, model)
+      end
+
+      def attach(mode, source)
+        raise(DescriptorError, "SectionDescriptors#attach accepts only two modes: :xml or :model") unless [:xml, :model].include?(mode)
+        debug "attach mode: #{mode}, source: #{source.inspect} to #{self}"
+        self.send("extract_values_from_#{mode}")
+        each_value { |v| v.send("#{mode}=", extracted_value || source) } if respond_to?(:each_value)
+        self
+      end
+
+      private
+  
+      def _pretty_print_attributes(pp)
+        had_attributes = false
+        [:options, :xml, :model, :extracted_value].each do |m|
+          if !(value = send(m)).nil? && (value.respond_to?(:empty?) ? !value.empty? : true)
+            pp.breakable
+            pp.text "@#{m} = "
+            pp.pp value 
+            had_attributes = true
+          end
+        end
+        had_attributes
+      end
+  
+      def _pretty_print_descriptors(pp)
+        had_descriptors = false
+        if respond_to?(:each)
+          had_descriptors = true
+          pp.breakable
+          i = 1
+          each do |k,v|
+            pp.text "#{k.inspect} => "
+            pp.pp v
+            pp.breakable unless i == size
+            i += 1
+          end
+        end
+        had_descriptors
+      end
     end
   end
 
@@ -485,59 +756,89 @@ module ComponentDescriptors
     end
   end
 
-  # Describes the mapping for key fields and subsections of a section
+  # Describes the mapping for fields and subsections of a section
   # of a component module.
   class Section < DescriptorHash 
     include DescriptorInitialization
 
-    # Array of field keys used to uniquely identify a section. 
+    # Array of field section_keys used to uniquely identify a section. 
     def matches_by
-      Array(options[:matches_by])
+      Array(options_by_type(:matches_by))
     end
 
     # If true, then a section is identified by dereferencing a pointer
     # attribute ('//reference/@value') which matches the @ID of an element
     # in the main document whose text value is the key needed to match.
     def matches_by_reference?
-      options[:matches_by_reference]
+      options_by_type(:matches_by_reference)
     end
 
-    # Returns a hash of the section's matches_by keys and their values.
+  end
+
+  class RepeatingSectionInstance < Section
+    # Returns a hash of the section's matches_by keys and their values.  If any
+    # key descriptor is missing or is unattached, an empty hash will be
+    # returned.  All of the key descriptors must exist for a section_key to be
+    # established, however any of the key values may be nil, so long as a node
+    # has been attached (making it possible to have obtained a value).
     def section_key_hash
-      matches_by.inject({}) do |hash,k| 
-        hash[k] = descendent(k).extracted_value
+      matches_by.inject({}) do |hash,k|
+        if matches_by_reference? && xml
+          value = dereference 
+          hash[k] = value if value
+        else
+          key_descriptor = descendent(k)
+          unless key_descriptor && key_descriptor.attached?
+            # not all key_descriptors in place yet (perhaps we are still
+            # processing the descriptors)
+            return {}
+          else
+            hash[k] = key_descriptor.extracted_value
+          end
+        end
         hash
       end
     end
 
-    # Returns a string built from matches_by keys (optionally dereferenced) used
-    # to uniquely identify a section.
-    def section_key 
-      if matches_by_reference?
-        raise('implement me')
-      elsif !matches_by.empty?
-        Section.section_key(section_key_hash)
+    alias :unguarded_section_key :section_key
+    def section_key
+      return unguarded_section_key if unguarded_section_key
+      if key = repeating_section_instance_key
+        debug("setting section_key to #{key.inspect}")
+        self.section_key = key
       end
     end
 
+    # Returns a key built from matches_by keys (optionally dereferenced) used
+    # to uniquely identify an instance of a repeating section.
+    def repeating_section_instance_key 
+      unless matches_by.empty?
+        RepeatingSectionInstance.section_key(section_key_hash)
+      end
+#      if matches_by_reference?
+#        RepeatingSectionInstance.section(xml ? {matches_by => dereference} : section_key_hash)
+#      elsif !matches_by.empty?
+#        RepeatingSectionInstance.section_key(section_key_hash)
+#      end
+    end
+
+    # Returns the given hash as an array of key, value pairs
+    # sorted by keys.  If evaluated as strings, this keys will
+    # be unique and consistently ordered.
+    #
+    # An empty key_values hash produces a nil section_key.
     def self.section_key(key_values)
-      key_values.keys.sort.map do |key|
-        "#{key}:#{key_values[key]}"
-      end.join("__")
+      return nil if key_values.empty?
+      key_values.to_a.sort { |a,b| a[0].to_s <=> b[0].to_s }
     end
   end
 
   # Describes the mapping for a section that may occur one or more times.
   class RepeatingSection < Section
 
-    def _initialize_subsections
-      section(:_repeating_section_template, &descriptors) if descriptors 
-    end
-  
     def attach(mode, source)
       raise(DescriptorError, "RepeatingSection#attach accepts only two modes: :xml or :model") unless [:xml, :model].include?(mode)
-      debug "RepeatingSection:attach mode: #{mode}, source: #{source.inspect}"
-      self.send("#{mode}=", source)
+      debug "attach mode: #{mode}, source: #{source.inspect} to #{self}"
       self.send("extract_values_from_#{mode}")
       instantiate_section_nodes(mode)
       self
@@ -548,50 +849,54 @@ module ComponentDescriptors
     # @extracted_value attribute. Returns the newly stored extracted_value
     # or nil.
     def extract_values_from_xml
-      debug("RepeatingSection#extract_values_from_xml xml: #{xml.inspect}")
+      debug("extract_values_from_xml xml: #{xml.inspect}")
       self.extracted_value = (xml.nil? ? nil : extract_all_nodes(locator))
     end
 
     # Clears the hash (dropping any existing sections) and creates a new
     # section for each node in extracted_values.  Each node will be attached
-    # and injected with associated xml values. 
+    # and injected with associated xml or model values depending on mode. 
     def instantiate_section_nodes(mode)
       raise(DescriptorError, "RepeatingSection#instantiate_section_nodes accepts only two modes: :xml or :model") unless [:xml, :model].include?(mode)
-      debug "RepeatingSection:instantiate_section_nodes mode: #{mode}"
+      debug "instantiate_section_nodes mode: #{mode}"
       clear
       (extracted_value || send(mode)).try(:each_with_index) do |node,i|
         node_position = i + 1
-        debug("RepeatingSection#instantiate_section_node node ##{node_position} -> #{node.inspect}")
-        section = _instantiate(:section, nil, nil, :matches_by => matches_by, :matches_by_reference => matches_by_reference?, &descriptors)
-        section.extracted_value = node 
-        section.attach(mode, node)
-        section.locator = "#{locator}[#{node_position}]"
-        key = section.section_key || section.locator
-        section.key = key 
-        store(key, section)
+        debug("instantiate_section_node node ##{node_position} -> #{node.inspect}")
+        section_locator = "#{locator}[#{node_position}]"
+        section = DSL.create(:repeating_section_instance, nil, section_locator, :logger => logger, :matches_by => matches_by, :matches_by_reference => matches_by_reference?, &descriptors)
+        section.send("#{mode}=", node)
+        section.extracted_value = node unless section.extracted_value
+        section.section_key = section.locator unless section.section_key
+        if matches_by_reference? && mode == :xml
+          debug("setting #{matches_by} value to #{section.dereference}")
+          matches_by.each { |k| section.descendent(k).extracted_value = section.dereference}
+        end
+        store(section.section_key, section)
       end
     end
 
-    # Returns a hash of key values from the passed model; one value
-    # for each entry in matches_by() which the model responds to.
-    def get_section_key_hash_from(model)
-      matches_by.inject({}) do |hash,k| 
-        v = model.send(k) if model.respond_to?(k)
-        hash[k] = v
-        hash
-      end
-    end
-
-    # Looks up matches_by key value(s) in the passed model and returns
-    # the section whose key matches or nil if there is no match.
-    def find_matching_section_for(model)
-      fetch(Section.section_key(get_section_key_hash_from(model)), nil)
-    end
+#    # Returns a hash of key values from the passed model; one value
+#    # for each entry in matches_by() which the model responds to.
+#    def get_section_key_hash_from(model)
+#      matches_by.inject({}) do |hash,k| 
+#        v = model.send(k) if model.respond_to?(k)
+#        hash[k] = v
+#        hash
+#      end
+#    end
+#
+#    # Looks up matches_by key value(s) in the passed model and returns
+#    # the section whose key matches or nil if there is no match.
+#    def find_matching_section_for(model)
+#      fetch(RepeatingSectionInstance.section_key(get_section_key_hash_from(model)), nil)
+#    end
 
     # True if this descriptor may occur one or more times.
     def repeats?
       true 
     end
+
   end
 
   # Describes the mapping for a single field.
@@ -599,7 +904,7 @@ module ComponentDescriptors
     include DescriptorInitialization
     include InstanceEquality
     
-    equality_and_hashcode_from :key, :locator, :options
+    equality_and_hashcode_from :section_key, :locator, :options
 
     # If an xml node has been set for the descriptor, extract the textual value
     # of the descriptor's locator and store the result in the @extracted_value
@@ -613,6 +918,7 @@ module ComponentDescriptors
     def field?
       true 
     end
+  
   end
 
   # Captures all of the information needed to describe a Component.
@@ -620,66 +926,56 @@ module ComponentDescriptors
   class ComponentDefinition
     include InstanceEquality
 
-    equality_accessors :name, :args, :descriptors
+    equality_accessors :descriptor_args, :component_options, :descriptors
 
-    def initialize(name, *args, &descriptors)
-      self.name = name
-      self.args = args
+    def initialize(descriptor_args, component_options, &descriptors)
+      self.descriptor_args = descriptor_args
+      self.component_options = component_options
       self.descriptors = descriptors
     end
 
-    def instantiate
-      Component.new(name, *args, &descriptors)
+    def instantiate(options = {})
+      ComponentModule.new(descriptor_args, component_options.merge(options), &descriptors)
     end
 
   end
 
   # Describes the mapping between key sections and fields of one component module
-  # from a patient document. 
-  class Component < DescriptorHash
-    include SectionDescriptors
-    include NodeTraversal
+  # from a patient document.  This is a wrapper class around the root descriptor
+  # intended to provide a uniform handle on any base component module.
+  class ComponentModule < SimpleDelegator
+    include OptionsParser 
     include Logging
 
-    attr_accessor :name, :options, :template_id, :validation_type, :xml, :model, :descriptors
+    attr_accessor :original_arguments, :repeats, :component_descriptors, :root_descriptor
 
-    def initialize(name, *args, &descriptors)
-      self.options = args.first || {}
-      self.name = name
-      self.template_id = options[:template_id]
-      self.validation_type = options[:validation_type]
+    def initialize(*args, &descriptors)
+      self.original_arguments = args
+      key, locator, options = parse_args(args)
+      self.repeats = options.delete(:repeats)
       self.logger = options[:logger]
-      self.descriptors = descriptors
-      if template_id
-        section(template_id, &descriptors)
-      else
-        _initialize_subsections
-      end
-    end
-
-    # Associates a REXML document or gold modle with this component.  The tree
-    # of descriptors will be walked and values will be set wherever we are able
-    # to match locators/keys in the given document.
-    def attach(mode, source)
-      raise(DescriptorError, "Component#attach accepts only two modes: :xml or :model") unless [:xml, :model].include?(mode)
-      debug "Component:attach mode: #{mode}, source: #{source.inspect}"
-      self.send("#{mode}=", source)
-      each_value { |v| v.attach(mode, source) }
+      self.component_descriptors = descriptors
+      # XXX make this safer then a private call into the DSL module...factory method?
+      self.root_descriptor = ComponentDescriptors::DSL.create(repeats? ? :repeating_section : :section, key, locator, options, &descriptors)
+      super(root_descriptor)
       self
     end
 
-    # No xml parsing for the base component.
-    def error?
-      false
+    def name
+      root_descriptor.section_key
+    end
+ 
+    def repeats?
+      @repeats
     end
 
-    # Component Modules are required.
-    def required?
-      true
+    def to_s
+      root_descriptor.to_s
     end
 
+    # Create an unattached copy of the ComponentModule
     def copy
-      Component.new(name, options, &descriptors)
+      ComponentModule.new(*original_arguments, &component_descriptors)
     end
 
   end

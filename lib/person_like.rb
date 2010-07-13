@@ -35,12 +35,8 @@ module PersonLike
       "#{person_name.first_name} #{person_name.last_name}"
     end
 
-    def first_name
-      person_name.first_name
-    end
-    
-    def last_name
-      person_name.last_name
+    [:name_prefix, :first_name, :last_name, :middle_name, :last_name, :name_suffix].each do |m|
+      define_method(m) { person_name.try(m) }
     end
   end
 
