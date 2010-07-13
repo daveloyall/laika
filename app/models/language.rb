@@ -14,7 +14,9 @@ class Language < ActiveRecord::Base
     }
   end
 
-  
+  def language_ability_mode_code
+    language_ability_mode.try(:code)
+  end
 
   # Creates the language code as specified in Section 2.2 of the CCD Spec
   def language_code

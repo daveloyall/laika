@@ -26,11 +26,11 @@ describe "Logging" do
 
   it "should print to STDERR if logger is not set" do
     silence_warnings do
-      old_fallback = Logging::FALLBACK
-      Logging::FALLBACK = @mock_logger
+      old_fallback = Logging.fallback
+      Logging.fallback = @mock_logger
       @mock_logger.should_receive(:puts).once.with("DEBUG : \e[4;32;1mTestLogging\e[0m : foo")
       @l.debug("foo")
-      Logging::FALLBACK = old_fallback
+      Logging.fallback = old_fallback
     end
   end
 

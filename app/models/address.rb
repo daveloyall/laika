@@ -14,6 +14,10 @@ class Address < ActiveRecord::Base
         city state postal_code iso_country_id ].all? {|a| read_attribute(a).blank? }
   end
 
+  def iso_country_code
+    iso_country.try(:code)
+  end
+
   def requirements
     case addressable_type
       when 'RegistrationInformation':

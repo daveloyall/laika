@@ -12,9 +12,8 @@ describe "C32 Isurance Provider Validation" do
       :validator => "ComponentScopeTest",
       :inspection_type => "Testing",
       :component_module => :insurance_providers,
-      :section => :insurance_providers,
-      :gold_model_array => [@insurance_provider],
-      :xml_component => @document
+      :reference_model => [@insurance_provider],
+      :document => @document
     )
   end
 
@@ -32,7 +31,7 @@ describe "C32 Isurance Provider Validation" do
     errors.size.should == 1
     errors.first.should be_kind_of(Laika::ComparisonError)
     @insurance_provider.group_number = original_group_number
-    @scope.errors.clear
+    @scope.clear
     @scope.validate.should == []
   end
 

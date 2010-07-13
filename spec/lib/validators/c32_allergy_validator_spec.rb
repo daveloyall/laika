@@ -12,9 +12,8 @@ describe "C32 Allergy Validation" do
       :validator => "ComponentScopeTest",
       :inspection_type => "Testing",
       :component_module => :allergies,
-      :section => :allergies,
-      :gold_model_array => [@allergy],
-      :xml_component => @document
+      :reference_model => [@allergy],
+      :document => @document
     )
   end
 
@@ -31,7 +30,7 @@ describe "C32 Allergy Validation" do
     errors.first.location.should == '/ClinicalDocument/component/structuredBody/component/section/entry/act/entryRelationship/observation'
     errors.first.expected_section.should == {
       :free_text_product => "foo",
-      :start_event => "February 21, 2006",
+      :start_event => Date.new(2006,2,21),
       :end_event => nil,
       :product_code => "70618",
     }
@@ -46,15 +45,13 @@ describe "C32 Allergy Validation" do
   end
 
   it "should verify when there are no known allergies" do
-    pending "validate for no known allergies" do
-      document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/allergies/no_known_allergies.xml'))
-      allergy = Allergy.new
-      @scope.update_attributes(
-        :gold_model_array => [allergy],
-        :xml_component => document
-      )
-      errors = @scope.validate
-      errors.should be_empty
-    end
+    document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/allergies/no_known_allergies.xml'))
+    allergy = Allergy.new
+    @scope.update_attributes(
+      :reference_model => [allergy],
+      :document => document
+    )
+    errors = @scope.validate
+    errors.should be_empty
   end
 end

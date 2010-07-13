@@ -1,8 +1,11 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 module Testing
-  include ComponentDescriptors
+  include ComponentDescriptors::Mapping
 end
+
+# Set to STDERR or STDOUT for debugging output
+Logging.fallback = nil #STDERR
 
 describe ComponentDescriptors do
 
@@ -20,12 +23,14 @@ describe ComponentDescriptors do
 
     class TestHash < ComponentDescriptors::DescriptorHash
       include ComponentDescriptors::NodeTraversal
+      attr_accessor :an_attribute
     end
     class TestLeaf; include ComponentDescriptors::NodeTraversal; end
 
     before do
       @r = TestHash.new
-      @r.store(:child, @c = TestHash[:child => TestLeaf.new])
+      @r.store(:child, @c = TestHash.new)
+      @c.store(:child, @gc = TestLeaf.new)
     end
 
     it "should raise an error if node has no parent method" do
@@ -63,6 +68,14 @@ describe ComponentDescriptors do
       @r.descendent(:dingo).should be_nil
     end
 
+    it "should find first non-nil ancestor value" do
+      @gc.first_ancestors(:an_attribute).should be_nil
+      @r.an_attribute = 'at the root'
+      @gc.first_ancestors(:an_attribute).should == 'at the root'
+      @c.an_attribute = 'at the parent'
+      @gc.first_ancestors(:an_attribute).should == 'at the parent'
+    end
+
     it "should find a particular descendent at arbitrary depth" do
       @c.store(:grandchild1, g1 = TestHash[:grandchild1 => TestLeaf.new])
       @c.store(:grandchild2, g2 = TestHash[:grandchild2 => TestLeaf.new])
@@ -79,7 +92,7 @@ describe ComponentDescriptors do
     end
   end
 
-  describe "NodeManipulation" do
+  describe "XMLManipulation" do
 
     before do
       @document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/c32v2.5.xml'))
@@ -126,7 +139,7 @@ describe ComponentDescriptors do
   describe "parse_args" do
 
     before do
-      @component = ComponentDescriptors::Component.new(:foo)
+      @component = ComponentDescriptors::ComponentModule.new(:foo)
     end
 
     it "should raise an error on no args" do
@@ -169,6 +182,22 @@ describe ComponentDescriptors do
       lambda { @component.parse_args([1,2], []) }.should raise_error(ComponentDescriptors::DescriptorArgumentError)
     end
 
+    it "should parse unknown keys that reference hashes as overrides" do
+      @component.parse_args([:foo => :bar, :matches_by => :bar, :special => { :matches_by => :biscuit }]).should == [:foo, :bar, {:matches_by => :bar, :special => { :matches_by => :biscuit }}]
+    end
+
+    it "should not change arguments" do
+      original_args = {:foo => :bar, :matches_by => :baz}
+      args = original_args.dup
+      key, locator, options = @component.parse_args(args)
+      args.should == original_args
+    end
+
+    it "should not change arguments when references are nested" do
+      args = [{:foo => :bar, :matches_by => :baz}]
+      key, locator, options = @component.parse_args(args)
+      args.should == [{:foo => :bar, :matches_by => :baz}]
+    end
   end
 
   describe "components" do
@@ -179,35 +208,57 @@ describe ComponentDescriptors do
     end
 
     it "should parse options" do
-      lambda { Testing.components }.should raise_error(ArgumentError)
+      lambda { Testing.components }.should raise_error(ComponentDescriptors::DescriptorArgumentError)
       Testing.components(:foo)
       Testing.components(:foo, :bar => :dingo)
     end
 
-    it "should be possible to instantiate a defined component" do
-      Testing.components(:foo) do
-        field(:bar)
-      end
-      Testing.get_component(:foo).should == { :bar => ComponentDescriptors::Field.new(:bar, nil, nil) }
+    it "should retain arguments in component definition" do
+      Testing.components(:foo => '//path', :matches_by => :bar)
+      definition = Testing.descriptors[:foo]
+      definition.descriptor_args.should == [{:foo => '//path', :matches_by => :bar}]
+      definition.component_options.should == {:repeats => true}
     end
 
+    it "should be possible to instantiate a defined component" do
+      Testing.component(:foo) do
+        field(:bar)
+      end
+      component = Testing.get_component(:foo)
+      component.root_descriptor.should be_instance_of(ComponentDescriptors::Section)
+      component.root_descriptor.should == { :bar => ComponentDescriptors::Field.new(:bar, nil, nil) }
+      component.should == { :bar => ComponentDescriptors::Field.new(:bar, nil, nil) }
+    end
+
+    it "should be possible to instantiate a defined repeating component" do
+      Testing.components(:foos) do
+        field(:bar)
+      end
+      component = Testing.get_component(:foos)
+      component.root_descriptor.should be_instance_of(ComponentDescriptors::RepeatingSection)
+      component.root_descriptor.should == { :bar => ComponentDescriptors::Field.new(:bar, nil, nil) }
+      component.should == { :bar => ComponentDescriptors::Field.new(:bar, nil, nil) }
+    end
   end
 
   describe "ComponentDefinition" do
     
     it "should retain all the component definition arguments" do
       i = 0
-      cd = ComponentDescriptors::ComponentDefinition.new(:foo) do 
+      cd = ComponentDescriptors::ComponentDefinition.new(:foo, {:bar => :baz}) do 
         i += 1 
       end
-      cd.name.should == :foo
+      cd.descriptor_args.should == :foo
+      cd.component_options.should == {:bar => :baz}
       c = cd.instantiate
+      c.section_key.should == :foo
+      c.options.should == {:bar => :baz}
       i.should == 1
     end
 
   end
 
-  describe "Descriptors" do
+  describe "DescriptorInitialization" do
 
     class Foo; include ComponentDescriptors::DescriptorInitialization; end
 
@@ -216,7 +267,6 @@ describe ComponentDescriptors do
     end
   
     it "should be required if no required option set" do
-      Foo.new(:foo, nil, nil)
       Foo.new(:foo, nil, nil).required?.should be_true 
     end
 
@@ -230,13 +280,13 @@ describe ComponentDescriptors do
 
     it "should identify template_id from key" do
       foo = Foo.new(@template_id, nil, nil)
-      foo.key.should == @template_id
+      foo.section_key.should == @template_id
       foo.template_id.should == @template_id
     end
  
     it "should identify template_id from options" do
       foo = Foo.new(:a_section, nil, :template_id => @template_id)
-      foo.key.should == :a_section
+      foo.section_key.should == :a_section
       foo.template_id.should == @template_id
     end
 
@@ -251,13 +301,18 @@ describe ComponentDescriptors do
     end
 
     it "should construct a locator based on key as attribute" do
-      foo = Foo.new(:element_name, nil, {:locate_by => :attribute})
-      foo.locator.should == "@elementName"
+      foo = Foo.new(:attribute_name, nil, {:locate_by => :attribute})
+      foo.locator.should == "@attributeName"
     end
 
     it "should assume key as locator if key seems to be an xpath expression" do
       foo = Foo.new('ns:element', nil, nil)
       foo.locator.should == 'ns:element'
+    end
+
+    it "should recognize override to options by validation type" do
+      foo = Foo.new(:foo, nil, :matches_by => 'not me', :validation_type => :version_test, :version_test => { :matches_by => 'this' })
+      foo.options_by_type(:matches_by).should == 'this'
     end
 
     TEST_XML = <<-EOS
@@ -308,12 +363,13 @@ EOS
   describe "Component" do
 
     before do
-      @component = ComponentDescriptors::Component.new(:test)
+      @component = ComponentDescriptors::ComponentModule.new(:test)
     end
 
     it "should build a section if given a template_id" do
       tid = '2.16.840.1.113883.10.20.1.8'
-      ComponentDescriptors::Component.new(:foo, :template_id => tid ).should == { tid => {} }
+      component = ComponentDescriptors::ComponentModule.new(:foo, :template_id => tid )
+      component.should == ComponentDescriptors::Section.new(nil, nil, :templae_id => tid)
     end
 
     it "should create a section hash" do
@@ -340,16 +396,67 @@ EOS
   describe "RepeatingSection" do
 
     it "should initialize" do
-      ComponentDescriptors::RepeatingSection.new('foo', nil, nil).should be_kind_of(ComponentDescriptors::RepeatingSection)
+      repeats = ComponentDescriptors::RepeatingSection.new(:foo, nil, nil)
+      repeats.should be_kind_of(ComponentDescriptors::RepeatingSection)
+      repeats.section_key.should == :foo 
     end
 
     it "should instantiate a template subsection" do
-      rs = ComponentDescriptors::RepeatingSection.new('foo', nil, nil) do
+      rs = ComponentDescriptors::RepeatingSection.new(:foo, nil, nil) do
         field :bar
       end
-      rs.should == { :_repeating_section_template => { :bar => ComponentDescriptors::Field.new(:bar,nil,nil) } } 
+      rs.should == { :bar => ComponentDescriptors::Field.new(:bar,nil,nil) } 
     end
 
+    it "Cannot explicitly set section_key to a known option like :required.  Need to provide explicit options for :section_key and :locator"
+  end
+
+  describe "RepeatingSectionInstance" do
+
+    before do
+      @ri = ComponentDescriptors::RepeatingSectionInstance.new(nil, nil, :matches_by => :bar) do
+        field :bar, :locate_by => :attribute
+      end
+      @xml = REXML::Document.new("<foo bar='dingo' />")
+    end
+
+    it "should lazily initialize its section_key from attached xml" do
+      @ri.locator = "foo[1]"
+      @ri.unguarded_section_key.should be_nil 
+      @ri.xml = @xml
+      @ri.section_key.should == [[:bar, "dingo"]]
+    end
+
+    it "should lazily initalize its section_key from attached model" do
+      @ri.locator = "foo[1]"
+      @ri.unguarded_section_key.should be_nil
+      @ri.model = { :bar => "dingo" }
+      @ri.section_key.should == [[:bar, "dingo"]]
+    end
+
+    it "should lazily initialize its locator" do
+      @ri.section_key = :dingo
+      @ri.unguarded_locator.should be_nil
+      @ri.xml = @xml
+      @ri.locator.should == "cda:dingo"
+    end
+
+    it "should handle requests to section_key when nothing attached yet" do
+      @ri.unguarded_locator.should be_nil
+      @ri.attached?.should be_false
+      @ri.section_key.should be_nil
+    end
+
+    it "should handle requests to section_key when no matches_by is set" do
+      ri = ComponentDescriptors::RepeatingSectionInstance.new(nil, nil, nil)
+      ri.section_key.should be_nil
+    end
+
+    it "should produce consistently sorted section_key arrays" do
+      ComponentDescriptors::RepeatingSectionInstance.section_key({:b => 2, :a => 1}).should == [[:a, 1], [:b, 2]]
+    end
+
+    it "should cope with error situations where two sections have the same key value"
   end
 
   describe "Section" do
@@ -376,44 +483,44 @@ EOS
    
     before do
       @xml = REXML::Document.new(%Q{<patient xmlns='urn:hl7-org:v3'><foo id='1'><bar baz='dingo'>biscuit</bar></foo><foo id='2'/></patient>})
-      @foo, @foo2 = REXML::XPath.match(@xml, '//cda:foo', ComponentDescriptors::NodeManipulation::DEFAULT_NAMESPACES)
+      @foo, @foo2 = REXML::XPath.match(@xml, '//cda:foo', ComponentDescriptors::XMLManipulation::DEFAULT_NAMESPACES)
       @foo.should_not be_nil
       @logger = nil#TestLoggerDevNull.new
     end
   
     it "should attach an xml node to a section" do
       section = ComponentDescriptors::Section.new(:foo, nil, :logger => @logger)
-      section.attach_xml(@xml.root)
+      section.xml = @xml
       section.extracted_value.should == @foo 
     end
 
     it "should use custom locators" do
       section = ComponentDescriptors::Section.new(:foo, %Q{//cda:foo[@id='2']}, :logger => @logger)
-      section.attach_xml(@xml)
+      section.xml = @xml
       section.extracted_value.should == @foo2
     end
 
     it "should extract a text value for a field" do
       field = ComponentDescriptors::Field.new(:bar, nil, :logger => @logger)
-      field.attach_xml(@foo)
+      field.xml = @foo
       field.extracted_value.should == 'biscuit'
     end
 
     it "should extract a text value for a field with a custom locator" do
       field = ComponentDescriptors::Field.new(:bar, %q{cda:bar/@baz}, :logger => @logger)
-      field.attach_xml(@foo)
+      field.xml = @foo
       field.extracted_value.should == 'dingo'
     end
 
     it "should extract an array of sections for a repeating section" do
       repeating = ComponentDescriptors::RepeatingSection.new(:foo, nil, :logger => @logger)
-      repeating.attach_xml(@xml.root)
+      repeating.xml = @xml.root
       repeating.extracted_value.should == [@foo, @foo2]
     end
 
     it "should extract an array of sections for a repeating section keyed by xpath" do
       repeating = ComponentDescriptors::RepeatingSection.new('cda:foo', nil, :logger => @logger)
-      repeating.attach_xml(@xml.root)
+      repeating.xml = @xml.root
       repeating.extracted_value.should == [@foo, @foo2]
     end
 
@@ -437,7 +544,7 @@ EOS
       end
 
       it "should handle a nested set of descriptors" do
-        @repeating.attach_xml(@xml.root)
+        @repeating.xml = @xml.root
         @repeating.extracted_value.should == [@foo, @foo2]
         @repeating['cda:foo[1]'].extracted_value.should == @foo
         @repeating['cda:foo[1]'][:id].extracted_value.should == '1'
@@ -450,14 +557,14 @@ EOS
       end
 
       it "should produce a values hash" do
-        @repeating.attach_xml(@xml.root)
+        @repeating.xml = @xml.root
         values_hash = @repeating.to_values_hash
         values_hash.should be_kind_of(ComponentDescriptors::ValuesHash)
         values_hash.should == {"cda:foo[1]"=>{:id=>"1", :bar=>"biscuit", :baz=>"dingo"}, "cda:foo[2]"=>{:id=>"2", :bar=>nil, :baz=>nil}}
       end
 
       it "should produce a flattened values hash do" do
-        @repeating.attach_xml(@xml.root)
+        @repeating.xml = @xml.root
         field_hash = @repeating.to_field_hash
         field_hash.should be_kind_of(ComponentDescriptors::ValuesHash)
         field_hash.should == {:id=>"1", :bar=>"biscuit", :baz=>"dingo", :"cda:foo[2]_id"=>"2", :"cda:foo[2]_bar"=>nil, :"cda:foo[2]_baz"=>nil}
@@ -470,12 +577,11 @@ EOS
       end 
 
       it "should atach_model" do
-        @repeating.attach_xml(@xml.root)
+        @repeating.xml = @xml
         f1 = DummyModel.new("1", "biscuit", "dingo")
         f2 = DummyModel.new("2", nil, nil)
         clone = @repeating.copy
-        puts "attaching model now\n\n\n"
-        clone.attach_model([f1, f2])
+        clone.model = [f1, f2]
         clone.to_values_hash.should == @repeating.to_values_hash
       end
     end
@@ -513,6 +619,164 @@ EOS
     it "should raise an error if keys collide" do
       @vh[:baz_foo] = :oopsie
       lambda { @vh.flatten }.should raise_error(ComponentDescriptors::DescriptorError)
+    end
+
+    it "should nest multiple levels" do
+      pending do
+        ComponentDescriptors::ValuesHash[
+          :foo => ComponentDescriptors::ValuesHash[
+            :baz => 1,
+            :bar => ComponentDescriptors::ValuesHash[
+              :baz => 2,
+            ],
+            :dingo => ComponentDescriptors::ValueHash[
+              :bing => 5,
+            ],
+          ],
+          :another => ComponentDescriptors::ValuesHash[
+            :baz => 3,
+            :bar => ComponentDescriptors::ValuesHash[
+              :baz => 4,
+            ],
+            :biscuit => ComponentDescriptors::ValuesHash[
+              :bing => 6,
+            ],
+          ],
+        ].flatten.should == {
+          :foo_baz         =>1,
+          :foo_bar_baz     =>2,
+          :dingo_bing      => 5,
+          :another_baz     =>3,
+          :another_bar_baz =>4,
+          :biscuit_bing    => 6,
+        }
+      end
+    end
+  end
+
+  describe "indexing" do
+
+    before do
+      @base = ComponentDescriptors::Section.new(:base, nil, nil) do
+        section :child do 
+          field :grand
+        end
+      end
+      @child = @base[:child]
+      @grand = @child[:grand]
+    end
+
+    it "should provide an index_key" do
+      @base.index_key.should == :base
+      @child.index_key.should == :base_child
+      @grand.index_key.should == :base_child_grand
+    end
+
+    it "should provide an index" do
+      @base.index.should == {
+        :base             => @base,
+        :base_child       => @child,
+        :base_child_grand => @grand,
+      }
+    end
+
+    it "should find a descriptor by index" do
+      @base.find(:base).should == @base
+      @base.find(:base_child).should == @child
+      @base.find(:base_child_grand).should == @grand
+    end
+
+    it "should find a descriptor by index regardless of current position" do
+      @grand.find(:base).should == @base
+      @grand.find(:base_child).should == @child
+      @grand.find(:base_child_grand).should == @grand 
+    end
+
+    it "should find all descriptors in branch" do
+      @base.branch.should == [@base, @child, @grand]
+      @child.branch.should == [@child, @grand]
+      @grand.branch.should == [@grand]
+    end
+
+    it "should find all descendants" do
+      @base.descendents.should == [@child, @grand]
+      @child.descendents.should == [@grand]
+      @grand.descendents.should == []
+    end
+
+    it "should return all descriptors in tree" do
+      @base.all.should == [@base, @child, @grand]
+      @child.all.should == [@base, @child, @grand]
+      @grand.all.should == [@base, @child, @grand]
+    end
+ 
+  end
+
+  describe "pretty printing" do
+    
+    REPEATING_XML = <<-EOS
+<base>
+  <biscuits gravy='true' sour_cream='false' />
+  <biscuits gravy='false' sour_cream='false' />
+</base>
+EOS
+
+    before do
+      @base = ComponentDescriptors::Section.new(:base, nil, nil) do
+        section :child1 => 'foo/bar' do 
+          field :grand
+        end
+        field :child2 => 'thing/path'
+        repeating_section :repeating => '//biscuits', :matches_by => :gravy do
+          field :gravy, :locate_by => :attribute
+          field :sour_cream, :locate_by => :attribute
+        end
+      end
+      @child1 = @base[:child1]
+      @grand = @child1[:grand]
+      @child2 = @base[:child2]
+      @repeats = @base[:repeating]
+      @repeating_doc = REXML::Document.new(REPEATING_XML)
+    end
+
+    it "should provide concise to_s for section" do
+      @base.to_s.should =~ /<Section:\d+ :base => "cda:base" {...} >/
+    end
+
+    it "should provide concise to_s for field" do
+      @grand.to_s.should =~ /<Field:\d+ :grand => "cda:grand">/
+    end
+
+    it "should provide concise to_s for repeating_section" do
+      @repeats.to_s.should =~ %r|<RepeatingSection:\d+ :repeating => "//biscuits" {...} >|
+    end
+
+    it "should provide concise to_s for repeating_section_instance" do
+      @repeats.xml = @repeating_doc
+      @repeats.values.first.to_s.should =~ %r|<RepeatingSectionInstance:\d+ \[\[:gravy, "true"]] => "//biscuits\[1]" {...} >|
+    end
+
+    it "should provide pretty_printing for section" do
+      @base.pretty_inspect.should =~
+%r|<Section:\d+ :base => "cda:base" :index_key => :base
+  :child1 => <Section:\d+ :child1 => "foo/bar" :index_key => :base_child1
+    :grand => <Field:\d+ :grand => "cda:grand" :index_key => :base_child1_grand>
+  >
+  :child2 => <Field:\d+ :child2 => "thing/path" :index_key => :base_child2>
+  :repeating => <RepeatingSection:\d+ :repeating => "//biscuits" :index_key => :base_repeating
+    @options = {:matches_by=>:gravy}
+    :gravy => <Field:\d+ :gravy => "@gravy" :index_key => :base_repeating_gravy
+      @options = {:locate_by=>:attribute}
+    >
+    :sour_cream => <Field:\d+ :sour_cream => "@sourCream" :index_key => :base_repeating_sour_cream
+      @options = {:locate_by=>:attribute}
+    >
+  >
+>|
+    end
+
+    it "should provide pretty_printing for field" do
+      @grand.pretty_inspect.should =~ %r|<Field:\d+ :grand => "cda:grand" :index_key => :base_child1_grand>|
     end
   end
 end

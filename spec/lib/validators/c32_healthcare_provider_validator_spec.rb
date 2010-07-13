@@ -64,10 +64,9 @@ EOS
       :logger => TestLoggerDevNull.new,
       :validator => "ComponentScopeTest",
       :inspection_type => "Testing",
-      :component_module => :healthcare_provider,
-      :section => :healthcare_providers,
-      :gold_model_array => [@provider],
-      :xml_component => @document
+      :component_module => :healthcare_providers,
+      :reference_model => [@provider],
+      :document => @document
     )
   end
 
@@ -76,16 +75,18 @@ EOS
   end
 
   it "should fail if unable to match a performer section" do
-    @provider.person_name.stub!(:first_name).and_return('foo')
+    @provider.stub!(:first_name).and_return('foo')
     errors = @scope.validate
     errors.size.should == 1
     errors.first.should be_kind_of(Laika::NoMatchingSection)
     errors.first.location.should == '/ClinicalDocument/documentationOf/serviceEvent/performer'
     errors.first.expected_section.should == {
-      :code => "370000000X",
-      :name => "Nursing Service Related Providers",
-      :start_service => "March 23, 1977",
-      :end_service => "March 23, 1987",
+      :code => "CP",
+      :name => "Consulting Provider",
+      :assigned_entity_code => "370000000X",
+      :assigned_entity_name => "Nursing Service Related Providers",
+      :start_service => Date.new(1977,3,23),
+      :end_service => Date.new(1987,3,23),
       :name_prefix => "RN.",
       :first_name => "foo",
       :middle_name => nil,
@@ -101,8 +102,10 @@ EOS
     }
     errors.first.provided_sections.should == [
       {
-        :code => "370000000X",
-        :name => "Nursing Service Related Providers",
+        :code => "CP",
+        :name => "Consulting Provider",
+        :assigned_entity_code => "370000000X",
+        :assigned_entity_name => "Nursing Service Related Providers",
         :start_service => "19770323",
         :end_service => "19870323",
         :name_prefix => "RN.",
