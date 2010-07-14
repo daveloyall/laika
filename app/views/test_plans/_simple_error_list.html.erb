@@ -1,0 +1,20 @@
+<div class="simple-error-list">
+  <table>
+    <tr valign="top">
+      <th width="125">Error Type</th>
+      <th>Error Message</th>
+    </tr>
+  
+    <%
+         errors.sort { |a,b| a.validator <=> b.validator }.each_with_index do |err, index| 
+    %>
+    <tr>
+      <td><%= err.validator %></td>
+      <td>
+          <b><%= index %>.</b> <span><%= err.error_message %></span>
+      </td>
+    </tr>  
+    <%end %> 
+     
+  </table>
+</div>

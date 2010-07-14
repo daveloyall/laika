@@ -16,18 +16,21 @@
           <div class="inspection_result_header <%= test_plan_results_class(@test_plan) %>">
             <h3>Test Result Summary: <span><%= test_plan_results_heading(@test_plan) %></span></h3>
           </div>
-          <div class="widget">
-            <span class="number"><%= @test_plan.xml_validation_errors.count %></span> <a href="#xml_validation">XML Validation Errors</a>
+          <div id="xml_validation_summary" class="inspection-summary widget">
+            <div class="error-count column">
+              <span class="number"><%= @test_plan.xml_validation_errors.count %></span> <a href="#xml_validation">XML Validation Errors</a>
+            </div>
+            <%= render :partial => 'errors_breakout', :locals => { :errors => @test_plan.xml_validation_errors, :inspection => :xml_validation } %> 
           </div>
-          <div id="content_inspection_summary" class="widget container">
-            <div class="column">
+          <div id="content_inspection_summary" class="inspection-summary widget container">
+            <div class="error-count column">
               <span class="number"><%= @test_plan.content_inspection_errors.count %></span> <a href="#content_inspection">Content Inspection Warnings</a>
             </div>
             <%= render :partial => 'errors_breakout', :locals => { :errors => @test_plan.content_inspection_errors } %> 
           </div>
           <% if @test_plan.umls_enabled? -%>
-          <div class="widget container">
-            <div class="column">
+          <div id="umls_validation_summary" class="inspection-summary widget container">
+            <div class="error-count column">
               <span class="number"><%= @test_plan.umls_codesystem_errors.count %></span> <a href="#umls_validation">UMLS Code Warnings</a>
             </div>
             <%= render :partial => 'errors_breakout', :locals => { :errors => @test_plan.umls_codesystem_errors } %> 
@@ -63,22 +66,35 @@
 </div>
 
 <div id="xml_validation" class="test_results">
-    <%= render :partial => "xml_error_response",
-      :locals => { :errors => @test_plan.xml_validation_errors } %>
+  <div id="xml_validation_inner" class="section-errors-inner-wrap">
+    <%= render :partial => "content_inspection_results",
+      :locals => { :inspection => :xml_validation, :errors => @test_plan.xml_validation_errors } %>
+  </div>
 </div>
 
-<div id="content_inspection"class="test_results">
-  <div id="content-inspection-inner-wrap">
+<div id="content_inspection" class="test_results">
+  <div id="content_inspection_inner" class="section-errors-inner-wrap">
     <%= render :partial => "content_inspection_results",
-      :locals => { :errors => @test_plan.content_inspection_errors } %>
+      :locals => { :inspection => :content_errors, :errors => @test_plan.content_inspection_errors } %>
   </div>
 </div>
 
 <div id="umls_validation" class="test_results">
+  <div id="umls_validation_inner" class="section-errors-inner-wrap">
     <% if @test_plan.umls_enabled? -%>
       <%= render :partial => "content_inspection_results",
-        :locals => { :errors => @test_plan.umls_codesystem_errors } %>
+        :locals => { :inspection => :umls_errors, :errors => @test_plan.umls_codesystem_errors } %>
     <% end -%>
+  </div>
 </div>    
 
+<div class="column span-21 first" id="xml_frame">
+  <h3>Vendor Generated XML</h3>
+  <%= render :partial => "node" , :locals => {:doc => @xml_document} %>
+</div>
 
+<%- if @print_preview %>
+<div class="column span-21 first" id="print-preview-error-list">
+  <%= render :partial => "simple_error_list", :locals => { :errors => @test_plan.content_errors } %>
+</div>
+<%- end -%>

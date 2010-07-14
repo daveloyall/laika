@@ -99,7 +99,7 @@ module Validators
 
               # figure out how to handle the errors here
                unless validate_code(oid,code,name)
-                 errors << Laika::ValidationError.new(
+                 errors << Laika::ReviewableError.new(
                    base_error_parameters.merge(
                      :location        => el.xpath,
                      :message   => "Code #{code} not found in CodeSystem #{oid}"

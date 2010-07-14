@@ -1,8 +1,12 @@
-<%- errors ||= [] %>
+<%- errors ||= [] 
+    inspection ||= nil
+%>
           <%- unless errors.empty? %>
-            <div class="column">=>
+            <div class="errors-breakdown column">=&gt;
+<%- unless inspection == :xml_validation -%>
               <span class="breakout number passed"><%= errors.passed.count %></span>
               <span class="breakout number pending"><%= errors.pending.count %></span>
+<%- end -%>
               <span class="breakout number failed"><%= errors.failed.count %></span>
             </div>
           <%- end %>

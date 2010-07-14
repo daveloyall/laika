@@ -16,7 +16,8 @@ class GenerateAndFormatPlan < TestPlan
   # The *_INSPECTION constants are set in config/initializers/laika_globals.rb
   has_many :xml_validation_errors, :class_name => 'ContentError',
     :foreign_key => 'test_plan_id',
-    :conditions => { :inspection_type => ::XML_VALIDATION_INSPECTION }
+    :conditions => { :inspection_type => ::XML_VALIDATION_INSPECTION },
+    :extend => ErrorStateExtension
   has_many :content_inspection_errors, :class_name => 'ContentError',
     :foreign_key => 'test_plan_id',
     :conditions => { :inspection_type => ::CONTENT_INSPECTION },
