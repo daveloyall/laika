@@ -4,7 +4,8 @@
 .footer,
 INPUT,
 .printer-friendly-affordance,
-.hl7-message-log-affordance {
+.hl7-message-log-affordance,
+#xml_frame {
   display:none;
 }
 .level1, .level2,

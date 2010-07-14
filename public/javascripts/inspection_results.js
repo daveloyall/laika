@@ -12,39 +12,61 @@ $j(document).ready(function(){
   })
 
   // FILTERING
-  $j("#filter input:checkbox").click(function(e) {
+  $j(".section-errors-filter input:checkbox").click(function(e) {
     var input = e.target;
     var type = input.name;
     var rows = $j("tr." + type + " td");
+    var detail_rows = $j("tr." + type + "_details td");
     // If passed checkbox is checked
     if (input.checked) {
       //show passed fields
       rows.show();
+      detail_rows.show();
     } else {
       rows.hide();
+      // and hide their detail rows in case they were open
+      detail_rows.hide();
     }
   });
 
-  set_overall_content_inspection_status();
+  set_overall_inspection_status('#xml_validation_inner');
+  set_overall_inspection_statuses();
   set_manual_assignment();
 
-  // SCROLLING  
-  //$j('a.error_link').click(function() {
-  //    var $errorid = (this).attr("id");
-  //    var $target = $j('xml_frame').find('div:attr(id, $errorid)');
-  //    $j('#xml_frame').scrollTo( $target, {axis:'x'});
-  //});
+  // LOCATION SCROLLING  
+  // onclick="$j('#xml_frame').scrollTo( $j('div#error_<%=error_id%>'));"
+  $j('a.error_link').click(function() {
+//      console.log(this);
+//      console.log(this.id);
+      var errorid = this.id.replace(/content_error_\d+_link_to_/,'');
+//      console.log(errorid);
+      var target = $j('#xml_frame #' + errorid);//.find('div:attr(id, errorid)');
+//      console.log(target);
+      $j('#xml_frame').scrollTo( target, 500, {axis:'y'} );//, {axis:'x'});
+  });
   
 });
+
+function set_overall_inspection_statuses() {
+  set_overall_inspection_status('#content_inspection_inner');
+  set_overall_inspection_status('#umls_validation_inner');
+}
+
+function set_inspection_summaries() {
+  set_inspection_summary('#content_inspection');
+  set_inspection_summary('#umls_validation');
+}
 
 function update_error_class(content_error_id) {
 //  console.log('update');
 //  console.log(content_error_id);
   var selector = '#' + content_error_id;
   var select_control = $j(selector + ' select');
-  set_error_class($j(selector), select_control.val());
-  set_overall_content_inspection_status();
-  set_content_inspection_summary();
+  var error_class = select_control.val();
+  set_error_class($j(selector), error_class);
+  set_error_class($j(selector + '_details'), error_class + '_details');
+  set_overall_inspection_statuses();
+  set_inspection_summaries();
   set_manual_assignment();
 }
 
@@ -52,7 +74,7 @@ function set_error_class(element, value) {
 //  console.log('set');
 //  console.log(value);
 //  console.log(element);
-  element.removeClass('review passed failed');
+  element.removeClass('review passed failed review_details passed_details failed_details');
   element.addClass(value);
 }
 
@@ -62,10 +84,11 @@ function reset_error(content_error_id) {
   alert('failed to set state for ' + content_error_id)
 }
 
-function set_overall_content_inspection_status() {
-  var error_rows = $j('.scrollContent tr');
-  var inspection_status = $j('#content_inspection_status');
-  var status_code = $j('#content_inspection_status .status_code');
+function set_overall_inspection_status(tab_id) {
+  var error_rows = $j(tab_id + ' .scrollContent tr');
+  var inspection_status = $j(tab_id + ' .section-errors-status');
+  var status_code = $j(tab_id + ' .section-errors-status .status_code');
+//  console.log('set_overall_inspection_status for: ' + tab_id)
 //  console.log(error_rows)
 //  console.log(inspection_status)
 //  console.log(status_code)
@@ -81,13 +104,18 @@ function set_overall_content_inspection_status() {
   } 
 }
 
-function set_content_inspection_summary() {
-  var error_rows = $j('.scrollContent tr');
+function set_inspection_summary(tab_id) {
+  var error_rows = $j(tab_id + '_inner .scrollContent tr');
+//  console.log('set_inspection_summary for: ' + tab_id);
+//  console.log(error_rows);
   ['passed','failed','pending'].each( function(e) {
     var error_state = (e == 'pending') ? 'review' : e;
     var count = error_rows.filter('.' + error_state).size();
-    $j('#content_inspection_summary .' + e).text(count);
-  })
+    var summary = $j(tab_id + '_summary .' + e);
+//  console.log(summary);
+//  console.log(count);
+    summary.text(count);
+  });
 }
 
 function set_manual_assignment() {

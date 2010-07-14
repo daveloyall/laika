@@ -4,20 +4,6 @@
   padding: 5px;
 }
 
-.error_severity {
-  display: block;
-  padding: 5px;
-  float: left;
-}
-  
-.validator_type {
-  float: right;
-  display: block;
-  padding: 5px;
-}
-  
-.error_severity p,
-.validator_type p,
 .error_type_details p, {
     margin: 0 0 0 0;
 }
@@ -82,11 +68,6 @@
   font-weight: bold;
   font-size: 1.5em;
   padding: 10px 3px;
-}
-
-.inspection_controls {
-  width: 300px;
-  float: right;
 }
 
 ol#error_report_toc {
@@ -162,45 +143,35 @@ div.test_results {
   padding: 3px 20px 0 0;
 }
 
-#launch_xml_window {
-  font-size: 1.3em;
-  color: #99e4fd;
-  text-decoration: none;
-}
-
-#launch_xml_window:hover {
-  color: #FFF;
-}
-
-#content-inspection-inner-wrap {
+.section-errors-inner-wrap {
   background: #333;
   padding: 5px;
 }
 
-#content_inspection_status {
+.section-errors-status {
   float: left;
 }
 
-#content_inspection_status,
-#filter {
+.section-errors-status,
+.section-errors-filter {
   padding: 5px 0px 5px 15px;
 }
 
-#filter {
+.section-errors-filter {
   float: right;
   width: 350px;
 }
 
-#content_inspection_status p,
-#filter p {
+.section-errors-status p,
+.section-errors-filter p {
   margin: 0 0 0 0;
 }
 
-#filter .emp {
+.section-errors-filter .emp {
   float: left;
 }
 
-#filter label {
+.section-errors-filter label {
   color: #eeeeee;
 }
 
@@ -209,24 +180,11 @@ div.test_results {
   color: #ccc;
 }
 
-.results_header {
-  background:none repeat scroll 0 0 #333333;
-  left:105px;
-  padding:10px;
-  position:absolute;
-  top:205px;
-  width:135px;
-}
-
-.results_header h2 {
-  font-size: 1.25em;
-}
-
 #xml_frame {
   border:2px solid yellow;
   margin-top:25px;
   overflow:auto;
-  height:245px;
+  height:445px;
   padding:10px;
 }
 
@@ -255,12 +213,6 @@ a.manual-review:hover {
 
 .error_review hr {
   margin: 0;
-}
-
-#individual_error_details {
-  background: #ccc;
-  height: 350px;
-  margin-top:25px;
 }
 
 /* NOT PRIORITY - PRINT THE TABLE HEAD ONCE */
@@ -358,10 +310,6 @@ tbody.scrollContent td.section_header .section_title p {
   font-weight: bold;
 }
 
-tbody.scrollContent td.section_header .error_severity {
-  float: right;
-}
- 
 /* make TD elements pretty. */
 /* http://www.alistapart.com/articles/zebratables/                             */
 tbody.scrollContent td, tbody.scrollContent tr.normalRow td {
@@ -378,7 +326,7 @@ tbody.scrollContent td, tbody.scrollContent tr.normalRow td {
 /* Add 16px to last TH for scrollbar padding. All other non-IE browsers. */
 /* http://www.w3.org/TR/REC-CSS2/selector.html#adjacent-selectors        */
 html>body thead.fixedHeader th {
-  width: 160px
+  width: 170px
 }
  
 html>body thead.fixedHeader th + th {
@@ -390,9 +338,12 @@ html>body thead.fixedHeader th + th + th {
 }
 
 html>body thead.fixedHeader th + th + th + th {
-  width: 100px
+  width: 90px
 }
 
+#xml_validation_inner thead.fixedHeader th + th {
+  width: 650px
+}
  
 /* define width of TD elements: 1st, 2nd, and 3rd respectively.          */
 /* All other non-IE browsers.                                            */
@@ -417,19 +368,8 @@ tbody.scrollContent td p {
   margin: 0;
 }
 
-/*
-tbody.scrollContent tr td.error_type_details p {
-  float: left;
-  margin:10px 0 0 2px;
-  width: 100px;
-}
-*/
-
-.marker {
-  width: 25px;
-  height: 34px;
-  float: left;
-  margin: 2px;
+#xml_validation_inner tbody.scrollContent td + td {
+  width: 645px
 }
 
 .result {
@@ -440,14 +380,27 @@ tbody.scrollContent tr td.error_type_details p {
   margin: 0;
 }
 
+.error-count {
+  width: 230px;
+}
+
+.inspection-summary {
+  width: 430px;
+  padding: 2px 0;
+}
+
+.errors-breakdown {
+  float: right;
+}
+
 #test_summary_breakdown .breakout,
-#content_inspection_status .status_code {
+.section-errors-status .status_code {
   -moz-border-radius: 6px;
   font-weight: bold;
   padding: 2px 27px 2px 4px;
 }
 
-#content_inspection_status .status_code {
+.section-errors-status .status_code {
   font-size: larger;
 }
 

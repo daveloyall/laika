@@ -1,24 +1,31 @@
-    <div id="content_inspection_status">
+<%- xml_display = inspection == :xml_validation %>
+
+    <div class="section-errors-status">
       <div class="emp column">Overall:</div>
       <div class="status_code column"></div>
     </div>
 
-    <div id="filter" class="column span-8">
+<%- unless xml_display -%>
+    <div class="section-errors-filter column span-8">
       <p class="emp">Filter warnings by status:</p>
-      <input name="passed" type="checkbox" id="fieldPass" value="0" class="" checked="checked" /><label for="fieldPass">Passed</label>
-      <input name="review" type="checkbox" id="fieldReview" value="0" class="" checked="checked" /><label for="fieldReview">Review</label>
-      <input name="failed" type="checkbox" id="fieldFailed" value="0" class="" checked="checked" /><label for="fieldFailed">Failed</label>
-      <!-- not implemented <input name="notest" type="checkbox" id="fieldNotTested" value="0" class="" checked="checked" /><label for="fieldNotTested">Not Tested</label> -->
+      <input name="passed" type="checkbox" id="<%= inspection %>-fieldPass" value="0" class="" checked="checked" /><label for="<%= inspection %>-fieldPass">Passed</label>
+      <input name="review" type="checkbox" id="<%= inspection %>-fieldReview" value="0" class="" checked="checked" /><label for="<%= inspection %>-fieldReview">Review</label>
+      <input name="failed" type="checkbox" id="<%= inspection %>-fieldFailed" value="0" class="" checked="checked" /><label for="<%= inspection %>-fieldFailed">Failed</label>
     </div><!-- END FILTER-->
-  
-    <div id="tableContainer" class="tableContainer"> 
+ <%- end -%>
+ 
+    <div class="tableContainer"> 
       <table border="0" cellpadding="0" cellspacing="0" width="100%" class="scrollTable"> 
         <thead class="fixedHeader"> 
         	<tr> 
         		<th><a href="#">Error Type / Severity</a></th> 
+<%- unless xml_display -%>
         		<th><a href="#">Field Name</a></th> 
+<%- end -%>
         		<th><a href="#">Message</a></th>
+<%- unless xml_display -%>
         		<th><a href="#">Result</a></th> 
+<%- end -%>
         	</tr> 
         </thead>
         <tbody class="scrollContent">
@@ -26,7 +33,8 @@
         <%-
           errors.group_by(&:section).each do |section, section_errors|
         -%>
-        
+
+<%- if section -%>
         <!-- MODULE SECTION HEADER -->
         <tr>
           <td class="section_header" colspan="4">
@@ -34,22 +42,11 @@
           </td>
         </tr>
         <!-- END MODULE SECTION HEADER -->
+<%- end -%>
 
-        <%= render :partial => "section_errors" , :locals => {:errors => section_errors } %>
+        <%= render :partial => "section_errors" , :locals => {:inspection => inspection, :errors => section_errors } %>
         
         <%- end -%>
         </tbody>
       </table>
     </div><!--CLOSE table container -->
-
-    <div class="column span-21 first" id="xml_frame">
-      <h3>Vendor Generated XML</h3>
-      <%= render :partial => "node" , :locals => {:doc => @xml_document} %>
-    </div>
-    
-    
-    
-    
-    
-    
-

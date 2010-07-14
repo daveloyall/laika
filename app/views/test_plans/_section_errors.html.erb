@@ -1,5 +1,7 @@
   
-  <%- errors.group_by(&:subsection).each do |subsection, subsection_errors| -%>
+  <%- xml_display = inspection == :xml_validation
+
+      errors.group_by(&:subsection).each do |subsection, subsection_errors| -%>
 
   <!-- MODULE SUBSECTION HEADER -->
   <%- unless subsection.nil? or true # turn off subsection headers for the moment -%>
@@ -31,20 +33,24 @@
       </p>
     </td>
 
+<%- unless xml_display -%>
     <!-- FIELD NAME -->
     <td>
       <p><%= e.field_name.try(:to_s).try(:humanize) %></p>
     </td>
+<%- end -%>
 
     <!-- ERROR MESSAGE -->
+    <%- message = xml_display ? h(e.error_message) : h(e.summary) %>
     <td title="<%= h e.error_message %>">
       <% if error_id %>
-        <a id="error_<%=error_id%>" class="error_link" href="#" onclick="$j('#xml_frame').scrollTo( $j('div#error_<%=error_id%>'));"><b><%= index %></b> <span><%= h e.summary %></span></a>
+        <a id="<%= content_error_id %>_link_to_error_<%=error_id%>" class="error_link" href="#"><b><%= index %></b> <span><%= message %></span></a>
       <% else %>
-        <b><%= index %>.</b> <span><%= e.summary %></span>
+        <b><%= index %>.</b> <span><%= message %></span>
       <% end %>
     </td>
 
+<%- unless xml_display -%>
     <!-- ERROR RESULT -->
     <td class="result">
       <% form_for(e, :url => '') do |f| %>
@@ -53,9 +59,10 @@
       <% end %> 
     </td>
   </tr>
-  
+<%- end -%>
+ 
   <%- if e.details? %>
-  <tr id="<%= content_error_id %>_details">
+  <tr id="<%= content_error_id %>_details" class="<%= "#{e.state}" %>_details">
     <td colspan="4">
       <div class="error_review" colspan="4">
         <%- case e.error_type -%>
