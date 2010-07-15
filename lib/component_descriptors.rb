@@ -36,7 +36,7 @@ module ComponentDescriptors
 
   module OptionsParser
 
-    KNOWN_KEYS = [:required, :repeats, :template_id, :matches_by, :matches_by_reference, :locate_by, :reference]
+    KNOWN_KEYS = [:required, :repeats, :template_id, :matches_by, :locate_by, :accessor, :dereference]
 
     # Parses the different argument styles accepted by section/field methods.
     #
@@ -290,7 +290,7 @@ module ComponentDescriptors
       return ( command == :match ? [] : nil ) if xpath.blank? 
       begin
         result = REXML::XPath.send(command, node, xpath, namespaces)
-        debug("_extract_nodes: extracted #{result.inspect}")
+        debug("_extract_nodes: found #{result.inspect}")
         result
       rescue REXML::ParseException => e
         info("REXML::ParseException thrown attempting to follow: #{xpath} in node:\n#{node.inspect}\nException: #{e}, #{e.backtrace}")
@@ -407,7 +407,7 @@ module ComponentDescriptors
   # * @locator => xpath locator indicating how to find the associated xml value
   #   for this descriptor within the xml node of it's parent.
   #
-  # * @reference => the method to call to find the associated value from an attached
+  # * @accessor => the method to call to find the associated value from an attached
   #   model.  Defaults to section_key.
   #
   # * @descriptors => a block of ComponentDescriptors::DSL code describing any
@@ -428,7 +428,7 @@ module ComponentDescriptors
 
     def self.included(base)
       base.class_eval do
-        attr_accessor :section_key, :locator, :reference, :options, :descriptors, :extracted_value
+        attr_accessor :section_key, :locator, :accessor, :options, :descriptors, :extracted_value
         attr_reader :xml, :model
         include Logging
         include XMLManipulation
@@ -440,9 +440,9 @@ module ComponentDescriptors
         def locator
           guarded_locator
         end
-        alias_method :unguarded_reference, :reference
-        def reference
-          guarded_reference
+        alias_method :unguarded_accessor, :accessor
+        def accessor
+          guarded_accessor
         end
       end
     end
@@ -504,8 +504,8 @@ module ComponentDescriptors
       # Raises an error if no model attached.
       def model_has_section?
         raise(DescriptorError, "No model attached.") unless model
-        model_has_section = reference && model.respond_to?(reference.to_s)
-        model_has_section ||= model.kind_of?(Hash) && model.key?[reference.to_s]
+        model_has_section = accessor && model.respond_to?(accessor.to_s)
+        model_has_section ||= model.kind_of?(Hash) && model.key?[accessor.to_s]
       end
  
       def index_key
@@ -527,12 +527,8 @@ module ComponentDescriptors
       # and store the result in the @extracted_value attribute.
       # Returns the newly stored extracted_value or nil.
       def extract_values_from_model
-        debug "DescriptorInitialization#extract_values_from_model model: #{model.inspect}"
-        unless extracted_value || model.nil?
-          self.extracted_value = model.send(reference.to_s) if reference && model.respond_to?(reference.to_s)
-          self.extracted_value ||= model[reference] if model.kind_of?(Hash)
-          debug "DescriptorInitialization#extract_values_from_model extracted: #{extracted_value}" if extracted_value
-        end
+        debug "DescriptorInitialization#extract_values_from_model calling: #{accessor.inspect} on model: #{model.inspect}"
+        self.extracted_value = _extract_values_from_model unless extracted_value
         extracted_value
       end
   
@@ -599,10 +595,10 @@ module ComponentDescriptors
       end
  
       # Note that the original reference accessor is aliased to 
-      # :unguarded_reference when DescriptorInitialization is included.
-      def guarded_reference
-        return unguarded_reference if unguarded_reference
-        self.reference = options[:reference] || section_key
+      # :unguarded_accessor when DescriptorInitialization is included.
+      def guarded_accessor
+        return unguarded_accessor if unguarded_accessor
+        self.accessor = options[:accessor] || section_key
       end
 
       # True if this descriptor describes a section which must be present.
@@ -670,7 +666,17 @@ module ComponentDescriptors
       end
 
       private
-  
+ 
+      def _extract_values_from_model
+        value = nil
+        if model && accessor
+          value = model.send(accessor.to_s) if model.respond_to?(accessor.to_s)
+          value ||= model[accessor] if model.kind_of?(Hash)
+          debug "DescriptorInitialization#_extract_values_from_model extracted: #{value.inspect}" if value
+        end
+        value
+      end
+
       def _pretty_print_attributes(pp)
         had_attributes = false
         [:options, :xml, :model, :extracted_value].each do |m|
@@ -766,13 +772,6 @@ module ComponentDescriptors
       Array(options_by_type(:matches_by))
     end
 
-    # If true, then a section is identified by dereferencing a pointer
-    # attribute ('//reference/@value') which matches the @ID of an element
-    # in the main document whose text value is the key needed to match.
-    def matches_by_reference?
-      options_by_type(:matches_by_reference)
-    end
-
   end
 
   class RepeatingSectionInstance < Section
@@ -783,18 +782,13 @@ module ComponentDescriptors
     # has been attached (making it possible to have obtained a value).
     def section_key_hash
       matches_by.inject({}) do |hash,k|
-        if matches_by_reference? && xml
-          value = dereference 
-          hash[k] = value if value
+        key_descriptor = descendent(k)
+        unless key_descriptor && key_descriptor.attached?
+          # not all key_descriptors in place yet (perhaps we are still
+          # processing the descriptors)
+          return {}
         else
-          key_descriptor = descendent(k)
-          unless key_descriptor && key_descriptor.attached?
-            # not all key_descriptors in place yet (perhaps we are still
-            # processing the descriptors)
-            return {}
-          else
-            hash[k] = key_descriptor.extracted_value
-          end
+          hash[k] = key_descriptor.extracted_value.try(:canonical)
         end
         hash
       end
@@ -815,11 +809,6 @@ module ComponentDescriptors
       unless matches_by.empty?
         RepeatingSectionInstance.section_key(section_key_hash)
       end
-#      if matches_by_reference?
-#        RepeatingSectionInstance.section(xml ? {matches_by => dereference} : section_key_hash)
-#      elsif !matches_by.empty?
-#        RepeatingSectionInstance.section_key(section_key_hash)
-#      end
     end
 
     # Returns the given hash as an array of key, value pairs
@@ -860,41 +849,57 @@ module ComponentDescriptors
       raise(DescriptorError, "RepeatingSection#instantiate_section_nodes accepts only two modes: :xml or :model") unless [:xml, :model].include?(mode)
       debug "instantiate_section_nodes mode: #{mode}"
       clear
-      (extracted_value || send(mode)).try(:each_with_index) do |node,i|
+      (Array(extracted_value || send(mode))).try(:each_with_index) do |node,i|
         node_position = i + 1
         debug("instantiate_section_node node ##{node_position} -> #{node.inspect}")
         section_locator = "#{locator}[#{node_position}]"
-        section = DSL.create(:repeating_section_instance, nil, section_locator, :logger => logger, :matches_by => matches_by, :matches_by_reference => matches_by_reference?, &descriptors)
+        section = DSL.create(:repeating_section_instance, nil, section_locator, :logger => logger, :matches_by => matches_by, &descriptors)
+        section.parent = self # without this, we can't access root options like :validation_type
         section.send("#{mode}=", node)
         section.extracted_value = node unless section.extracted_value
         section.section_key = section.locator unless section.section_key
-        if matches_by_reference? && mode == :xml
-          debug("setting #{matches_by} value to #{section.dereference}")
-          matches_by.each { |k| section.descendent(k).extracted_value = section.dereference}
-        end
         store(section.section_key, section)
       end
     end
 
-#    # Returns a hash of key values from the passed model; one value
-#    # for each entry in matches_by() which the model responds to.
-#    def get_section_key_hash_from(model)
-#      matches_by.inject({}) do |hash,k| 
-#        v = model.send(k) if model.respond_to?(k)
-#        hash[k] = v
-#        hash
-#      end
-#    end
-#
-#    # Looks up matches_by key value(s) in the passed model and returns
-#    # the section whose key matches or nil if there is no match.
-#    def find_matching_section_for(model)
-#      fetch(RepeatingSectionInstance.section_key(get_section_key_hash_from(model)), nil)
-#    end
-
     # True if this descriptor may occur one or more times.
     def repeats?
       true 
+    end
+
+  end
+
+  # Wrapper around field node values used to compare and convert. 
+  class FieldValue < SimpleDelegator
+    
+    # Returns the authoritative string form of a Laika value.
+    def canonical
+      case internal = __getobj__ 
+        when String then internal
+        when Date then internal.to_formatted_s(:brief)
+        else internal.to_s
+      end
+    end
+
+    def ==(other)
+      case
+        when nil?
+          then other.nil? || other == ""
+        when other.kind_of?(FieldValue)
+          then canonical == other.canonical
+        else
+          __getobj__.==(other) 
+      end 
+    end
+
+    def nil?
+      __getobj__.nil?
+    end
+
+    # SimpleDelegator seems to short circuit try() by sending it strait to the
+    # to the internal reference.
+    def try(method)
+      send(method) if respond_to?(method)
     end
 
   end
@@ -911,14 +916,36 @@ module ComponentDescriptors
     # attribute.  Returns the newly stored extracted_value or nil.
     def extract_values_from_xml
       debug("Field#extract_values_from_xml xml: #{xml.inspect}")
-      self.extracted_value = xml.nil? ? nil : extract_node_value(locator) unless self.extracted_value
+      unless extracted_value || xml.nil? || locator.nil?
+        value = dereference? ? dereference(extract_first_node(locator)) : extract_node_value(locator)
+        # since we have both xml and locator , a nil is the real return value
+        # and should be wrapped just like any other
+        self.extracted_value = FieldValue.new(value)
+      end
+      extracted_value
+    end
+
+    def extract_values_from_model
+      debug("Field#extract_values_from_model calling #{accessor.inspect} on model: #{model.inspect}")
+      unless extracted_value || model.nil? || accessor.nil?
+        value = _extract_values_from_model
+        # since we have both model and accessor, a nil is the real return value
+        # and should be wrapped just like any other
+        self.extracted_value = FieldValue.new(value)
+      end
+      extracted_value
     end
 
     # True if this is a field leaf node.
     def field?
       true 
     end
-  
+ 
+    # True if we need to dereference the xml value for this field when extracting.
+    def dereference?
+      options_by_type(:dereference)
+    end
+ 
   end
 
   # Captures all of the information needed to describe a Component.

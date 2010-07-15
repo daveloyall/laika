@@ -95,7 +95,7 @@ describe Validators::C32Validation do
 
     describe "generically" do
 
-      TEST_XML = <<-EOS
+      VALIDATOR_TEST_XML = <<-EOS
 <?xml version="1.0" encoding="UTF-8"?>
 <ClinicalDocument
    xmlns="urn:hl7-org:v3" xmlns:sdct="urn:hl7-org:sdct">
@@ -126,7 +126,7 @@ EOS
 
       before do
         @module = :languages
-        @document = REXML::Document.new(TEST_XML)
+        @document = REXML::Document.new(VALIDATOR_TEST_XML)
         @scope.update_attributes(
           :component_module => @module,
           :document => @document
@@ -146,16 +146,6 @@ EOS
       it "should raise an error if unable to find descriptor" do
         @scope.component_module = :foo
         lambda { @scope.component_descriptors }.should raise_error(Validators::ValidatorException)
-      end
-
-      it "should determine equality between expected and provided" do
-        @scope.send(:_equal_values?, "foo", "foo").should be_true
-        @scope.send(:_equal_values?, :foo, "foo").should be_true
-        @scope.send(:_equal_values?, 1, "1").should be_true
-      end
-  
-      it "should handle time conversion when determining equality" do
-        @scope.send(:_equal_values?, Date.new(2010,5,27), "20100527").should be_true
       end
 
       it "should provide the xpath location of the current xml in scope" do

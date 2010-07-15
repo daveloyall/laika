@@ -315,7 +315,7 @@ describe ComponentDescriptors do
       foo.options_by_type(:matches_by).should == 'this'
     end
 
-    TEST_XML = <<-EOS
+    DESCRIPTOR_TEST_XML = <<-EOS
 <?xml version="1.0" encoding="UTF-8"?>
 <ClinicalDocument
    xmlns="urn:hl7-org:v3" xmlns:sdct="urn:hl7-org:sdct">
@@ -345,7 +345,7 @@ describe ComponentDescriptors do
 EOS
 
     it "should find the innermost element" do
-      document = @document = REXML::Document.new(TEST_XML)
+      document = @document = REXML::Document.new(DESCRIPTOR_TEST_XML)
       foo = Foo.new(:foo, nil, nil)
       foo.find_innermost_element('/foo/bar', @document.root).xpath.should == '/ClinicalDocument'
       foo.find_innermost_element('//foo/bar', @document.root).xpath.should == '/ClinicalDocument'
@@ -479,15 +479,43 @@ EOS
     end
   end
 
+  describe "FieldValue" do
+
+    it "should convert to string for ==" do
+      ComponentDescriptors::FieldValue.new("foo").should ==  ComponentDescriptors::FieldValue.new("foo")
+      ComponentDescriptors::FieldValue.new(:foo).should == ComponentDescriptors::FieldValue.new("foo")
+      ComponentDescriptors::FieldValue.new(1).should == ComponentDescriptors::FieldValue.new("1")
+    end
+  
+    it "should handle time conversion when determining equality" do
+      ComponentDescriptors::FieldValue.new(Date.new(2010,5,27)).should == ComponentDescriptors::FieldValue.new("20100527")
+    end
+
+  end
+
   describe "attaching" do
    
     before do
-      @xml = REXML::Document.new(%Q{<patient xmlns='urn:hl7-org:v3'><foo id='1'><bar baz='dingo'>biscuit</bar></foo><foo id='2'/></patient>})
+      @xml = REXML::Document.new(%Q{<patient xmlns='urn:hl7-org:v3'><foo oid='1'><bar baz='dingo'>biscuit</bar></foo><foo oid='2'/></patient>})
       @foo, @foo2 = REXML::XPath.match(@xml, '//cda:foo', ComponentDescriptors::XMLManipulation::DEFAULT_NAMESPACES)
       @foo.should_not be_nil
       @logger = nil#TestLoggerDevNull.new
     end
-  
+ 
+    it "should extend field xml extracted_value with FieldValue" do
+      field = ComponentDescriptors::Field.new(:bar, nil, :logger => @logger)
+      field.xml = @foo
+      field.extracted_value.should be_kind_of(ComponentDescriptors::FieldValue)
+      field.extracted_value.canonical.should == field.extracted_value
+    end
+ 
+    it "should extend field model extracted_value with FieldValue" do
+      field = ComponentDescriptors::Field.new(:bar, nil, :logger => @logger)
+      field.model = { :bar => Date.new(2010,1,2) }
+      field.extracted_value.should be_kind_of(ComponentDescriptors::FieldValue)
+      field.extracted_value.canonical.should == "20100102"
+    end
+
     it "should attach an xml node to a section" do
       section = ComponentDescriptors::Section.new(:foo, nil, :logger => @logger)
       section.xml = @xml
@@ -495,7 +523,7 @@ EOS
     end
 
     it "should use custom locators" do
-      section = ComponentDescriptors::Section.new(:foo, %Q{//cda:foo[@id='2']}, :logger => @logger)
+      section = ComponentDescriptors::Section.new(:foo, %Q{//cda:foo[@oid='2']}, :logger => @logger)
       section.xml = @xml
       section.extracted_value.should == @foo2
     end
@@ -510,6 +538,13 @@ EOS
       field = ComponentDescriptors::Field.new(:bar, %q{cda:bar/@baz}, :logger => @logger)
       field.xml = @foo
       field.extracted_value.should == 'dingo'
+    end
+
+    it "should extract a reference to a text value for a field" do
+      xml = REXML::Document.new(%Q{<patient xmlns='urn:hl7-org:v3'><text ID='12345'>dereferenced text</text><foo oid='2'><bar><reference value='12345'/></bar></foo></patient>})
+      field = ComponentDescriptors::Field.new(:bar, %q{cda:foo/cda:bar}, :dereference => true, :logger => @logger)
+      field.xml = xml 
+      field.extracted_value.should == 'dereferenced text'
     end
 
     it "should extract an array of sections for a repeating section" do
@@ -527,17 +562,17 @@ EOS
     describe "with nested descriptors" do
 
       class DummyModel 
-        attr_accessor :id, :bar, :baz
-        def initialize(id, bar, baz)
-          self.id = id
-          self.bar =  bar
+        attr_accessor :oid, :bar, :baz
+        def initialize(oid, bar, baz)
+          self.oid = oid
+          self.bar = bar
           self.baz = baz
         end
       end
  
       before do
         @repeating = ComponentDescriptors::RepeatingSection.new(:foo, nil, :logger => @logger) do
-          attribute :id
+          attribute :oid
           field :bar
           field :baz => %q{cda:bar/@baz}
         end
@@ -547,11 +582,11 @@ EOS
         @repeating.xml = @xml.root
         @repeating.extracted_value.should == [@foo, @foo2]
         @repeating['cda:foo[1]'].extracted_value.should == @foo
-        @repeating['cda:foo[1]'][:id].extracted_value.should == '1'
+        @repeating['cda:foo[1]'][:oid].extracted_value.should == '1'
         @repeating['cda:foo[1]'][:bar].extracted_value.should == 'biscuit'
         @repeating['cda:foo[1]'][:baz].extracted_value.should == 'dingo'
         @repeating['cda:foo[2]'].extracted_value.should == @foo2
-        @repeating['cda:foo[2]'][:id].extracted_value.should == '2'
+        @repeating['cda:foo[2]'][:oid].extracted_value.should == '2'
         @repeating['cda:foo[2]'][:bar].extracted_value.should be_nil 
         @repeating['cda:foo[2]'][:baz].extracted_value.should be_nil 
       end
@@ -560,14 +595,14 @@ EOS
         @repeating.xml = @xml.root
         values_hash = @repeating.to_values_hash
         values_hash.should be_kind_of(ComponentDescriptors::ValuesHash)
-        values_hash.should == {"cda:foo[1]"=>{:id=>"1", :bar=>"biscuit", :baz=>"dingo"}, "cda:foo[2]"=>{:id=>"2", :bar=>nil, :baz=>nil}}
+        values_hash.should == {"cda:foo[1]"=>{:oid=>"1", :bar=>"biscuit", :baz=>"dingo"}, "cda:foo[2]"=>{:oid=>"2", :bar=>nil, :baz=>nil}}
       end
 
       it "should produce a flattened values hash do" do
         @repeating.xml = @xml.root
         field_hash = @repeating.to_field_hash
         field_hash.should be_kind_of(ComponentDescriptors::ValuesHash)
-        field_hash.should == {:id=>"1", :bar=>"biscuit", :baz=>"dingo", :"cda:foo[2]_id"=>"2", :"cda:foo[2]_bar"=>nil, :"cda:foo[2]_baz"=>nil}
+        field_hash.should == {:oid=>"1", :bar=>"biscuit", :baz=>"dingo", :"cda:foo[2]_oid"=>"2", :"cda:foo[2]_bar"=>nil, :"cda:foo[2]_baz"=>nil}
       end
 
       it "should be possible to make an unattached deep copy of a descriptor" do

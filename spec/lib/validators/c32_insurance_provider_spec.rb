@@ -8,7 +8,7 @@ describe "C32 Isurance Provider Validation" do
     @insurance_provider = insurance_providers(:joe_smiths_insurance_provider)
     @scope = Validators::C32Validation::ComponentScope.new(
       :validation_type => Validation::C32_V2_5_TYPE,
-      :logger => TestLogger.new,
+      :logger => TestLogger.new,#DevNull.new,
       :validator => "ComponentScopeTest",
       :inspection_type => "Testing",
       :component_module => :insurance_providers,
@@ -19,9 +19,7 @@ describe "C32 Isurance Provider Validation" do
 
   it "should verify an insurance provider matches in a C32 doc" do
     errors = @scope.validate
-    pp errors
     errors.should be_empty
-    flunk "finish insurance provider directives"
   end
 
   it "should match group number if exists" do
@@ -41,7 +39,21 @@ describe "C32 Isurance Provider Validation" do
   end
 
   it "should match insurance_provider_guarantor" do
-    pp @insurance_provider.insurance_provider_guarantor
-    pp @insurance_provider.insurance_provider_guarantor.person_name
+    original_first_name = @insurance_provider.insurance_provider_guarantor.first_name
+    original_name_prefix = @insurance_provider.insurance_provider_guarantor.name_prefix
+    @insurance_provider.insurance_provider_guarantor.person_name.first_name = 'foo'
+    errors = @scope.validate
+    errors.size.should == 1
+    errors.first.should be_kind_of(Laika::NoMatchingSection)
+    @insurance_provider.insurance_provider_guarantor.person_name.first_name = original_first_name
+    @insurance_provider.insurance_provider_guarantor.person_name.name_prefix = 'foo'
+    @scope.clear
+    errors = @scope.validate
+    errors.size.should == 1
+    errors.first.should be_kind_of(Laika::ComparisonError)
+    @insurance_provider.insurance_provider_guarantor.person_name.name_prefix = original_name_prefix
+    @scope.clear
+    @scope.validate.should == []
   end
+
 end

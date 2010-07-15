@@ -7,7 +7,7 @@ module Validators
   
     components :languages => %q{//cda:recordTarget/cda:patientRole/cda:patient/cda:languageCommunication}, :matches_by => :language_code do
       field :language_code => %q{cda:languageCode/@code}
-      field :language_ability_mode => %q{cda:modeCode/@code}, :reference => :language_ability_mode_code, :required => false
+      field :language_ability_mode => %q{cda:modeCode/@code}, :accessor => :language_ability_mode_code, :required => false
       field :preference => %q{cda:preferenceInd/@value}, :required => false
     end
   
@@ -38,7 +38,7 @@ module Validators
           field :city, :required => false
           field :state, :required => false
           field :postal_code, :required => false
-          field :iso_country => %q{cda:country}, :reference => :iso_country_code, :required => false
+          field :iso_country => %q{cda:country}, :accessor => :iso_country_code, :required => false
         end
   #      # 'with' is transparent to the output, unlike 'section'
   #      with :telecom => %q{cda:telecom}, :required => :false do
@@ -48,19 +48,19 @@ module Validators
   #        field :vacation_home_phone => %q{[@use='hv']}, :validates => :match_telecom_as_hv
   #        field :email => %q{[@use='email']}, :validates => :match_telecom_as_email
   #      end
-        field :id => %q{sdtc:patient/sdtc:id/@root}, :required => false 
+        field :id => %q{sdtc:patient/sdtc:id/@root}, :accessor => :patient_identifier, :required => false 
       end
     end
   
     component :medications, :template_id => '2.16.840.1.113883.10.20.1.8' do
-      repeating_section :medication => %q{cda:entry/cda:substanceAdministration}, :matches_by => :product_coded_display_name, Validation::C32_V2_5_TYPE => { :matches_by_reference => true } do
-        field :product_coded_display_name => %q{cda:consumable/cda:manufacturedProduct/cda:manufacturedMaterial/cda:code/cda:originalText/text()}
+      repeating_section :medication => %q{cda:entry/cda:substanceAdministration}, :matches_by => :product_coded_display_name do
+        field :product_coded_display_name => %q{cda:consumable/cda:manufacturedProduct/cda:manufacturedMaterial/cda:code/cda:originalText}, Validation::C32_V2_5_TYPE => { :dereference => true }
         section :consumable do
           section :manufactured_product do
             field :free_text_brand_name => %q{cda:manufacturedMaterial/cda:name}
           end
         end
-        field :medication_type => %q{cda:entryRelationship[@typeCode='SUBJ']/cda:observation[cda:templateId/@root='2.16.840.1.113883.3.88.11.32.10']/cda:code/@displayName}, :reference => :medication_type_name
+        field :medication_type => %q{cda:entryRelationship[@typeCode='SUBJ']/cda:observation[cda:templateId/@root='2.16.840.1.113883.3.88.11.32.10']/cda:code/@displayName}, :accessor => :medication_type_name
         field :status => %q{cda:entryRelationship[@typeCode='REFR']/cda:observation[cda:templateId/@root='2.16.840.1.113883.10.20.1.47']/cda:statusCode/@code}, :required => false
         section :order => %q{cda:entryRelationship[@typeCode='REFR']/cda:supply[@moodCode='INT']}, :required => false do
           field :quantity_ordered_value => %q{cda:quantity/@value}
@@ -86,8 +86,26 @@ module Validators
           field :name => %q{@displayName}
         end
         field :represented_organization => %q{cda:performer[@typeCode='PRF']/cda:assignedEntity[@classCode='ASSIGNED']/cda:representedOrganization[@classCode='ORG']/cda:name}, :required => false
+        repeating_section :insurance_provider_guarantor => %q{cda:performer/cda:assignedEntity/cda:assignedPerson/cda:name}, :matches_by => [:first_name, :last_name], :required => false do
+          field :name_prefix => %q{cda:prefix}, :required => false
+          field :first_name => %q{cda:given[1]}, :required => false
+          field :middle_name => %q{cda:given[2]}, :required => false
+          field :last_name => %q{cda:family}, :required => false
+          field :name_suffix => %q{cda:suffix}, :required => false
+        end
       end
     end
-  
+ 
+    component :conditions, :template_id => '2.16.840.1.113883.10.20.1.11' do
+      repeating_section :condition => %q{cda:entry/cda:act[cda:templateId/@root='2.16.840.1.113883.10.20.1.27']/cda:entryRelationship[@typeCode='SUBJ']/cda:observation[cda:templateId/@root='2.16.840.1.113883.10.20.1.28']}, :matches_by => [:start_event, :end_event, :problem_name] do
+        field :problem_name => %q{cda:text}, :dereference => true
+        field :start_event => %q{cda:effectiveTime/cda:low/@value}
+        field :end_event => %q{cda:effectiveTime/cda:high/@value}
+        section :problem_type => %q{cda:code[@codeSystem='2.16.840.1.113883.6.96']} do
+          attribute :code
+          field :name => %q{@displayName}
+        end
+      end
+    end
   end
 end
