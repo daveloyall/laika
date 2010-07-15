@@ -57,25 +57,8 @@ module Validators
           debug("match_value for #{current_reference_descriptor}")
           expected_value = model_value 
           actual_value = xml_value
-          add_comparison_error(field_name, expected_value.to_s, actual_value) unless _equal_values?(expected_value, actual_value)
+          add_comparison_error(field_name, expected_value.to_s, actual_value) unless expected_value == actual_value
         end
-
-        private
-
-        def _equal_values?(expected, provided)
-          case expected
-            when Date
-              expected.to_formatted_s(:brief).eql?(provided)
-            when nil
-              provided.nil? || privided == ""
-            else
-              expected.to_s.eql?(provided)
-          end 
-        end
-
-#        def _reference_model_matching(descriptor)
-#          reference_model.send(descriptor.key) if reference_model.respond_to?(descriptor.key)
-#        end
 
       end # module InstanceMethods
     end # module Actions
@@ -328,7 +311,7 @@ module Validators
       end
 
       def validate
-        debug("validating: #{key} -> #{current_reference_descriptor.pretty_inspect}")
+        debug("validating: #{key} -> #{current_reference_descriptor}")
         raise(ValidatorException, "Reference and document descriptors are out of sync.\ncurrent_reference_descriptor: #{current_reference_descriptor.pretty_inspect}\ncurrent_document_descriptor: #{current_document_descriptor}") if current_reference_descriptor.index_key != current_document_descriptor.index_key
         begin
 
@@ -374,7 +357,7 @@ module Validators
       def inspect
         str = "<#{self.class}:#{self.object_id}\n"
         attributes.each do |k,v|
-          if [:enclosing_scope,:current_descriptors,:document_descriptors,:reference_descriptors,:current_document_descriptor,:current_reference_descriptor].include?(k)
+          if [:enclosing_scope,:component_descriptors,:document_descriptors,:reference_descriptors,:current_document_descriptor,:current_reference_descriptor].include?(k)
             str << "  #{k} => #{v}\n"
 #          elsif v.respond_to?(:pretty_inspect)
 #            str << "  #{k} => #{v.pretty_inspect}\n"
