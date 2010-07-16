@@ -317,16 +317,18 @@ module Validators
 
           if current_document_descriptor.error?
             add_validation_error((e = current_document_descriptor.error.dup).delete(:message), e)
-          elsif current_reference_descriptor.required? && !xml_located?
+          elsif xml_located?
+            if current_reference_descriptor.repeats?
+              validate_repeating_section
+            elsif current_reference_descriptor.field?
+              match_value unless model_value.nil?
+            else 
+              validate_section
+            end
+          elsif current_reference_descriptor.required?
             add_section_not_found_error(locator, (current_reference_descriptor.field? ? { :field_name => field_name } : {})) unless model_section_nil? 
-          elsif current_reference_descriptor.repeats?
-            validate_repeating_section
-          elsif current_reference_descriptor.field?
-            match_value unless model_value.nil?
-          else 
-            validate_section
           end
-  
+
         rescue ValidatorException => e
           raise e # just repropagate
         rescue RuntimeError => e
@@ -427,7 +429,7 @@ module Validators
           debug("Validating component: #{component_module}, association_key: #{association_key}")
           debug("reference_model: #{reference_model}")
 
-          unless reference_model.nil? || reference_model.empty?
+          unless reference_model.nil? || reference_model.respond_to?(:empty?) ? reference_model.empty? : false
             ComponentScope.new(
               :component_module => component_module,
               :reference_model  => reference_model,

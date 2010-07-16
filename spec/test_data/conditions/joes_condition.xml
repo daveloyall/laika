@@ -142,6 +142,7 @@
                   <text>
                     <reference value="#problem-1021520352"/>
                   </text>
+                  <value xsi:type='CD' code='271860004' displayName='Abdominal mass finding' codeSystem='2.16.840.1.113883.6.96' codeSystemName='SNOMED CT'/>
                   <statusCode code="completed"/>
                   <effectiveTime>
                     <low value="20060221"/>
