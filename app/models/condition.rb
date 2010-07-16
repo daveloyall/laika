@@ -3,6 +3,7 @@ class Condition < ActiveRecord::Base
   strip_attributes!
 
   belongs_to :problem_type
+  belongs_to :snowmed_problem, :foreign_key => :problem_name, :primary_key => :name
 
   include PatientChild
   include Commentable
@@ -14,6 +15,10 @@ class Condition < ActiveRecord::Base
       :problem_type_id => :hitsp_r2_required,
       :problem_name => :required,
     }
+  end
+
+  def problem_code
+    snowmed_problem.try(:code)
   end
  
   def to_c32(xml)

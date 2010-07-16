@@ -135,4 +135,17 @@ EOS
     end
   end
 
+  it "should match provider type" do
+    @provider.provider_type.name = 'foo'
+    errors = @scope.validate
+    errors.size.should == 1
+    errors.first.should be_kind_of(Laika::ComparisonError)
+  end
+  
+  it "should match address" do
+    @provider.address.street_address_line_one = 'foo'
+    errors = @scope.validate
+    errors.size.should == 1
+    errors.first.should be_kind_of(Laika::ComparisonError)
+  end
 end

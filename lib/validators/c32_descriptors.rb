@@ -97,15 +97,58 @@ module Validators
     end
  
     component :conditions, :template_id => '2.16.840.1.113883.10.20.1.11' do
-      repeating_section :condition => %q{cda:entry/cda:act[cda:templateId/@root='2.16.840.1.113883.10.20.1.27']/cda:entryRelationship[@typeCode='SUBJ']/cda:observation[cda:templateId/@root='2.16.840.1.113883.10.20.1.28']}, :matches_by => [:start_event, :end_event, :problem_name] do
+      repeating_section :condition => %q{cda:entry/cda:act[cda:templateId/@root='2.16.840.1.113883.10.20.1.27']/cda:entryRelationship[@typeCode='SUBJ']/cda:observation[cda:templateId/@root='2.16.840.1.113883.10.20.1.28']}, :matches_by => [:problem_name, :start_event, :end_event] do
         field :problem_name => %q{cda:text}, :dereference => true
-        field :start_event => %q{cda:effectiveTime/cda:low/@value}
-        field :end_event => %q{cda:effectiveTime/cda:high/@value}
-        section :problem_type => %q{cda:code[@codeSystem='2.16.840.1.113883.6.96']} do
+        field :problem_code => %q{cda:value[@codeSystem='2.16.840.1.113883.6.96']/@code}, :required => false
+        field :start_event => %q{cda:effectiveTime/cda:low/@value}, :required => false
+        field :end_event => %q{cda:effectiveTime/cda:high/@value}, :required => false
+        section :problem_type => %q{cda:code[@codeSystem='2.16.840.1.113883.6.96']}, :required => false do
           attribute :code
           field :name => %q{@displayName}
         end
       end
     end
+  
+    component :personal_information => %q{/cda:ClinicalDocument/cda:recordTarget/cda:patientRole} do
+      repeating_section :address => %q{cda:addr}, :matches_by => :street_address_line_one do
+        field :street_address_line_one => %q{cda:streetAddressLine[1]}, :required => false
+        field :street_address_line_two => %q{cda:streetAddressLine[2]}, :required => false
+        field :city, :required => false
+        field :state, :required => false
+        field :postal_code, :required => false
+        field :iso_country => %q{cda:country}, :accessor => :iso_country_code, :required => false
+      end
+      section :patient, :accessor => :do_not_access_patient_method do
+        repeating_section :name, matches_by => [:first_name, :last_name] do
+          field :name_prefix => %q{cda:prefix}, :required => false
+          field :first_name => %q{cda:given[1]}, :required => false
+          field :middle_name => %q{cda:given[2]}, :required => false
+          field :last_name => %q{cda:family}, :required => false
+          field :name_suffix => %q{cda:suffix}, :required => false
+        end
+        section :gender => %q{cda:administrativeGenderCode} do
+          attribute :code
+          field :name => %q{@displayName}
+        end
+        field :date_of_birth => %q{cda:birthTime/@value}
+        section :marital_status => %q{cda:maritalStatusCode}, :required => false do
+          attribute :code
+          field :name => %q{@displayName}
+        end
+        section :religious_affiliation => %q{cda:religiousAffiliationCode}, :required => false, :accessor => :religion do
+          attribute :code
+          field :name => %q{@displayName}
+        end
+        section :race => %q{cda:raceCode}, :required => false do
+          attribute :code
+          field :name => %q{@displayName}
+        end
+        section :ethnicity => %q{cda:ethnicGroupCode}, :required => false do
+          attribute :code
+          field :name => %q{@displayName}
+        end
+      end
+    end
+
   end
 end
