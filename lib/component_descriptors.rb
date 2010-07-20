@@ -145,9 +145,21 @@ module ComponentDescriptors
       def component(*args, &descriptors)
         _component_definition(args, :repeats => false, &descriptors)
       end
+
+      # Declares a common set of descriptors which may be included in multiple
+      # component definitions with a reference() call.
+      #
+      # TODO -> clip in example of abstract_result here
+      def common(key, &descriptors)
+        _component_definition([key], :common => true, &descriptors)
+      end
   
       def get_component(name, options = {})
-        descriptors[name].instantiate(options) if descriptors.key?(name)
+        descriptors[name].instantiate(options.merge(:mapping => self)) if descriptors.key?(name)
+      end
+
+      def get_common(key)
+        descriptors[key] || raise(DescriptorError, "No common descriptor found for key: #{key.inspect} in mapping: #{descriptors.pretty_inspect}")
       end
  
       private
@@ -173,6 +185,21 @@ module ComponentDescriptors
   module DSL
     include OptionsParser
 
+    # Set a local reference to a ComponentDescriptors::Mapping.
+    def mapping_class=(mapping_class)
+      @mapping_class = mapping_class 
+    end
+
+    # Accessor for descriptors in our original ComponentDescriptor::Mapping.
+    # Used to lookup references to common descriptors when instantiating.
+    # Raises a DescriptorError if mapping_class is not set or descriptor cannot
+    # be found.
+    def mapping(key)
+      raise(DescriptorError, "No Mapping class set.") unless @mapping_class
+#      pp @mapping_class
+      common_descriptor = @mapping_class.get_common(key)
+    end
+
     # Adds a subsection to this section.
     def section(*args, &descriptors)
       _instantiate_and_store(:section, *args, &descriptors)
@@ -192,6 +219,13 @@ module ComponentDescriptors
     # as an attribute of the current node ("@#{key}").
     def attribute(*args)
       _instantiate_and_store(:field, args, :locate_by => :attribute)
+    end
+
+    # Evaluates the descriptors of a common descriptor section used by multiple
+    # components.
+    def reference(key)
+      descriptors = mapping(key).descriptors
+      instance_eval(&descriptors)
     end
 
     # Factory creation method for descriptors of :type.
@@ -453,6 +487,7 @@ module ComponentDescriptors
         self.locator = locator
         self.options = options || {}
         self.logger = self.options[:logger]
+        self.mapping_class = options[:mapping]
         self.descriptors = descriptors
         _initialize_subsections
       end

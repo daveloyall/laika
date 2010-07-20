@@ -2,9 +2,6 @@ module Validators
   module C32Descriptors
     include ComponentDescriptors::Mapping
   
-    # need to be able to identify whether we are locating a single element or
-    # an array of similar elements
-  
     components :languages => %q{//cda:recordTarget/cda:patientRole/cda:patient/cda:languageCommunication}, :matches_by => :language_code do
       field :language_code => %q{cda:languageCode/@code}
       field :language_ability_mode => %q{cda:modeCode/@code}, :accessor => :language_ability_mode_code, :required => false
@@ -148,6 +145,55 @@ module Validators
           field :name => %q{@displayName}
         end
       end
+    end
+
+    # Another nit-noid of the CCD specification... if there is an organizer
+    # of a lab result, and that organizaer has an id, result type and a
+    # status code, the XML is changed for the reults and is wrapped within
+    # an organizer/component XML element.
+    #
+    # Otherwise, that XPath is not included in the XML and the result is
+    # simply an observation...  This is specified in the CCD documentation
+    # and NOT the C32 specification... so this really complicates things
+    # for folks who only have access to the C32 spec.
+    #
+    # TODO Organizer XPath expressions and logic for deciding which set of
+    # descriptors to employ.  Perhaps something like:
+    #
+    # common :abstract_result do
+    #   if descendent(:organizer) && descendent(:result_type_code) && descendent(:act_status_code)
+    #     reference :organizer_abstract_result
+    #   else
+    #     ...
+    #   end
+    # end
+    # 
+    # except that the above relies on the ability to find the :organizer
+    # descriptor -- even though we are only just deciding whether that
+    # descriptor will be included...
+
+    common :abstract_result do
+      repeating_section :result => %q{cda:entry/cda:observation}, :matches_by => :result_id do
+        field :result_id => %q{cda:id/@root}
+        section :code do
+          field :result_code => %q{@code}
+          field :result_code_display_name => %q{@displayName}
+          attribute :code_system, :accessor => :code_system_code
+          attribute :code_system_name
+        end
+        field :status_code => %q{cda:statusCode/@code}
+        field :result_date => %q{cda:effectiveTime/@value}
+        field :value_scalar => %q{cda:value/@value}
+        field :value_unit => %q{cda:value/@unit}
+      end
+    end
+
+    component :vital_signs, :template_id => '2.16.840.1.113883.10.20.1.16' do
+      reference :abstract_result
+    end
+
+    component :results, :template_id => '2.16.840.1.113883.10.20.1.14' do
+      reference :abstract_result
     end
 
   end
