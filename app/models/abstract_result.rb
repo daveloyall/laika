@@ -34,6 +34,14 @@ class AbstractResult < ActiveRecord::Base
     }
   end
 
+  def code_system_code
+    code_system.try(:code)
+  end
+
+  def code_system_name
+    code_system.try(:name)
+  end
+ 
   # Return a string representation of the value using value_scalar and value_unit.
   def value
     "#{value_scalar} #{value_unit}"
