@@ -226,8 +226,8 @@ describe ComponentDescriptors do
       end
       component = Testing.get_component(:foo)
       component.root_descriptor.should be_instance_of(ComponentDescriptors::Section)
-      component.root_descriptor.should == { :bar => ComponentDescriptors::Field.new(:bar, nil, nil) }
-      component.should == { :bar => ComponentDescriptors::Field.new(:bar, nil, nil) }
+      component.root_descriptor.should == { :bar => ComponentDescriptors::Field.new(:bar, nil, :mapping => Testing) }
+      component.should == { :bar => ComponentDescriptors::Field.new(:bar, nil, :mapping => Testing) }
     end
 
     it "should be possible to instantiate a defined repeating component" do
@@ -236,8 +236,8 @@ describe ComponentDescriptors do
       end
       component = Testing.get_component(:foos)
       component.root_descriptor.should be_instance_of(ComponentDescriptors::RepeatingSection)
-      component.root_descriptor.should == { :bar => ComponentDescriptors::Field.new(:bar, nil, nil) }
-      component.should == { :bar => ComponentDescriptors::Field.new(:bar, nil, nil) }
+      component.root_descriptor.should == { :bar => ComponentDescriptors::Field.new(:bar, nil, :mapping => Testing) }
+      component.should == { :bar => ComponentDescriptors::Field.new(:bar, nil, :mapping => Testing) }
     end
   end
 
@@ -356,6 +356,38 @@ EOS
       foo.find_innermost_element("cda:languageCode[@code='en-US']", language).xpath.should == '/ClinicalDocument/recordTarget/patientRole/patient/languageCommunication[1]/languageCode'
       foo.find_innermost_element("cda:languageCode[@code='foo']", language).xpath.should == '/ClinicalDocument/recordTarget/patientRole/patient/languageCommunication[1]/languageCode'
       foo.find_innermost_element("cda:modeCode/@code]", language).xpath.should == '/ClinicalDocument/recordTarget/patientRole/patient/languageCommunication[1]/modeCode'
+    end
+
+    describe "mapping accessors" do
+
+      before do
+        Testing.descriptors[:bar] = :baz
+        @foo = Foo.new(:foo, nil, nil)
+      end
+
+      it "be able to set a mapping_class" do
+        @foo.mapping_class = Testing
+        @foo.mapping_class.should == Testing
+      end
+
+      it "should lookup descriptors from mapping class" do
+        @foo.mapping_class = Testing
+        @foo.mapping(:bar).should == :baz
+      end
+
+      it "should read a mapping set from options" do
+        foo = Foo.new(:foo, nil, :mapping => Testing)
+        foo.mapping_class.should == Testing
+        foo.mapping(:bar).should == :baz
+      end
+
+      it "should find mapping class from parent" do
+        parent = Foo.new(:parent, nil, :mapping => Testing)
+        @foo.parent = parent
+        @foo.mapping_class.should == Testing
+        @foo.mapping(:bar).should == :baz
+      end
+
     end
 
   end

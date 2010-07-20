@@ -7,11 +7,32 @@ module Validators
       field :language_ability_mode => %q{cda:modeCode/@code}, :accessor => :language_ability_mode_code, :required => false
       field :preference => %q{cda:preferenceInd/@value}, :required => false
     end
-  
+ 
+    common :address_fields do
+      field :street_address_line_one => %q{cda:streetAddressLine[1]}, :required => false
+      field :street_address_line_two => %q{cda:streetAddressLine[2]}, :required => false
+      field :city, :required => false
+      field :state, :required => false
+      field :postal_code, :required => false
+      field :iso_country => %q{cda:country}, :accessor => :iso_country_code, :required => false
+    end
+
+    common :name_fields do
+      field :name_prefix => %q{cda:prefix}, :required => false
+      field :first_name => %q{cda:given[1]}, :required => false
+      field :middle_name => %q{cda:given[2]}, :required => false
+      field :last_name => %q{cda:family}, :required => false
+      field :name_suffix => %q{cda:suffix}, :required => false
+    end
+
+    common :code_name do
+      attribute :code
+      field :name => %q{@displayName}
+    end
+
     components :healthcare_providers => %q{//cda:documentationOf/cda:serviceEvent/cda:performer}, :matches_by => [:first_name, :last_name] do
       section :provider_role => %q{cda:functionCode}, :required => false do
-        attribute :code
-        field :name => %q{@displayName}
+        reference :code_name
       end
       section :time do
         field :start_service => %q{cda:low/@value}
@@ -19,23 +40,13 @@ module Validators
       end
       section :assigned_entity do
         section :provider_type => %q{cda:code}, :required => false do
-          attribute :code
-          field :name => %q{@displayName}
+          reference :code_name
         end
         section :assigned_person => %q{cda:assignedPerson/cda:name}, :required => false do
-          field :name_prefix => %q{cda:prefix}, :required => false
-          field :first_name => %q{cda:given[1]}, :required => false
-          field :middle_name => %q{cda:given[2]}, :required => false
-          field :last_name => %q{cda:family}, :required => false
-          field :name_suffix => %q{cda:suffix}, :required => false
+          reference :name_fields
         end
         section :address => %q{cda:addr}, :required => false do
-          field :street_address_line_one => %q{cda:streetAddressLine[1]}, :required => false
-          field :street_address_line_two => %q{cda:streetAddressLine[2]}, :required => false
-          field :city, :required => false
-          field :state, :required => false
-          field :postal_code, :required => false
-          field :iso_country => %q{cda:country}, :accessor => :iso_country_code, :required => false
+          reference :address_fields
         end
   #      # 'with' is transparent to the output, unlike 'section'
   #      with :telecom => %q{cda:telecom}, :required => :false do
@@ -79,16 +90,11 @@ module Validators
       repeating_section :insurance_provider => %q{cda:entry/cda:act[cda:templateId/@root='2.16.840.1.113883.10.20.1.20']/cda:entryRelationship/cda:act[cda:templateId/@root='2.16.840.1.113883.10.20.1.26']} do
         field :group_number => %q{cda:id/@root}, :required => false
         section :insurance_type => %q{cda:code[@codeSystem='2.16.840.1.113883.6.255.1336']}, :required => false do
-          attribute :code
-          field :name => %q{@displayName}
+          reference :code_name
         end
         field :represented_organization => %q{cda:performer[@typeCode='PRF']/cda:assignedEntity[@classCode='ASSIGNED']/cda:representedOrganization[@classCode='ORG']/cda:name}, :required => false
         repeating_section :insurance_provider_guarantor => %q{cda:performer/cda:assignedEntity/cda:assignedPerson/cda:name}, :matches_by => [:first_name, :last_name], :required => false do
-          field :name_prefix => %q{cda:prefix}, :required => false
-          field :first_name => %q{cda:given[1]}, :required => false
-          field :middle_name => %q{cda:given[2]}, :required => false
-          field :last_name => %q{cda:family}, :required => false
-          field :name_suffix => %q{cda:suffix}, :required => false
+          reference :name_fields
         end
       end
     end
@@ -100,49 +106,34 @@ module Validators
         field :start_event => %q{cda:effectiveTime/cda:low/@value}, :required => false
         field :end_event => %q{cda:effectiveTime/cda:high/@value}, :required => false
         section :problem_type => %q{cda:code[@codeSystem='2.16.840.1.113883.6.96']}, :required => false do
-          attribute :code
-          field :name => %q{@displayName}
+          reference :code_name
         end
       end
     end
   
     component :personal_information => %q{/cda:ClinicalDocument/cda:recordTarget/cda:patientRole} do
       repeating_section :address => %q{cda:addr}, :matches_by => :street_address_line_one do
-        field :street_address_line_one => %q{cda:streetAddressLine[1]}, :required => false
-        field :street_address_line_two => %q{cda:streetAddressLine[2]}, :required => false
-        field :city, :required => false
-        field :state, :required => false
-        field :postal_code, :required => false
-        field :iso_country => %q{cda:country}, :accessor => :iso_country_code, :required => false
+        reference :address_fields
       end
       section :patient, :accessor => :do_not_access_patient_method do
         repeating_section :name, matches_by => [:first_name, :last_name] do
-          field :name_prefix => %q{cda:prefix}, :required => false
-          field :first_name => %q{cda:given[1]}, :required => false
-          field :middle_name => %q{cda:given[2]}, :required => false
-          field :last_name => %q{cda:family}, :required => false
-          field :name_suffix => %q{cda:suffix}, :required => false
+          reference :name_fields
         end
         section :gender => %q{cda:administrativeGenderCode} do
-          attribute :code
-          field :name => %q{@displayName}
+          reference :code_name
         end
         field :date_of_birth => %q{cda:birthTime/@value}
         section :marital_status => %q{cda:maritalStatusCode}, :required => false do
-          attribute :code
-          field :name => %q{@displayName}
+          reference :code_name
         end
         section :religious_affiliation => %q{cda:religiousAffiliationCode}, :required => false, :accessor => :religion do
-          attribute :code
-          field :name => %q{@displayName}
+          reference :code_name
         end
         section :race => %q{cda:raceCode}, :required => false do
-          attribute :code
-          field :name => %q{@displayName}
+          reference :code_name
         end
         section :ethnicity => %q{cda:ethnicGroupCode}, :required => false do
-          attribute :code
-          field :name => %q{@displayName}
+          reference :code_name
         end
       end
     end

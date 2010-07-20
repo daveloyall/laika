@@ -190,14 +190,20 @@ module ComponentDescriptors
       @mapping_class = mapping_class 
     end
 
+    def mapping_class
+      mapping_class = @mapping_class
+      mapping_class ||= parent.try(:mapping_class) if respond_to?(:parent)
+      return mapping_class
+    end
+
     # Accessor for descriptors in our original ComponentDescriptor::Mapping.
     # Used to lookup references to common descriptors when instantiating.
     # Raises a DescriptorError if mapping_class is not set or descriptor cannot
     # be found.
     def mapping(key)
-      raise(DescriptorError, "No Mapping class set.") unless @mapping_class
-#      pp @mapping_class
-      common_descriptor = @mapping_class.get_common(key)
+      raise(DescriptorError, "No Mapping class set.") unless mapping_class
+#      pp mapping_class
+      common_descriptor = mapping_class.get_common(key)
     end
 
     # Adds a subsection to this section.
@@ -242,6 +248,7 @@ module ComponentDescriptors
     def _instantiate_and_store(type, *args, &descriptors)
       key, locator, options = parse_args(args)
       options[:logger] = logger unless options.key?(:logger) || logger.nil?
+      options[:mapping] = mapping_class unless options.key?(:mapping) || mapping_class.nil?
       debug("_instantiate_and_store: #{key} => #{type} in #{self}")
       store(key, DSL.create(type, key, locator, options, &descriptors))
       self
@@ -487,7 +494,7 @@ module ComponentDescriptors
         self.locator = locator
         self.options = options || {}
         self.logger = self.options[:logger]
-        self.mapping_class = options[:mapping]
+        self.mapping_class = self.options[:mapping]
         self.descriptors = descriptors
         _initialize_subsections
       end
@@ -716,6 +723,10 @@ module ComponentDescriptors
         had_attributes = false
         [:options, :xml, :model, :extracted_value].each do |m|
           if !(value = send(m)).nil? && (value.respond_to?(:empty?) ? !value.empty? : true)
+            if m == :options
+              value = value.reject { |k,v| k == :mapping }
+              next if value.empty?
+            end
             pp.breakable
             pp.text "@#{m} = "
             pp.pp value 
@@ -888,7 +899,7 @@ module ComponentDescriptors
         node_position = i + 1
         debug("instantiate_section_node node ##{node_position} -> #{node.inspect}")
         section_locator = "#{locator}[#{node_position}]"
-        section = DSL.create(:repeating_section_instance, nil, section_locator, :logger => logger, :matches_by => matches_by, &descriptors)
+        section = DSL.create(:repeating_section_instance, nil, section_locator, :logger => logger, :mapping => mapping_class, :matches_by => matches_by, &descriptors)
         section.parent = self # without this, we can't access root options like :validation_type
         section.send("#{mode}=", node)
         section.extracted_value = node unless section.extracted_value
