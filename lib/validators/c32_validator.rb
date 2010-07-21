@@ -430,19 +430,37 @@ module Validators
           debug("reference_model: #{reference_model}")
 
           unless reference_model.nil? || reference_model.respond_to?(:empty?) ? reference_model.empty? : false
-            ComponentScope.new(
+            Validator.validate_component( 
               :component_module => component_module,
               :reference_model  => reference_model,
               :document         => document,
               :validation_type  => validation_type,
-              :logger           => logger,
-              :logger_color     => 33,
-              :validator        => C32VALIDATOR,
-              :inspection_type  => ::CONTENT_INSPECTION
-            ).validate
+              :logger           => logger
+            )
           end
 
         end.flatten!.compact!
+      end
+
+      # Utility method for validating a component module.
+      # 
+      # The options hash must include the following:
+      # * :component_module
+      # * :reference_model
+      # * :document
+      # * :validation_type
+      def self.validate_component(options)
+        local_options = options.dup
+        unless local_options.key?(:logger)
+          reference_model = local_options[:reference_model]
+          local_options[:logger] = reference_model.try(:logger) if reference_model.respond_to?(:logger)
+        end
+        default_options = {
+          :logger_color     => 33,
+          :validator        => C32VALIDATOR,
+          :inspection_type  => ::CONTENT_INSPECTION
+        }
+        ComponentScope.new(default_options.merge(local_options)).validate
       end
 
     end

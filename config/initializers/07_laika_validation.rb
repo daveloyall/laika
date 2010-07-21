@@ -1,7 +1,9 @@
 require 'xml_helper'
-
+require 'laika/constants'
 require 'validation'
 require 'validation_error'
+# convenience validator methods
+require_dependency 'patient_validators'
 
 # The Tale of Validator Initialization
 #

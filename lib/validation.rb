@@ -34,7 +34,7 @@ module Validation
      attr_accessor :validation_type, :logger
 
      def initialize
-       self.logger = Logger.new(STDOUT)
+#       self.logger = Logger.new(STDOUT)
      end
      
      def validate(patient_data, document)
@@ -114,7 +114,6 @@ module Validation
       doc_validator = get_validator(doc_type)
       doc_validator << validator unless doc_validator.contains?(validator)
     end
-
 
     def get_validator(type)
       # just to make sure everything is normalized to capitalized symbols
