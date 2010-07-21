@@ -55,7 +55,7 @@ describe Validators::C32Validation do
           @scope.update_attributes(
             :component_module => :medications,
             :key => :medications_medication,
-            :reference_model => [@medication]
+            :reference_model => @medication
           )
         end
 
@@ -186,7 +186,6 @@ EOS
 
   it "should validate a v2.5 C32 document" do
     @validator.validate(@patient, @document).should == []
-    flunk "haven't finished directives for all component modules yet"
   end
 
 end

@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 [
 # [:component_module, :xml_path, :fixture, :model_reference, :repeating],
   [:vital_signs, 'vital_signs/jenny_vital_sign.xml', :abstract_results, :jennifer_thompson_vital_sign, true],
-  [:results, 'results/jenny_result.xml', :abstract_results, :jennifer_thompson_result, true],
+  [:test_results, 'results/jenny_result.xml', :abstract_results, :jennifer_thompson_result, true],
 ].each do |component_module,xml_path,fixture,model_reference,repeating|
 
   describe "C83 #{component_module.to_s.titleize} Validation" do
