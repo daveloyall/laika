@@ -29,7 +29,7 @@ Note that many rake tasks load the environment, and thus will also fail if the C
 
 == Install JRuby
 
-Ensure that you have JRuby version 1.3.1 installed locally (available here: http://dist.codehaus.org/jruby/1.3.1/) and add <jruby-install>/bin to your PATH environment variable.
+Ensure that you have JRuby installed locally (available here: http://dist.codehaus.org/jruby/) and add <jruby-install>/bin to your PATH environment variable.
 
 On a Linux based system, JRuby can be installed painlessly by untarring as root into /opt.  On a Debian based distro, /etc/environment has the global PATH environment variable.  You will need to restart X to get this into your root terminal sessions.
 
