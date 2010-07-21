@@ -427,9 +427,9 @@ module Validators
           # remove or raise an exception perhaps once all components described
 
           debug("Validating component: #{component_module}, association_key: #{association_key}")
-          debug("reference_model: #{reference_model}")
+          debug("reference_model: #{reference_model.inspect}")
 
-          unless reference_model.nil? || reference_model.respond_to?(:empty?) ? reference_model.empty? : false
+          unless reference_model.nil? || (reference_model.respond_to?(:empty?) ? reference_model.empty? : false)
             Validator.validate_component( 
               :component_module => component_module,
               :reference_model  => reference_model,
