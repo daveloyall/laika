@@ -183,9 +183,31 @@ module Validators
       reference :abstract_result
     end
 
-    component :results, :template_id => '2.16.840.1.113883.10.20.1.14' do
+    component :test_results, :template_id => '2.16.840.1.113883.10.20.1.14' do
       reference :abstract_result
     end
+
+    # TODO Immunizations module (existing c32/immunization_c32_validation.rb is blank
+
+    # TODO Encounters module (existing c32/encounters_c32_validation.rb is blank
+
+    # TODO Procedures module (existing c32/procedures_c32_validation.rb is blank
+
+    # TODO Medical Equipment module (existing c32/medical_equipment_c32_validation.rb is blank
+
+# TODO - These exist in the old c32/*_c32_validation.rb library but are not
+# currently part of the test process.  They still need to be translated.
+#    component :support do
+#
+#    end
+#
+#    component :information_source do
+#
+#    end
+#
+#    component :advanced_directive do
+#
+#    end
 
   end
 end

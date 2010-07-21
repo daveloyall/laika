@@ -31,7 +31,7 @@ module Validators
               }
               errors << descend(options).validate
             else
-              add_no_matching_section_error(reference_descriptor.section_key_hash)
+              add_no_matching_section_error(reference_descriptor)
             end
           end
         end
@@ -247,10 +247,10 @@ module Validators
       # Add a NoMatchingSection error with provided and expected sections 
       # to the current scope's error list.  Default error arguments may
       # be overridden by passing in options in the args parameter.
-      def add_no_matching_section_error(xpath, args = {})
+      def add_no_matching_section_error(expected_reference_descriptor, args = {})
         _add_error(Laika::NoMatchingSection, {
-            :message => "No matching #{section_name} was found. Searched for: #{xpath.inspect}",
-            :expected_section => collect_expected_values, 
+            :message => "No matching #{section_name} was found. Searched for: #{expected_reference_descriptor.section_key_hash.inspect}",
+            :expected_section => collect_expected_values(expected_reference_descriptor), 
             :provided_sections => collect_provided_values,
           },
           args
@@ -343,11 +343,9 @@ module Validators
       end
 
       # Collect a hash of all the expected values from the current reference_model().
-      def collect_expected_values
-        debug("collect_expected_values: #{key}, #{current_reference_descriptor}")
-        current_reference_descriptor.to_field_hash
-#        attached = descriptor.copy.model = reference_model
-#        attached.to_field_hash
+      def collect_expected_values(expected_reference_descriptor = current_reference_descriptor)
+        debug("collect_expected_values: #{key}, #{expected_reference_descriptor}")
+        expected_reference_descriptor.to_field_hash
       end
 
       # Collect a hash of all the values in the current xml

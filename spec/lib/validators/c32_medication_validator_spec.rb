@@ -42,7 +42,6 @@ describe "C32 Medication Validation" do
 
     it "should verify a medication in a C32 doc version 2.5" do
       errors = @scope.validate
-      pp errors
       errors.should be_empty
     end
   
@@ -83,13 +82,12 @@ describe "C32 Medication Validation" do
     it "should return multiple provider sections when no matching section found" do
       @document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/c32v2.5.xml'))
       @scope.update_attributes( :document => @document )
-      @medication.stub!(:product_coded_display_name).and_return('foo')
       errors = @scope.validate
       errors.size.should == 1
       errors.first.should be_kind_of(Laika::NoMatchingSection)
       errors.first.location.should == "/ClinicalDocument/component/structuredBody/component[2]/section/entry/substanceAdministration[1]"
       errors.first.expected_section.should == {
-        :product_coded_display_name => "foo", 
+        :product_coded_display_name => "Prednisone", 
         :free_text_brand_name => nil, 
         :medication_type => "Over the counter product", 
         :status => nil, 
@@ -116,6 +114,33 @@ describe "C32 Medication Validation" do
 
     it "should fail if a field does not match"
     it "should fail if we cannot find a consumable"
+     
+    it "should return a single expected section with multiple model medications" do
+      medication2 = medications(:emily_jones_medication)
+      @scope.update_attributes( :reference_model => [@medication, medication2] )
+      errors = @scope.validate
+      errors.size.should == 1
+      errors.first.should be_kind_of(Laika::NoMatchingSection)
+      errors.first.location.should == '/ClinicalDocument/component/structuredBody/component/section/entry/substanceAdministration'
+      errors.first.expected_section.should == {
+        :product_coded_display_name => "Clopidogrel", 
+        :free_text_brand_name => "Plavix", 
+        :medication_type => "Prescription Drug", 
+        :status => nil, 
+        :quantity_ordered_value => nil, 
+        :expiration_time => Date.new(2008,11,17),
+      }
+      errors.first.provided_sections.should == [
+        {
+          :product_coded_display_name => "Prednisone", 
+          :free_text_brand_name => "Intensol", 
+          :medication_type => "Over the counter product", 
+          :status => nil, 
+          :quantity_ordered_value => "30.0", 
+          :expiration_time => "20151002",
+        },
+      ]
       
+    end 
   end
 end
