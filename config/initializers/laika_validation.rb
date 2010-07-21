@@ -20,9 +20,10 @@ require 'importers/c32/address_c32_importer'
 require 'importers/c32/telecom_c32_importer'
 require 'importers/c32/person_name_c32_importer'
 
-
 require 'validation'
 require 'validation_error'
+# convenience validator methods
+require_dependency 'patient_validators'
 
 # The Tale of Validator Initialization
 #

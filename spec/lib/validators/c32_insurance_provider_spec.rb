@@ -8,7 +8,7 @@ describe "C32 Isurance Provider Validation" do
     @insurance_provider = insurance_providers(:joe_smiths_insurance_provider)
     @scope = Validators::C32Validation::ComponentScope.new(
       :validation_type => Validation::C32_V2_5_TYPE,
-      :logger => TestLogger.new,#DevNull.new,
+      :logger => TestLoggerDevNull.new,
       :validator => "ComponentScopeTest",
       :inspection_type => "Testing",
       :component_module => :insurance_providers,

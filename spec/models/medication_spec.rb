@@ -13,12 +13,12 @@ describe Medication, 'it can validate medication elements in a C32' do
   it "should verify a medication in a C32 doc version 2.5" do
     document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/medications/jenny_medication_2.5.xml'))
     med = medications(:jennifer_thompson_medication)
-    substance_administration_hash = XmlHelper.dereference('substanceAdministration', document)
-    errors = med.validate_c32(document, :validation_type => Validation::C32_V2_5_TYPE, :substance_administration_hash => substance_administration_hash)
+    med.quantity_ordered_value = 15.0
+    errors = med.validate_c32(document, :validation_type => Validation::C32_V2_5_TYPE)
     errors.size.should == 1
-    errors.first.message.should == "Expected nil got 30.0"
+    errors.first.message.should == "Expected 15.0 got 30.0"
     med.quantity_ordered_value = 30.0
-    errors = med.validate_c32(document, :validation_type => Validation::C32_V2_5_TYPE, :substance_administration_hash => substance_administration_hash)
+    errors = med.validate_c32(document, :validation_type => Validation::C32_V2_5_TYPE)
     errors.should be_empty
   end
 end
