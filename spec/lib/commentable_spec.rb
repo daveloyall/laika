@@ -34,7 +34,7 @@ describe Commentable do
       end
   
       it "should destroy the comment on update_attributes" do
-        @immunization.update_attributes(:comment_attributes => { :id => @comment.id, '_delete' => '1' })
+        @immunization.update_attributes(:comment_attributes => { :id => @comment.id, :_destroy => '1' })
         @immunization.comment(true).should be_nil
       end
   
