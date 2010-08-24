@@ -437,7 +437,8 @@ module Validators
             )
           end
 
-        end.flatten!.compact!
+        end
+        errors.flatten.compact
       end
 
       # Utility method for validating a component module.

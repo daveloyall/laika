@@ -11,10 +11,13 @@ describe Allergy, "it can validate allergy entries in a C32" do
   end
 
   it "should verify when there are no known allergies" do
-    document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/allergies/no_known_allergies.xml'))
-    allergy = Allergy.new
-    errors = allergy.check_no_known_allergies_c32(document)
-    errors.should be_empty
+    pending do
+      # not sure if this is relevant?  check_no_known_allergies_c32 isn't called anywhere
+      document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/allergies/no_known_allergies.xml'))
+      allergy = Allergy.new
+      errors = allergy.check_no_known_allergies_c32(document)
+      errors.should be_empty
+    end
   end
 end
 

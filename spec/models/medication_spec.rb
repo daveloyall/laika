@@ -53,8 +53,7 @@ describe Medication, "can create a C32 representation of itself" do
         end
       end
     end
-    substance_administration_hash = XmlHelper.dereference('substanceAdministration', document.root)
-    errors = med.validate_c32(document.root, :substance_administration_hash => substance_administration_hash)
+    errors = med.validate_c32(document.root)
     puts errors.inspect if !errors.empty?
     errors.should be_empty
   end

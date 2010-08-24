@@ -67,6 +67,7 @@ describe Validators::Umls::UmlsValidator, "Can validate codes/code_systems " do
 
     it "should handle validation failure do to lack of umls database" do
       @validator.logger = mock
+      @validator.logger.should_receive(:debug).once
       @validator.logger.should_receive(:warn).once
       document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/validators/valid_codes.xml'))
       errors =  @validator.validate(nil,document)
@@ -100,6 +101,7 @@ describe Validators::Umls::UmlsValidator, "Can validate codes/code_systems " do
 
     it "should fail if attempt to validate" do
       @validator.logger = mock
+      @validator.logger.should_receive(:debug).once
       @validator.logger.should_receive(:warn).once
       document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/validators/valid_codes.xml'))
       errors =  @validator.validate(nil,document)

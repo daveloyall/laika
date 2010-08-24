@@ -11,9 +11,7 @@ describe Condition, "can validate itself" do
   it "should validate without errors" do
     document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/conditions/joes_condition.xml'))
     errors = @cond.validate_c32(document.root)
-    pending("joes_condition.xml gold data needs to be fixed in order to be valid") do
-      errors.should be_empty
-    end
+    errors.should be_empty
   end
 
   it "should belong to a snowmed_problem" do
