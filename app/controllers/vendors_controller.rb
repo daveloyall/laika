@@ -3,12 +3,12 @@ class VendorsController < ApplicationController
   before_filter :find_vendor, :only => [:update, :destroy]
 
   def create
-    vendor = Vendor.new(params[:vendor])
-    vendor.user = current_user
-    if vendor.save
+    @vendor = Vendor.new(params[:vendor])
+    @vendor.user = current_user
+    if @vendor.save
       flash[:notice] = "Vendor inspection ID was successfully created."
     else
-      flash[:notice] = "Failed to create a new vendor inspection ID: #{vendor.errors.full_messages.join(', ')}."
+      flash[:notice] = "Failed to create a new vendor inspection ID: #{@vendor.errors.full_messages.join(', ')}."
     end
     redirect_to vendor_test_plans_url(@vendor)
   end
