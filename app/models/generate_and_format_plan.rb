@@ -52,7 +52,7 @@ class GenerateAndFormatPlan < TestPlan
 #    logger.debug(validator.inspect)
     errors = nil
     begin
-      errors = validator.validate(patient, clinical_document)
+      errors = validator.validate(patient, clinical_document, :logger => logger)
     rescue REXML::ParseException => e
       logger.info("ERROR DURING DOCUMENT PARSING: #{e.inspect}\n#{e.backtrace.join("\n")}")
       raise(ValidationError, "Unable to parse (is this a well-formed XML document?)")

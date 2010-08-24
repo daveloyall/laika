@@ -28,7 +28,7 @@ describe ContentErrorsController do
     end
 
     it "should not set an arbitrary state" do
-      xhr :put, :mark, :id => @error.id, :content_error => { :state => "foo" }
+      lambda { xhr :put, :mark, :id => @error.id, :content_error => { :state => "foo" } }.should raise_error(ActiveRecord::RecordInvalid)
       @error.reload
       @error.state.should == 'failed'
     end

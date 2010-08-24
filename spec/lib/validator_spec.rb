@@ -55,8 +55,20 @@ describe Validation::Validator do
   severity_terms supports telecoms users vaccines vendors zip_codes
     ]
 
-    [ :david_carter, :emily_jones, :jennifer_thompson, :theodore_smith, :joe_smith, :will_haynes ].each do |patient|
+    [ :david_carter, :emily_jones, :theodore_smith, :joe_smith, :will_haynes ].each do |patient|
       it "should round-trip validate #{patient} without errors or warnings" do
+        record = patients(patient)
+        document = REXML::Document.new(record.to_c32)
+        validator = Validation.get_validator(Validation::C32_V2_5_TYPE)
+        errors = validator.validate(record,document)        
+        errors.should be_empty
+      end
+    end
+
+    # see c32_descriptor notes for abstract_result
+    it "should round-trip validate jennifer_thompson without errors or warnings iven though results have an organizer" do
+      pending do
+        patient = :jennifer_thompson
         record = patients(patient)
         document = REXML::Document.new(record.to_c32)
         validator = Validation.get_validator(Validation::C32_V2_5_TYPE)
@@ -78,18 +90,18 @@ end
 
 describe Validation::BaseValidator do
 
-  it "should provide a logger" do
+  it "should provide a logger accessor" do
     validator = Validation::BaseValidator.new
-    validator.logger.should be_kind_of Logger
+    validator.logger.should be_nil
   end
 
 end
 
 describe Validation::FileValidator do
 
-  it "should provide a logger" do
+  it "should provide a logger accessor" do
     validator = Validation::FileValidator.new
-    validator.logger.should be_kind_of Logger
+    validator.logger.should be_nil
   end
 
 end

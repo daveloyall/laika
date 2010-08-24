@@ -16,7 +16,8 @@ describe Provider do
   
   it "should validate itself without errors" do
     document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/jenny_healthcare_provider.xml'))
-    @provider.validate_c32(document).should be_empty
+    errors = @provider.validate_c32(document)
+    errors.should be_empty
   end 
   
 
@@ -41,6 +42,5 @@ describe Provider do
       end
     end
   end
-
 
 end

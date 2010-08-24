@@ -20,7 +20,7 @@ module Validators
           java_file_descriptor = java.io.File.new(RAILS_ROOT + "/public/#{document_path}")
           result = @validator.validateToString(java_file_descriptor)
         rescue org.drools.runtime.rule.ConsequenceException => e
-          logger.info("ERROR DURING WALDREN CCR RULES VALIDATION: #{e.inspect}\n#{e.backtrace.join("\n") if e.respond_to?(:backtrace)}")
+          info("ERROR DURING WALDREN CCR RULES VALIDATION: #{e.inspect}\n#{e.backtrace.join("\n") if e.respond_to?(:backtrace)}")
           errors << Laika::ValidationError.new(
             :message => "CCR rules validation engine threw an exception: #{e} (Plese check the logs).",
             :validator => name,

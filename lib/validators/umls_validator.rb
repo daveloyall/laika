@@ -23,7 +23,7 @@ module Validators
       if Validators::Umls.configured?
         establish_connection(Validators::Umls.configuration_key)
       else
-        logger.warn("Validators::Umls::UmlsBase not configured with a #{Validators::Umls.configuration_key} database")
+        warn("Validators::Umls::UmlsBase not configured with a #{Validators::Umls.configuration_key} database")
       end    
     end
     
@@ -74,7 +74,7 @@ module Validators
       # Validate a given xml document against the umls db. This validation only looks to see 
       # if the code 
       def validate(patient_data,document)
-    
+        debug("Validators::Umls::UmlsValidator#validate() #{patient_data}")
         base_error_parameters = { 
           :validator       => "UmlsValidator",
           :severity        => msg_type,
@@ -109,13 +109,13 @@ module Validators
                     
             end
           rescue ActiveRecord::ActiveRecordError => e
-            logger.warn("Validators::Umls::UmlsValidator#validate() - ActiveRecordError: #{e}\n#{e.backtrace}")
+            warn("Validators::Umls::UmlsValidator#validate() - ActiveRecordError: #{e}\n#{e.backtrace}")
             errors << Laika::ValidationError.new(base_error_parameters.merge(
               :message   => "Laika encountered an error connecting to the UMLS database and was not able to complete UMLS validation"
             ))
           end
         else
-          logger.warn("Validators::Umls::UmlsValidator#validate() - UmlsBase not configured with a #{Validators::Umls.configuration_key} database.  UMLS validation not attempted.")
+          warn("Validators::Umls::UmlsValidator#validate() - UmlsBase not configured with a #{Validators::Umls.configuration_key} database.  UMLS validation not attempted.")
           errors << Laika::ValidationError.new(base_error_parameters.merge(
             :message   => "Laika was not configured to use a UMLS database"
           ))

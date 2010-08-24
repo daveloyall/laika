@@ -31,12 +31,9 @@ module Validation
    # this is just a stubbed out marker class to we can ensure that
    # everything that is registered as a validator really is one
    class BaseValidator
-     attr_accessor :validation_type, :logger
+     include Logging
+     attr_accessor :validation_type
 
-     def initialize
-#       self.logger = Logger.new(STDOUT)
-     end
-     
      def validate(patient_data, document)
          raise "Implement me damn it"
      end
@@ -59,13 +56,15 @@ module Validation
       @doc_type= doc_type
     end
     
-    def validate(patient_data, document)
+    def validate(patient_data, document, options = {})
+      logger = options[:logger]
       errors = []
       # see if we have been given a ClinicalDocument, if so, get the xml
       xml_document = document.respond_to?(:as_xml_document) ? document.as_xml_document : document
       # and get the public path to the file if available
       xml_file_path = document.public_filename if document.respond_to?(:public_filename)
       validators.each do |validator|
+        validator.logger = logger if logger
         case validator
           when FileValidator
             errors.concat(validator.validate(patient_data, xml_file_path))
