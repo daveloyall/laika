@@ -178,7 +178,11 @@ Install the Glassfish server using the Glassfish gem:
 
 GlassFish will use default options for the server if you do not have a glassfish.yml file in your config directory. Laika provides a glassfish.yml.template file that you may edit. Note that GlassFish cannot run as a daemon process on Windows.
 
-Deploying Laika on the GlassFish server is very simple. Run the following command from the root of your Laika project:
+Deploying Laika on the GlassFish server is very simple. Make sure your CLASSPATH variable is set:
+
+  $ source bin/laika_env.sh
+
+Then run the following command from the root of your Laika project:
 
   $ jruby -S glassfish
 
