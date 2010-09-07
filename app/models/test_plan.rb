@@ -109,7 +109,20 @@ class TestPlan < ActiveRecord::Base
   #
   # @return [Array] Registered test plan types.
   def self.test_types
-    Laika::TEST_PLAN_TYPES
+    unless @test_types
+      @test_types = Laika::TEST_PLAN_TYPES.clone
+      unless Laika.use_xds
+        @test_types.delete(XdsProvideAndRegisterPlan.test_name)
+        @test_types.delete(XdsQueryAndRetrievePlan.test_name)
+      end
+      unless Laika.use_pix_pdq
+        @test_types.delete(PdqQueryPlan.test_name)
+        @test_types.delete(PixQueryPlan.test_name)
+        @test_types.delete(PixFeedPlan.test_name)
+      end
+      @test_types.delete(C62InspectionPlan.test_name) unless Laika.use_c62
+    end
+    @test_types
   end
 
   # Use this in the body of sub-classes to specify that inspection is done

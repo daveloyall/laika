@@ -18,4 +18,7 @@ if File.exists?(laika_config_path)
   
   # set ActionMailer
   configure_subsystem(ActionMailer::Base, yaml['action_mailer'] || {})
+
+  # set Laika
+  configure_subsystem(Laika, yaml['laika'] || {})
 end

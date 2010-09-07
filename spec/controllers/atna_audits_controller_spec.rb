@@ -1,5 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
+if Laika.use_atna
+
 describe AtnaAuditsController do
   before do
     @user = stub :user
@@ -27,4 +29,6 @@ ATNA_ENTRY
 
     it "should be tested (SF ticket 2738097)"
   end
+end
+
 end

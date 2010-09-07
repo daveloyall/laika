@@ -21,3 +21,15 @@ action_mailer:
 #    address: "localhost"
 #    port: 25
 #    domain: ""
+
+# These are configuration options for Laika itself
+laika:
+  # Set to true if you will be setting up an XDS database and making XDS
+  # provide & register/query & retrieve tests
+  use_xds: false
+  # Set to true if you will be setting up a database for ATNA logging
+  use_atna: false
+  # Set to true if you will be performing PDQ/PIX testing
+  use_pix_pdq: false
+  # Set to true if you wish to test C62 documents
+  use_c62: false

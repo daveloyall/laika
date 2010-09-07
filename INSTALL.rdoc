@@ -72,6 +72,8 @@ And follow the instructions contained in http://github.com/downloads/CCHIT/laika
 
 Regardless of whether you are going to use the ATNA syslog, you will at least need an empty syslog database to prevent errors being thrown when the AtnaAudit model is loaded.
 
+You will also need to set 'use_atna' to true in your config/laika.yml file.
+
 == UMLS HOST
 
 Detailed information about UMLS may be found here at NIH:
@@ -84,9 +86,12 @@ Setting up a local UMLS database requires a lot of space.  See the NIH site and 
 
 == XDS HOST
 
+To use XDS you will need to set 'use_xds' to true in your config/laika.yml file and then configure
+the XDS utility.
+
 The default XDS setup on Laika points to localhost. You can change the initial XDS endpoints by editing the settings.yml in spec/fixtures.  If you do not have your own XDS set up, you can use the public registry provided by NIST (more information at http://129.6.24.109:9080/index.html); simply change localhost to the following IP address: http://129.6.24.109:9080.
 
-If you are not conducting XDS tests, you will need to comment out this database in your config/database.yml
+If you are not conducting XDS tests, you should leave the XDS database commented out in your config/database.yml
 
 == Installing Required Gems
 
@@ -155,18 +160,26 @@ You will also need to place a copy of the CCR xsd in vendor/ccr-validation-servi
 
 This validation service is beta functionality and is likely to change in the future.
 
-== Mail Settings
+== Additional Laika Configuration
+
+May be set by copying config/laika.yml.template to config/laika.yml and editing as necessary.
+
+=== Mail Settings
 
 Laika sends mail for forgotten passwords, and potentially for error notifications (see below).
 
 By default, Laika assumes that it can send mail through a mail server configured at localhost on port 25.  To change this, create a copy of config/laika.yml from the config/laika.yml.template and set your mail settings as needed under 'action_mailer:'.  See the ActionMailer::Base configuration options for further details (http://api.rubyonrails.org/classes/ActionMailer/Base.html).
 
-== Error Notifications
+=== Error Notifications
 
 Laika uses the exception_notification plugin to email application errors encountered on a production server.  If you wish to receive email notifications, make sure that you have a config/laika.yml YAML file in place and that the exception_recipients parameter has been set to a list of one or more email addresses who should be receiving error notifications:
 
 exception_notifier:
   exception_recipients: [ 'foo@bar.com' ]
+
+=== Laika Advanced UI Functions
+
+laika.yml also has four switches for activating the UI for ATNA logs, C62, XDS, and PIX/PDQ tests.  In addition to setting these switches to true to activate the UI for these functions, you will need to set them ap locally (See XDS and ATNA above; See the http://github.com/citiustech/laika-pixpdq-adapter for information on setting up a PIX/PDQ server.  C62 testing is enabled simply by updating the laika.yml setting, but the test is incomplete.)
 
 == GlassFish
 

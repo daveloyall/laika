@@ -15,10 +15,10 @@
     <ul>
       <li><%= link_to_function 'Add to Test Plan',
         "$('assignment_div_#{patient.id}').toggle().down('select').focus()" %></li>
-      <li><%= link_to h('Provide & Register'),
-        provide_and_register_xds_patient_url(patient) %>
+      <% if Laika.use_xds %><li><%= link_to h('Provide & Register'),
+        provide_and_register_xds_patient_url(patient) %></li><% end %>
       <% if not patient.editable_by? current_user -%>
-        <li><%= link_to h('Duplicate'), copy_patient_url(patient), :method => 'post', :title => 'Create a copy to make changes to the patient data.' %>
+        <li><%= link_to h('Duplicate'), copy_patient_url(patient), :method => 'post', :title => 'Create a copy to make changes to the patient data.' %></li>
       <% end -%>
     </ul>
     <div id="assignment_div_<%=patient.id%>" style="display:none">

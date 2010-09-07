@@ -3,7 +3,7 @@
 <table id="dashboard">
 
   <tr>
-	<% if LOCAL_NIST_XDS %>
+	<% if Laika.use_xds && LOCAL_NIST_XDS %>
 		<th><div>XDS</div></th>
 	<% end %>
     <th class="<%= sort_order_class('name') %>"><%= link_to_sort 'name', 'Template' %></th>

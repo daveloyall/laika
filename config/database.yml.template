@@ -22,13 +22,6 @@ test:
   database: laika_test
   <<: *login
  
-# ATNA message log
-# You may set up an empty database with no schema if you will not be using
-# the ATNA log.  Otherwise see the INSTALL.rdoc.
-syslog:
-  database: syslog
-  <<: *login
- 
 # UMLS database settings
 # Required for Generate and Format test (see INSTALL.rdoc)
 umls_production:
@@ -49,12 +42,18 @@ umls_test:
   username: umls
   password: umls
 
+# ATNA message log
+# Uncomment if you will be setting up the ATNA logging (see INSTALL.rdoc) 
+#syslog:
+#  database: syslog
+#  <<: *login
+ 
 # NIST XDS local repository
-# Comment this out if you will not be doing XDS testing (see INSTALL.rdoc)
-nist_xds_registry:
-  adapter: jdbcpostgresql
-  database: registry
-  host: localhost
-  username: postgres
-  password:
-  port: 5432
+# Uncomment and edit this if you will be doing XDS testing (see INSTALL.rdoc)
+#nist_xds_registry:
+#  adapter: jdbcpostgresql
+#  database: registry
+#  host: localhost
+#  username: postgres
+#  password:
+#  port: 5432
