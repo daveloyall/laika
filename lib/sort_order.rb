@@ -88,7 +88,7 @@ module SortOrderHelper
 
   def link_to_sort(field_spec, label)
     sort_field = controller.sort_spec == field_spec ? "-#{field_spec}" : field_spec
-    link_to content_tag(:div, label), "?sort=#{sort_field}"
+    content_tag(:div, link_to(label, "?sort=#{sort_field}"), :class => 'sortable')
   end
 end
 

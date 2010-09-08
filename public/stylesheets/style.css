@@ -300,7 +300,7 @@ table#dashboard a {
 	color:#424242;
 }
 
-#dashboard th.sortable div {
+#dashboard th div.sortable {
 	background:url(/images/lightarrow.png) no-repeat right;
 }
 
