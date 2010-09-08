@@ -33,3 +33,5 @@ laika:
   use_pix_pdq: false
   # Set to true if you wish to test C62 documents
   use_c62: false
+  # Set to true if you wish to test NHIN documents
+  use_nhin: false

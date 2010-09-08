@@ -21,6 +21,11 @@ module Laika
   mattr_accessor :use_c62, :instance_writer => false
   @@use_xds = false
 
+  # Set to true if you wish to test C62 documents
+  # (Set in config/laika.yml)
+  mattr_accessor :use_nhin, :instance_writer => false
+  @@use_nhin = false
+
   TEST_PLAN_TYPES = {
     C32DisplayAndFilePlan.test_name     => C32DisplayAndFilePlan,
     NhinDisplayAndFilePlan.test_name    => NhinDisplayAndFilePlan,

@@ -121,6 +121,7 @@ class TestPlan < ActiveRecord::Base
         @test_types.delete(PixFeedPlan.test_name)
       end
       @test_types.delete(C62InspectionPlan.test_name) unless Laika.use_c62
+      @test_types.delete(NhinDisplayAndFilePlan.test_name) unless Laika.use_nhin
     end
     @test_types
   end

@@ -1,3 +1,4 @@
+require 'laika/constants'
 # Configure both ActionMailer::Base, and the exception_notification plugin
 
 def configure_subsystem(klass, config)
