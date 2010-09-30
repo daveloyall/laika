@@ -1,7 +1,7 @@
 <!-- Start Personal Information Module -->
 <h5>Person Information (Required)</h5>
-<table>
 <% if registration_information %>
+<table>
   <%= view_row(registration_information, :document_timestamp) %>
   <%= view_row(registration_information, :affinity_domain_identifier) %>
   <%= render :partial => '/person_names/show', :locals => {:person_name => registration_information.person_name}%>
