@@ -41,7 +41,7 @@ module TestPlansHelper
           }, :update => opts[:update])
       else
         content_tag 'li',
-          link_to(k, :controller => 'test_plans', :action => v, :id => test_plan)
+          link_to(k, { :controller => 'test_plans', :action => v, :id => test_plan }, :class => k.to_s.downcase)
       end
     end
   end
