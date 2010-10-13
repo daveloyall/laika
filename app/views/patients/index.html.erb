@@ -20,7 +20,7 @@
   <div class="column span-9 append-1 box">
     <h3>Create a new patient</h3>
     <% form_for(Patient.new) do |f| %>
-      <label for="name">Enter the patient's full name</label>
+      <%= f.label :name, "Enter the patient's full name" %>
       <br />
       <%= f.text_field :name %>
       <%= f.submit "Create Patient" %>
@@ -42,7 +42,7 @@
   	              :action => 'import' },
   	            :html => {
   	              :multipart => true,
-  	              :onSubmit => %[
+  	              :onsubmit => %[
   	                if ($("new_record").value.blank())
   	                  { alert("You must specify a file to upload."); return false }
   	                else return true

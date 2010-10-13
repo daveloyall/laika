@@ -22,24 +22,32 @@
       <% end -%>
     </ul>
     <div id="assignment_div_<%=patient.id%>" style="display:none">
-      <% form_for(TestPlan.new(:vendor_id => @vendor.try(:id),
-          :user_id => current_user.id),
-          :html => {
-          :onSubmit => <<-EOJ,
-            if (this['test_plan[vendor_id]'].value == '') {
-              this.vendor_name.value = window.prompt('Provide a name for the new inspection.');
-              return !(this.vendor_name.value == '');
-            }
-            EOJ
-          :method => 'post' }) do |f| -%>
-        <%= hidden_field_tag :patient_id, patient.id %>
-        <%= hidden_field_tag :vendor_name, '' %>
+      <% form_for(
+           TestPlan.new(
+             :vendor_id => @vendor.try(:id),
+             :user_id => current_user.id
+           ),
+           :html => {
+             :id => "new_test_plan_from_#{patient.id}",
+             :onsubmit => <<-EOJ,
+               if (this['test_plan[vendor_id]'].value == '') {
+                 this.vendor_name.value = window.prompt('Provide a name for the new inspection.');
+                 return !(this.vendor_name.value == '');
+               }
+               EOJ
+             :method => 'post'
+         }) do |f| -%>
+        <%= hidden_field_tag :patient_id, patient.id, :id => "patient_id_#{patient.id}" %>
+        <%= hidden_field_tag :vendor_name, '', :id => "vendor_name_#{patient.id}" %>
         <%= f.collection_select :vendor_id, @vendors, :id, :public_id,
-          :include_blank => 'New Inspection' %><br/>
-        <%= f.select :type, TestPlan.test_types %><br/>
+              { :include_blank => 'New Inspection' },
+              { :id => "test_plan_vendor_id_#{patient.id}" } %><br/>
+        <%= f.select :type, TestPlan.test_types, {},
+              { :id => "test_plan_type_#{patient.id}" } %><br/>
         <% if not @proctors.empty? -%>
           <%= f.collection_select :proctor_id, @proctors, :id, :name,
-            :include_blank => 'No Test Proctor' %><br/>
+                { :include_blank => 'No Test Proctor' }, 
+                { :id => "test_plan_proctor_id_#{patient.id}" } %><br/>
         <% end -%>
         <input type="submit" value="Assign" />
       <% end -%>
