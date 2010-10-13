@@ -1,6 +1,8 @@
 require File.dirname(__FILE__) + '/../../../spec_helper'
 
 describe RegistrationInformationC32Importer do
+  fixtures :person_names, :genders, :addresses 
+
   it "should import a registration information entry in a C32 into an ActiveRecord object" do
     document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/joe_c32.xml'))
 

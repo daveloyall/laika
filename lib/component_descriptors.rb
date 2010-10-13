@@ -895,9 +895,17 @@ module ComponentDescriptors
       raise(DescriptorError, "RepeatingSection#instantiate_section_nodes accepts only two modes: :xml or :model") unless [:xml, :model].include?(mode)
       debug "instantiate_section_nodes mode: #{mode}"
       clear
-# I think the Array() call below is the source of these warnings:
+# The Array() call below is the source of these warnings:
 # /opt/jruby-1.4.0/lib/ruby/gems/1.8/gems/activerecord-2.3.5/lib/active_record/associations/association_proxy.rb:217 warning: default 'to_a' will be obsolete
-      (Array(extracted_value || send(mode))).try(:each_with_index) do |node,i|
+# This warning will only show up when send(mode) returns an AssociationProxy for a
+# single object (such as from a has_one relation).  The warning should be 
+# irrelevant for us because Array() tries #to_ary #to_a and then wraps in a []
+# if they fail.  The warning is bloody irritating though.
+#      (Array(extracted_value || send(mode))).try(:each_with_index) do |node,i|
+# Here's a hamfisted, but hopefully quiet alternative.
+      extracted = extracted_value || send(mode)
+      extracted = extracted.proxy_target if extracted.respond_to?(:proxy_target)
+      Array(extracted).try(:each_with_index) do |node,i|
         node_position = i + 1
         debug("instantiate_section_node node ##{node_position} -> #{node.inspect}")
         section_locator = "#{locator}[#{node_position}]"

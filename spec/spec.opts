@@ -3,3 +3,4 @@
 --reverse
 --backtrace
 --diff
+--format nested 
