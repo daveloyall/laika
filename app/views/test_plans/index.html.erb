@@ -30,8 +30,8 @@
       <td class="test_state">
         <%= render :partial => 'mark_state', :locals => { :plan => test_plan } %>
       </td>
-      <td><%= test_plan.class.test_name %></td>
-	  <td><%= test_plan.clinical_document.try :doc_type %></td>
+      <td><%= h(test_plan.class.test_name) %></td>
+  	  <td><%= test_plan.clinical_document.try :doc_type %></td>
       <td class="edit">
         <%= link_to_if test_plan.pending?, h(test_plan.patient.name),
           patient_url(test_plan.patient) %>
