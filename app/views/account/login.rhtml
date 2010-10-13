@@ -5,7 +5,7 @@
             <div id="branding">
                 <%= image_tag "welcome.png", :id => 'imgLogo', :alt => 'Laika welcomes you!' %>
                 Hey friend, please log in.
-                <hr class="login">
+                <hr class="login" />
             </div>
             <div id="panelLogin">
                 <div style="padding-bottom:18px">
@@ -31,12 +31,12 @@
                       </div>
                       <div style="position:absolute; top:100px; left:25px; font-size:11px;"><%= link_to 'Lost your password?', {:action => 'forgot_password'}, {:class => "loginlink"} %></div>
                     <% else %>
-                      <div style="width:160px; position:absolute; top:30px; left:58px; line-height:1.2em; font-size:11px;">Don't have an account?<br>No worries, <%= link_to 'create one now!', {:action => 'signup'}, {:class => "loginlink"} %></div>
+                      <div style="width:160px; position:absolute; top:30px; left:58px; line-height:1.2em; font-size:11px;">Don't have an account?<br />No worries, <%= link_to 'create one now!', {:action => 'signup'}, {:class => "loginlink"} %></div>
                       <div style="position:absolute; top:100px; left:25px; font-size:11px;"><%= link_to 'Lost your password?', {:action => 'forgot_password'}, {:class => "loginlink"} %></div>
                     <% end %>
                   </div>
                   <div style="position: absolute; bottom: 0px; right: 0px; text-align:right;font-size:11px;">
-                    Laika v<%= LAIKA_VERSION %><br>
+                    Laika v<%= LAIKA_VERSION %><br />
                     <a class="loginlink" href="http://projectlaika.org" target="_blank">Project Laika</a> | 
                     <a class="loginlink" href="http://www.cchit.org" target="_blank">CCHIT</a><br />
                     <a class="loginlink" href="http://www.mitre.org" target="_blank">MITRE</a> |
