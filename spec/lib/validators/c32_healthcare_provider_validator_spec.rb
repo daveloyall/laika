@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../../spec_helper'
 
 describe "C32 Healthcare Providers Validation" do
-  fixtures :providers
+  fixtures :providers, :provider_types, :provider_roles, :addresses, :person_names, :iso_countries
 
   C32_HEALTHCARE_PROVIDERS = <<-EOS
 <ClinicalDocument xmlns="urn:hl7-org:v3"
