@@ -100,11 +100,24 @@ div#login div#panelLogin div, div#login div#panelResetPass div, div#login div#pa
 	margin: 0 auto;
 	width: 456px;
 }
-
+div#login div#panelLogin div.account-controls {
+  height: 20px;
+  margin-left:295px;
+}
+div#login div#panelLogin.create div.account-controls {
+  float :right;
+  padding: 25px 0 0 0;
+  margin: 0;
+  width : 250px;
+}
 div#login div#panelLogin div.doggyhelp {
 	padding-bottom:0px;
 }
-
+div#login div#panelLogin.create div.doggyhelp {
+  float: left;
+  width : 200px;
+  margin : 25px 0 0 35px;
+}
 div#login div#branding {
 	padding-top: 20px;
 	display: block;
@@ -274,7 +287,7 @@ a:hover.loginlink {
 div#whyreg {
 	float: left;
 	position: relative;
-	top: -158px;
+	top: -98px;
 	left: 30px;
 	font-size: 11px;
 }
@@ -287,8 +300,8 @@ div#whyreg {
 
 div#doggyappeartxt {
 	position: relative;
-	top: -165px;
-	left: 5px;
+	top: -145px;
+	left: 10px;
 	font-size: 11px;
 	float: left;
 }

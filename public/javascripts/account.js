@@ -9,7 +9,10 @@ function submitKeyPress(e) {
   }
   
   if (keynum == 13) {
-    document.laika_login_form.submit();
+    var f = e.target.up('form')
+    if (f) {
+      f.submit();
+    }
     return false;
   }
   return true;
@@ -20,7 +23,7 @@ function submitLaikaLoginform() {
 }
 
 function submitLaikaAccountCreationform() {      
-  document.laika_account_creation_form.submit(); 
+  $('laika_account_creation_form').submit(); 
 }
     
 function submitResetPasswordinform() {
