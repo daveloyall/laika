@@ -1,3 +1,11 @@
+document.observe("dom:loaded", function() {
+  $$('form.enter-submit').each( function(f) {
+    f.observe('keypress', function(evt) {
+      return submitKeyPress(evt)
+    })
+  });
+})
+
 function submitKeyPress(e) {
   var keynum;
   if(window.event) {
