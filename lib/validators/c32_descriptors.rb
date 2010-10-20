@@ -82,7 +82,7 @@ module Validators
         field :free_text_product => %q{cda:participant[@typeCode='CSM']/cda:participantRole[@classCode='MANU']/cda:playingEntity[@classCode='MMAT']/cda:name/text()}
         field :start_event => %q{cda:effectiveTime/cda:low/@value}
         field :end_event => %q{cda:effectiveTime/cda:high/@value}
-        field :product_code => %q{cda:participant[@typeCode='CSM']/cda:participantRole[@classCode='MANU']/cda:playingEntity[@classCode='MMAT']/cda:code[@codeSystem='2.16.840.1.113883.6.88']/@code}
+        field :product_code => %q{cda:participant[@typeCode='CSM']/cda:participantRole[@classCode='MANU']/cda:playingEntity[@classCode='MMAT']/cda:code/@code}
       end
     end
   
