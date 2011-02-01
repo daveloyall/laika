@@ -14,53 +14,45 @@ module Validators
   
     module Actions
 
-      def self.included(base)
-        base.send(:include, InstanceMethods)
+      def validate_repeating_section
+        debug("validate_repeating_section: #{current_reference_descriptor}")
+        current_reference_descriptor.each do |section_key,reference_descriptor|
+          if document_descriptor = current_document_descriptor[section_key]
+            options = {
+              :key => document_descriptor.index_key,
+              :current_reference_descriptor => reference_descriptor,
+              :current_document_descriptor => document_descriptor,
+            }
+            errors << descend(options).validate
+          else
+            add_no_matching_section_error(reference_descriptor)
+          end
+        end
       end
 
-      module InstanceMethods
- 
-        def validate_repeating_section
-          debug("validate_repeating_section: #{current_reference_descriptor}")
-          current_reference_descriptor.each do |section_key,reference_descriptor|
-            if document_descriptor = current_document_descriptor[section_key]
-              options = {
-                :key => document_descriptor.index_key,
-                :current_reference_descriptor => reference_descriptor,
-                :current_document_descriptor => document_descriptor,
-              }
-              errors << descend(options).validate
-            else
-              add_no_matching_section_error(reference_descriptor)
-            end
-          end
+      def validate_section
+        debug("validate_section: #{current_reference_descriptor}")
+        # we have a section
+        current_reference_descriptor.subdescriptors.each do |d|
+          options = {
+            :key => d.index_key,
+            :current_reference_descriptor => d,
+          }
+#          if rm = _reference_model_matching(d)
+#            options.merge!(:reference_model => rm)
+#          end
+          errors << descend(options).validate
         end
+      end
 
-        def validate_section
-          debug("validate_section: #{current_reference_descriptor}")
-          # we have a section
-          current_reference_descriptor.subdescriptors.each do |d|
-            options = {
-              :key => d.index_key,
-              :current_reference_descriptor => d,
-            }
-#            if rm = _reference_model_matching(d)
-#              options.merge!(:reference_model => rm)
-#            end
-            errors << descend(options).validate
-          end
-        end
-
-        # See if the current_reference_descriptor and current_document_descriptor's
-        # extracted_values match.
-        def match_value
-          debug("match_value for #{current_reference_descriptor}")
-          expected_value = model_value 
-          actual_value = xml_value
-          add_comparison_error(field_name, expected_value.to_s, actual_value) unless expected_value == actual_value
-        end
-
-      end # module InstanceMethods
+      # See if the current_reference_descriptor and current_document_descriptor's
+      # extracted_values match.
+      def match_value
+        debug("match_value for #{current_reference_descriptor}")
+        expected_value = model_value 
+        actual_value = xml_value
+        add_comparison_error(field_name, expected_value.to_s, actual_value) unless expected_value == actual_value
+      end
     end # module Actions
 
     # Holds the scope and general helper routines needed to validate a
