@@ -66,8 +66,9 @@ describe Validation::Validator do
     end
 
     # see c32_descriptor notes for abstract_result
-    it "should round-trip validate jennifer_thompson without errors or warnings iven though results have an organizer" do
+    it "should round-trip validate jennifer_thompson without errors or warnings even though results have an organizer" do
       pending do
+        flunk('abstract results descriptors not set yet')
         patient = :jennifer_thompson
         record = patients(patient)
         document = REXML::Document.new(record.to_c32)

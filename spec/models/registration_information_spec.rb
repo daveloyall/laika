@@ -9,7 +9,6 @@ describe RegistrationInformation, "can validate it's content" do
     document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/joe_c32.xml'))
     joe_reg = registration_information(:joe_smith)
     errors = joe_reg.validate_c32(document)
-    #puts errors.map {|e| e.error_message }.join(' ')
     errors.should be_empty
   end
 end

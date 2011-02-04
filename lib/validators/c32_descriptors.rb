@@ -30,6 +30,13 @@ module Validators
       field :name => %q{@displayName}
     end
 
+    common :telecom do
+      repeating_section :telecom_values => %q{cda:telecom}, :matches_by => :value, :required => false do
+        attribute :use
+        attribute :value
+      end
+    end
+
     components :healthcare_providers => %q{//cda:documentationOf/cda:serviceEvent/cda:performer}, :matches_by => [:first_name, :last_name] do
       section :provider_role => %q{cda:functionCode}, :required => false do
         reference :code_name
@@ -48,14 +55,7 @@ module Validators
         section :address => %q{cda:addr}, :required => false do
           reference :address_fields
         end
-  #      # 'with' is transparent to the output, unlike 'section'
-  #      with :telecom => %q{cda:telecom}, :required => :false do
-  #        field :home_phone => %q{[@use='hp']}, :validates => :match_telecom_as_hp
-  #        field :work_phone => %q{[@use='wp']}, :validates => :match_telecom_as_wp
-  #        field :mobile_phone => %q{[@use='mc']}, :validates => :match_telecom_as_mc
-  #        field :vacation_home_phone => %q{[@use='hv']}, :validates => :match_telecom_as_hv
-  #        field :email => %q{[@use='email']}, :validates => :match_telecom_as_email
-  #      end
+        reference :telecom
         field :id => %q{sdtc:patient/sdtc:id/@root}, :accessor => :patient_identifier, :required => false 
       end
     end
@@ -114,6 +114,10 @@ module Validators
     component :personal_information => %q{/cda:ClinicalDocument/cda:recordTarget/cda:patientRole} do
       repeating_section :address => %q{cda:addr}, :matches_by => :street_address_line_one do
         reference :address_fields
+      end
+      repeating_section :telecom_values => %q{cda:telecom}, :matches_by => :value do
+        attribute :use
+        attribute :value
       end
       section :patient, :accessor => :do_not_access_patient_method do
         repeating_section :name, matches_by => [:first_name, :last_name] do

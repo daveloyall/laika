@@ -20,4 +20,10 @@ describe PersonLike do
     ri.first_name.should == 'Foo'
     ri.last_name.should == 'Bar'
   end
+
+  it "should provide an array of telecom value hashes" do
+    ri = RegistrationInformation.new
+    ri.telecom_values.should == []
+  end
+
 end

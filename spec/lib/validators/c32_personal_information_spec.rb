@@ -19,7 +19,7 @@ describe "C32 Registration Information" do
     )
   end
 
-  it "should verify an insurance provider matches in a C32 doc" do
+  it "should verify an personal information matches in a C32 doc" do
     errors = @scope.validate
     errors.should be_empty
   end

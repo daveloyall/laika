@@ -8,9 +8,11 @@ describe Result, "it can validate result entries in a C32" do
   end  
   
   it "should validate without errors" do
-    document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/results/jenny_result.xml'))
-    errors = @result.validate_c32(document.root)
-    errors.should be_empty
+    pending "completion of test result descriptors" do
+      document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/results/jenny_result.xml'))
+      errors = @result.validate_c32(document.root)
+      errors.should be_empty
+    end
   end
 end
 

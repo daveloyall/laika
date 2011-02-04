@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Telecom do
-  it 'should be blank if all fields are empty' do
+  it "should be blank if all fields are empty" do
     Telecom.new.should be_blank
   end
 
@@ -11,6 +11,20 @@ describe Telecom do
     it "should not be blank if #{attr} field is not empty" do
       Telecom.new(attr => "0").should_not be_blank
     end
+  end
+
+  it "should translate to an array of hashes" do
+    Telecom.new.as_array.should == []
+    telecom = Telecom.new(
+      :work_phone => "+1-503-123-4567",
+      :home_phone => "+1-503-345-6789",
+      :email => "foo@bar.com"
+    )
+    telecom.as_array.to_set.should == [
+      { :use => 'WP', :value => 'tel:+1-503-123-4567' },
+      { :use => 'HP', :value => 'tel:+1-503-345-6789' },
+      { :value => 'mailto:foo@bar.com' },
+    ].to_set
   end
 
   describe "when validating" do

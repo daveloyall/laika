@@ -98,6 +98,8 @@ EOS
       :state => "NY",
       :postal_code => "12345",
       :iso_country => "US",
+      :use => 'WP',
+      :value => 'tel:+1-555-555-1212',
       :id => "78A150ED-B890-49dc-B716-5EC0027B3985",
     }
     errors.first.provided_sections.should == [
@@ -119,6 +121,8 @@ EOS
         :state => "NY",
         :postal_code => "12345",
         :iso_country => "US",
+        :use => 'WP',
+        :value => 'tel:+1-555-555-1212',
         :id => "78A150ED-B890-49dc-B716-5EC0027B3985",
       }
     ]
@@ -126,13 +130,11 @@ EOS
   end
 
   it "should have accurate expected and provided sections for unmatched telecom" do
-    pending do
-      @provider.telecom.work_phone = '123-456-789' 
-      errors = @scope.validate
-      errors.size.should == 1
-      errors.first.expected_section.should == {:use=>"WP", :value=>"123-456-789"}
-      errors.first.provided_sections.should == [{:use=>"WP", :value=>"tel:+1-555-555-1212"}]
-    end
+    @provider.telecom.work_phone = '123-456-789' 
+    errors = @scope.validate
+    errors.size.should == 1
+    errors.first.expected_section.should == {:use=>"WP", :value=>"tel:123-456-789"}
+    errors.first.provided_sections.should == [{:use=>"WP", :value=>"tel:+1-555-555-1212"}]
   end
 
   it "should match provider type" do

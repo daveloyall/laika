@@ -18,6 +18,9 @@ require 'delegate'
 # attribute - shortcut for a field whose xpath locator is simply the key value
 # as an attribute of the current node ("@#{key}").
 #
+# A descriptor is a concrete instance of the mapping between document
+# and model for a component, section, field or attribute.
+# 
 # Every descriptor has a section_key which uniquely identifies it within its
 # current section.  This key serves as the method used to look up a matching
 # element in an object model of the patient document.  Every descriptor also
@@ -508,7 +511,7 @@ module ComponentDescriptors
         options[validation_type] || {}
       end
 
-      # First checks to see if the options was specified specially for the
+      # First checks to see if the option was specified specially for the
       # current validation_type.  If so, returns it, if not, returns the base
       # option.
       def options_by_type(key)
@@ -547,7 +550,7 @@ module ComponentDescriptors
       def model_has_section?
         raise(DescriptorError, "No model attached.") unless model
         model_has_section = accessor && model.respond_to?(accessor.to_s)
-        model_has_section ||= model.kind_of?(Hash) && model.key?[accessor.to_s]
+        model_has_section ||= model.kind_of?(Hash) && model.key?(accessor.to_s)
       end
  
       def index_key

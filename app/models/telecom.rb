@@ -31,8 +31,17 @@ class Telecom < ActiveRecord::Base
         }
     end
   end
-
- 
+  
+  # Translate to an array of hashes, where each hash has a use and a value.
+  def as_array
+    array = []
+    [[:home_phone, 'HP'], [:work_phone, 'WP'], [:mobile_phone, 'MC'], [:vacation_home_phone, 'HV']].each do |attr,use|
+      array << { :use => use, :value => "tel:#{send(attr)}" } if send("#{attr}?")
+    end
+    array << { :value => "mailto:#{email}" } if email?
+    array << { :value => url } if url?
+    return array
+  end 
 
   def to_c32(xml= XML::Builder.new)
     if home_phone && home_phone.size > 0
