@@ -68,8 +68,6 @@ class Condition < ActiveRecord::Base
                 end
                 if end_event.present?
                   xml.high("value" => end_event.to_s(:brief))
-                else
-                  xml.high("nullFlavor" => "UNK")
                 end
               end
             end
