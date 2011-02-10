@@ -1,9 +1,10 @@
 module Validation
 
-  C32_V2_1_2_3_TYPE = 'C32 v2.1/v2.3'
-  C32_V2_5_TYPE     = 'C32 v2.5'
-  C32_NHIN_TYPE     = 'NHIN C32'
-  CCR_TYPE          = 'CCR'
+  C32_V2_1_2_3_TYPE      = 'C32 v2.1/v2.3'
+  C32_V2_5_TYPE          = 'C32 v2.5 C83 v1.1'
+  C32_V2_5_C83_V2_0_TYPE = 'C32 v2.5 C83 v2.0'
+  C32_NHIN_TYPE          = 'NHIN C32'
+  CCR_TYPE               = 'CCR'
 
    def Validation.unregister_validators
      ValidationRegistry.instance.unregister_validators

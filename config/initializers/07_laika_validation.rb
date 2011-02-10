@@ -115,6 +115,16 @@ validator_config = {
       "#{RAILS_ROOT}/resources/schematron/c32_v2.5/c32_v2.5_errors.xslt"),
     Validators::Umls::UmlsValidator.new("warning")
   ],
+  Validation::C32_V2_5_C83_V2_0_TYPE => [
+    Validators::C32Validation::Validator.new,
+    Validators::Schema::Validator.new("C32 Schema Validator",
+      "#{RAILS_ROOT}/resources/schemas/infrastructure/cda/C32_CDA.xsd"),
+    Validators::Schematron::CompiledValidator.new("CCD Schematron Validator",
+      "#{RAILS_ROOT}/resources/schematron/ccd_errors.xslt"),
+    Validators::Schematron::CompiledValidator.new("C32 Schematron Validator",
+      "#{RAILS_ROOT}/resources/schematron/c32_v2.5_c83_v2.0/c32_v2.5_c83_v2.0_errors.xslt"),
+    Validators::Umls::UmlsValidator.new("warning")
+  ],
 }
 if Laika.use_nhin
   validator_config[Validation::C32_NHIN_TYPE] = [

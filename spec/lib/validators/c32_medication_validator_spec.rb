@@ -6,7 +6,7 @@ describe "C32 Medication Validation" do
   before(:each) do
     @medication = medications(:jennifer_thompson_medication)
     @scope = Validators::C32Validation::ComponentScope.new(
-      :validation_type => Validation::C32_V2_5_TYPE,
+      :validation_type => Validation::C32_V2_5_C83_V2_0_TYPE,
       :logger => TestLoggerDevNull.new,
       :validator => "ComponentScopeTest",
       :inspection_type => "Testing",

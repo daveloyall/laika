@@ -7,7 +7,7 @@ describe "C32 Isurance Provider Validation" do
     @document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/insurance_provider/insurance_provider.xml'))
     @insurance_provider = insurance_providers(:joe_smiths_insurance_provider)
     @scope = Validators::C32Validation::ComponentScope.new(
-      :validation_type => Validation::C32_V2_5_TYPE,
+      :validation_type => Validation::C32_V2_5_C83_V2_0_TYPE,
       :logger => TestLoggerDevNull.new,
       :validator => "ComponentScopeTest",
       :inspection_type => "Testing",

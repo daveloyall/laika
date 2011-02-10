@@ -36,7 +36,7 @@ EOS
     @document = REXML::Document.new(C32_LANGUAGES_XML)
     @language = languages(:joe_smith_english_language)
     @scope = Validators::C32Validation::ComponentScope.new(
-      :validation_type => Validation::C32_V2_5_TYPE,
+      :validation_type => Validation::C32_V2_5_C83_V2_0_TYPE,
       :logger => TestLoggerDevNull.new,
       :validator => "ComponentScopeTest",
       :inspection_type => "Testing",

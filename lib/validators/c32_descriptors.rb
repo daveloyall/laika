@@ -62,7 +62,7 @@ module Validators
   
     component :medications, :template_id => '2.16.840.1.113883.10.20.1.8' do
       repeating_section :medication => %q{cda:entry/cda:substanceAdministration}, :matches_by => :product_coded_display_name do
-        field :product_coded_display_name => %q{cda:consumable/cda:manufacturedProduct/cda:manufacturedMaterial/cda:code/cda:originalText}, Validation::C32_V2_5_TYPE => { :dereference => true }
+        field :product_coded_display_name => %q{cda:consumable/cda:manufacturedProduct/cda:manufacturedMaterial/cda:code/cda:originalText}, Validation::C32_V2_5_TYPE => { :dereference => true }, Validation::C32_V2_5_C83_V2_0_TYPE => { :dereference => true }
         section :consumable do
           section :manufactured_product do
             field :free_text_brand_name => %q{cda:manufacturedMaterial/cda:name}

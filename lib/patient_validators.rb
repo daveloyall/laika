@@ -4,7 +4,7 @@
 Patient.class_eval do
 
   def validate_c32(document, options = {})
-    validation_type = options[:validation_type] || Validation::C32_V2_5_TYPE
+    validation_type = options[:validation_type] || Validation::C32_V2_5_C83_V2_0_TYPE
     content_validator = Validation.get_validator(validation_type).validators.find { |v| v.kind_of?(Validators::C32Validation::Validator) }
     content_validator.validate(self, document)
   end
@@ -14,7 +14,7 @@ Patient.class_eval do
     klass.class_eval do
       define_method(:validate_c32) do |xml,*optional|
         options = optional.first || {} 
-        validation_type = options[:validation_type] || Validation::C32_V2_5_TYPE
+        validation_type = options[:validation_type] || Validation::C32_V2_5_C83_V2_0_TYPE
         Validators::C32Validation::Validator.validate_component({
           :component_module => module_name,
           :reference_model  => self,

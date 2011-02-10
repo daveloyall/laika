@@ -10,32 +10,32 @@ describe Validation::Validator do
 
   before(:all) do
     Validation.unregister_validators
-    Validation.register_validator Validation::C32_V2_5_TYPE, C32_CONTENT_VALIDATOR
-    Validation.register_validator Validation::C32_V2_5_TYPE, C32_SCHEMA_VALIDATOR
-    Validation.register_validator Validation::C32_V2_5_TYPE, CCD_SCHEMATRON_VALIDATOR
-    Validation.register_validator Validation::C32_V2_5_TYPE, C32_SCHEMATRON_VALIDATOR
+    Validation.register_validator Validation::C32_V2_5_C83_V2_0_TYPE, C32_CONTENT_VALIDATOR
+    Validation.register_validator Validation::C32_V2_5_C83_V2_0_TYPE, C32_SCHEMA_VALIDATOR
+    Validation.register_validator Validation::C32_V2_5_C83_V2_0_TYPE, CCD_SCHEMATRON_VALIDATOR
+    Validation.register_validator Validation::C32_V2_5_C83_V2_0_TYPE, C32_SCHEMATRON_VALIDATOR
   end
 
   it "should be able to register validators" do 
-    Validation.get_validator(Validation::C32_V2_5_TYPE).should_not be_nil
-    Validation.get_validator(Validation::C32_V2_5_TYPE).validators.length.should == 4
+    Validation.get_validator(Validation::C32_V2_5_C83_V2_0_TYPE).should_not be_nil
+    Validation.get_validator(Validation::C32_V2_5_C83_V2_0_TYPE).validators.length.should == 4
   end
   
   it "should be able to tell if it contains a specific validator" do
-    validator = Validation.get_validator(Validation::C32_V2_5_TYPE)
+    validator = Validation.get_validator(Validation::C32_V2_5_C83_V2_0_TYPE)
     validator.contains?(C32_SCHEMATRON_VALIDATOR).should_not be_nil
     validator.contains?(UMLS_VALIDATOR).should be_false
   end
   
   it "should be able to tell if it contains a specific kind of validator" do
-    validator = Validation.get_validator(Validation::C32_V2_5_TYPE)
+    validator = Validation.get_validator(Validation::C32_V2_5_C83_V2_0_TYPE)
     validator.contains?(Validators::Schematron::CompiledValidator).should_not be_nil
     validator.contains?(Validators::Umls::UmlsValidator).should be_false
   end
 
   it "should set validation_type for each of its subvalidators" do
-    validator = Validation.get_validator(Validation::C32_V2_5_TYPE)
-    validator.validators.each { |v| v.validation_type.should == Validation::C32_V2_5_TYPE }
+    validator = Validation.get_validator(Validation::C32_V2_5_C83_V2_0_TYPE)
+    validator.validators.each { |v| v.validation_type.should == Validation::C32_V2_5_C83_V2_0_TYPE }
   end
 
   describe "with built-in records" do
@@ -59,7 +59,7 @@ describe Validation::Validator do
       it "should round-trip validate #{patient} without errors or warnings" do
         record = patients(patient)
         document = REXML::Document.new(record.to_c32)
-        validator = Validation.get_validator(Validation::C32_V2_5_TYPE)
+        validator = Validation.get_validator(Validation::C32_V2_5_C83_V2_0_TYPE)
         errors = validator.validate(record,document)        
         errors.should be_empty
       end
@@ -72,7 +72,7 @@ describe Validation::Validator do
         patient = :jennifer_thompson
         record = patients(patient)
         document = REXML::Document.new(record.to_c32)
-        validator = Validation.get_validator(Validation::C32_V2_5_TYPE)
+        validator = Validation.get_validator(Validation::C32_V2_5_C83_V2_0_TYPE)
         errors = validator.validate(record,document)        
         errors.should be_empty
       end

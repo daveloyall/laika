@@ -13,7 +13,7 @@ require File.dirname(__FILE__) + '/../../spec_helper'
       @document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/' + xml_path))
       @model = send(fixture, model_reference)
       @scope = Validators::C32Validation::ComponentScope.new(
-        :validation_type => Validation::C32_V2_5_TYPE,
+        :validation_type => Validation::C32_V2_5_C83_V2_0_TYPE,
         :logger => TestLoggerDevNull.new,
         :validator => "ComponentScopeTest",
         :inspection_type => "Testing",

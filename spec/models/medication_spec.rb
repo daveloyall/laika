@@ -14,11 +14,11 @@ describe Medication, 'it can validate medication elements in a C32' do
     document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/medications/jenny_medication_2.5.xml'))
     med = medications(:jennifer_thompson_medication)
     med.quantity_ordered_value = 15.0
-    errors = med.validate_c32(document, :validation_type => Validation::C32_V2_5_TYPE)
+    errors = med.validate_c32(document, :validation_type => Validation::C32_V2_5_C83_V2_0_TYPE)
     errors.size.should == 1
     errors.first.message.should == "Expected 15.0 got 30.0"
     med.quantity_ordered_value = 30.0
-    errors = med.validate_c32(document, :validation_type => Validation::C32_V2_5_TYPE)
+    errors = med.validate_c32(document, :validation_type => Validation::C32_V2_5_C83_V2_0_TYPE)
     errors.should be_empty
   end
 end

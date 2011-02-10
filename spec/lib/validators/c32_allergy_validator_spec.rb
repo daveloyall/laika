@@ -7,7 +7,7 @@ describe "C32 Allergy Validation" do
     @document = REXML::Document.new(File.new(RAILS_ROOT + '/spec/test_data/allergies/joe_allergy.xml'))
     @allergy = allergies(:joes_allergy)
     @scope = Validators::C32Validation::ComponentScope.new(
-      :validation_type => Validation::C32_V2_5_TYPE,
+      :validation_type => Validation::C32_V2_5_C83_V2_0_TYPE,
       :logger => TestLoggerDevNull.new,
       :validator => "ComponentScopeTest",
       :inspection_type => "Testing",

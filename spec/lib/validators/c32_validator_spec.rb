@@ -7,7 +7,7 @@ describe Validators::C32Validation do
 
     before do
       @scope = Validators::C32Validation::ComponentScope.new(
-        :validation_type => Validation::C32_V2_5_TYPE,
+        :validation_type => Validation::C32_V2_5_C83_V2_0_TYPE,
         :logger => TestLoggerDevNull.new,
         :validator => "ComponentScopeTest",
         :inspection_type => "Testing"
@@ -178,7 +178,7 @@ EOS
 
   before do
     @validator = Validators::C32Validation::Validator.new
-    @validator.validation_type = Validation::C32_V2_5_TYPE 
+    @validator.validation_type = Validation::C32_V2_5_C83_V2_0_TYPE 
     @validator.logger = TestLoggerDevNull.new
     @patient = patients(:david_carter)
     @document = REXML::Document.new(@patient.to_c32)

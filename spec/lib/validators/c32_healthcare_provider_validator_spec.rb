@@ -60,7 +60,7 @@ EOS
     @document = REXML::Document.new(C32_HEALTHCARE_PROVIDERS)
     @provider = providers(:rn_mary_smith)
     @scope = Validators::C32Validation::ComponentScope.new(
-      :validation_type => Validation::C32_V2_5_TYPE,
+      :validation_type => Validation::C32_V2_5_C83_V2_0_TYPE,
       :logger => TestLoggerDevNull.new,
       :validator => "ComponentScopeTest",
       :inspection_type => "Testing",
