@@ -26,11 +26,10 @@ class Allergy < ActiveRecord::Base
   def to_c32(xml)
     xml.entry do
       xml.act("classCode" => "ACT", "moodCode" => "EVN") do
-        xml.templateId("root" => "2.16.840.1.113883.10.20.1.27")
-        xml.templateId("root" => "2.16.840.1.113883.3.88.11.32.6")
+        xml.templateId("root" => "2.16.840.1.113883.10.20.1.27", "assigningAuthorityName" => "CCD")
         xml.templateId("root" => "2.16.840.1.113883.3.88.11.83.6", "assigningAuthorityName" => "HITSP C83" )
-        xml.templateId("root" => "1.3.6.1.4.1.19376.1.5.3.1.4.5.1")
-        xml.templateId("root" => "1.3.6.1.4.1.19376.1.5.3.1.4.5.3")
+        xml.templateId("root" => "1.3.6.1.4.1.19376.1.5.3.1.4.5.1", "assigningAuthorityName" => "IHE PCC")
+        xml.templateId("root" => "1.3.6.1.4.1.19376.1.5.3.1.4.5.3", "assigningAuthorityName" => "IHE PCC")
 
         xml.id("root" => "2C748172-7CC2-4902-8AF0-23A105C4401B")
         xml.code("nullFlavor"=>"NA")
@@ -169,13 +168,15 @@ class Allergy < ActiveRecord::Base
     if allergies.size > 0
       xml.component do
         xml.section do
+          xml.templateId("root" => "2.16.840.1.113883.3.88.11.83.102",
+                         "assigningAuthorityName" => "HITSP C83") # optional
           xml.templateId("root" => "2.16.840.1.113883.10.20.1.2", 
                          "assigningAuthorityName" => "CCD")
           xml.templateId("root" => "1.3.6.1.4.1.19376.1.5.3.1.3.13",  #C32 2.4
-                          "assigningAuthorityName" => "CCD")
+                          "assigningAuthorityName" => "IHE PCC")
           xml.code("code" => "48765-2", 
                    "codeSystem" => "2.16.840.1.113883.6.1")
-          xml.title "Allergies, Adverse Reactions, Alerts"
+          xml.title "Allergies and Adverse Reactions"
           xml.text do
             xml.table("border" => "1", "width" => "100%") do
               xml.thead do

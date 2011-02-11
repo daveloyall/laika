@@ -132,15 +132,23 @@ class Patient < ActiveRecord::Base
       xml.realmCode( "code" => "US" ) #C32 2.4
       xml.typeId("root" => "2.16.840.1.113883.1.3",
                  "extension" => "POCD_HD000040")
-      xml.templateId("root" => "2.16.840.1.113883.3.27.1776",
-                     "assigningAuthorityName" => "CDA/R2")
-      xml.templateId("root" => "2.16.840.1.113883.10.20.1", 
+      xml.templateId("root" => "1.3.6.1.4.1.19376.1.5.3.1.1.1",
+                     "assigningAuthorityName" => "IHE PCC")
+      xml.templateId("root" => "2.16.840.1.113883.10.20.3",
                      "assigningAuthorityName" => "CCD")
       xml.templateId("root" => "2.16.840.1.113883.3.88.11.32.1", 
                      "assigningAuthorityName" => "HITSP/C32")
-      xml.templateId("root" => "2.16.840.1.113883.10.20.3",
+      xml.templateId("root" => "2.16.840.1.113883.10.20.1", 
                      "assigningAuthorityName" => "CCD")
-      xml.templateId("root" => "1.3.6.1.4.1.19376.1.5.3.1.1.1")
+
+      # where is this required from?
+      xml.templateId("root" => "2.16.840.1.113883.3.27.1776",
+                     "assigningAuthorityName" => "CDA/R2")
+
+      # optional
+      xml.templateId("root" => "2.16.840.1.113883.3.88.11.83.1",
+                     "assigningAuthorityName" => "HITSP C83")
+
       xml.id("root" => "2.16.840.1.113883.3.72", 
              "extension" => "Laika C32 Test", 
              "assigningAuthorityName" => "Laika: An Open Source EHR Testing Framework projectlaika.org")
