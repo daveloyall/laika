@@ -25,10 +25,9 @@ class Condition < ActiveRecord::Base
     xml.entry do
       xml.act("classCode" => "ACT", "moodCode" => "EVN") do
         xml.templateId("root" => "2.16.840.1.113883.10.20.1.27", "assigningAuthorityName" => "CCD")
-        xml.templateId("root" => "2.16.840.1.113883.3.88.11.32.7", "assigningAuthorityName" => "HITSP/C32")
         xml.templateId("root" => "2.16.840.1.113883.3.88.11.83.7", "assigningAuthorityName" => "HITSP C83")
-        xml.templateId("root" => "1.3.6.1.4.1.19376.1.5.3.1.4.5.1")
-        xml.templateId("root" => "1.3.6.1.4.1.19376.1.5.3.1.4.5.2")
+        xml.templateId("root" => "1.3.6.1.4.1.19376.1.5.3.1.4.5.1", "assigningAuthorityName" => "IHE PCC")
+        xml.templateId("root" => "1.3.6.1.4.1.19376.1.5.3.1.4.5.2", "assigningAuthorityName" => "IHE PCC")
 
         xml.id
         xml.code("nullFlavor"=>"NA")
@@ -98,16 +97,18 @@ class Condition < ActiveRecord::Base
     if conditions.size > 0
       xml.component do
         xml.section do
+          xml.templateId("root" => "2.16.840.1.113883.3.88.11.83.103",
+                         "assigningAuthorityName" => "HITSP C83")
           xml.templateId("root" => "2.16.840.1.113883.10.20.1.11",
                          "assigningAuthorityName" => "CCD")
           xml.templateId("root" => "1.3.6.1.4.1.19376.1.5.3.1.3.6", #C32 2.4
-                          "assigningAuthorityName" => "CCD")
+                          "assigningAuthorityName" => "IHE PCC")
           
           xml.code("code" => "11450-4",
-                   "displayName" => "Problems",
+                   "displayName" => "Problem list",
                    "codeSystem" => "2.16.840.1.113883.6.1",
                    "codeSystemName" => "LOINC")
-          xml.title "Conditions or Problems"
+          xml.title "Problems"
           xml.text do
             xml.table("border" => "1", "width" => "100%") do
               xml.thead do
