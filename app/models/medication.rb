@@ -138,7 +138,10 @@ class Medication < ActiveRecord::Base
         xml.section do
           xml.templateId("root" => "2.16.840.1.113883.10.20.1.8", 
                          "assigningAuthorityName" => "CCD")
-          xml.templateId("root" => "1.3.6.1.4.1.19376.1.5.3.1.3.19")
+          xml.templateId("root" => "2.16.840.1.113883.3.88.11.83.112",
+                         "assigningAuthorityName" => "HITSP C83")
+          xml.templateId("root" => "1.3.6.1.4.1.19376.1.5.3.1.3.19",
+                         "assigningAuthorityName" => "IHE PCC")
           xml.code("code" => "10160-0", 
                    "displayName" => "History of medication use", 
                    "codeSystem" => "2.16.840.1.113883.6.1", 
