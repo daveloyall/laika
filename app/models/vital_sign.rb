@@ -10,6 +10,10 @@ class VitalSign < AbstractResult
     '2.16.840.1.113883.3.88.11.32.15'
   end
 
+  def statement_ihe_template_id
+    '1.3.6.1.4.1.19376.1.5.3.1.4.13.1'
+  end
+
   def self.c32_component(vital_signs, xml)
     # Start Vital Signs
     unless vital_signs.empty?

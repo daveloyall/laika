@@ -4,6 +4,10 @@ class Result < AbstractResult
     '2.16.840.1.113883.3.88.11.83.15.1'
   end
 
+  def statement_ihe_template_id
+    '1.3.6.1.4.1.19376.1.5.3.1.4.13'
+  end
+
   def self.c32_component(results, xml)
     # Start Results
     unless results.empty?
