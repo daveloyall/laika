@@ -119,7 +119,7 @@ class AbstractResult < ActiveRecord::Base
     xml.observation("classCode" => "OBS", "moodCode" => "EVN") do
       xml.templateId("root" => statement_ccd_template_id, "assigningAuthorityName" => "CCD")
       xml.templateId("root" => statement_c32_template_id, "assigningAuthorityName" => "HITSP/C83")
-      xml.templateId("root" => "1.3.6.1.4.1.19376.1.5.3.1.1.13.2.5", "assigningAuthorityName" => "IHE PCC"
+      xml.templateId("root" => "1.3.6.1.4.1.19376.1.5.3.1.4.13", "assigningAuthorityName" => "IHE PCC"
 
       if self.result_id
         xml.id("root" => self.result_id)
