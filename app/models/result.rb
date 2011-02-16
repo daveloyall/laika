@@ -1,7 +1,7 @@
 class Result < AbstractResult
 
   def statement_c32_template_id
-    '2.16.840.1.113883.3.88.11.32.16'
+    '2.16.840.1.113883.3.88.11.83.15.1'
   end
 
   def self.c32_component(results, xml)
