@@ -29,18 +29,20 @@ class Result < AbstractResult
                   xml.th "Result Display Name"
                   xml.th "Result Value"
                   xml.th "Result Unit"
+                  xml.th "Result Free Text"
                 end
               end
               xml.tbody do
                 results.each do |result|
                   xml.tr do 
-                    xml.td do
-                      xml.content(result.result_id, "ID" => "result-#{result.result_id}")
-                    end
+                    xml.td(result.result_id)
                     xml.td(result.result_date)
                     xml.td(result.result_code_display_name)
                     xml.td(result.value_scalar)
                     xml.td(result.value_unit)
+                    xml.td do
+                      xml.content("#{result.result_code_display_name}: #{result.value_scalar} #{result.value_unit}", "ID" => c32_abstract_result_id)
+                    end
                   end
                 end
               end

@@ -35,18 +35,20 @@ class VitalSign < AbstractResult
                   xml.th "Vital Sign Display Name"
                   xml.th "Vital Sign Value"
                   xml.th "Vital Sign Unit"
+                  xml.th "Vital Sign Free Text"
                 end
               end
               xml.tbody do
                 vital_signs.each do |vital_sign|
                   xml.tr do 
-                    xml.td do
-                      xml.content(vital_sign.result_id, "ID" => "vital_sign-#{vital_sign.result_id}")
-                    end
+                    xml.td(vital_sign.result_id)
                     xml.td(vital_sign.result_date)
                     xml.td(vital_sign.result_code_display_name)
                     xml.td(vital_sign.value_scalar)
                     xml.td(vital_sign.value_unit)
+                    xml.td do
+                      xml.content("#{vital_sign.result_code_display_name}: #{vital_sign.value_scalar} #{vital_sign.value_unit}", "ID" => c32_abstract_result_id)
+                    end
                   end
                 end
               end

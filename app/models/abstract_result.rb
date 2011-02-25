@@ -51,6 +51,10 @@ class AbstractResult < ActiveRecord::Base
     '2.16.840.1.113883.10.20.1.31'
   end
 
+  def c32_abstract_result_id
+    "abstract-result-#{id}"
+  end
+
   def to_c32(xml)
 
     xml.entry do
@@ -121,14 +125,13 @@ class AbstractResult < ActiveRecord::Base
       xml.templateId("root" => statement_c32_template_id, "assigningAuthorityName" => "HITSP/C83")
       xml.templateId("root" => statement_ihe_template_id, "assigningAuthorityName" => "IHE PCC")
 
-      if self.result_id
-        xml.id("root" => self.result_id)
-      end
+      xml.id("root" => self.result_id) if self.result_id
       if self.result_code
         xml.code("code" => self.result_code, "displayName" => self.result_code_display_name,
                  "codeSystem" => self.code_system.try(:code),
                  "codeSystemName" => self.code_system.try(:name))
       end
+      xml.text(xml.reference("value" => c32_abstract_result_id))
       if self.status_code
         xml.statusCode("code" => self.status_code)
       end

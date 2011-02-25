@@ -58,17 +58,11 @@ class Procedure < ActiveRecord::Base
         xml.section do
           xml.templateId("root" => "2.16.840.1.113883.10.20.1.12", 
                          "assigningAuthorityName" => "CCD")
-          xml.templateId("root" => "1.3.6.1.4.1.19376.1.5.3.1.1.13.2.11", 
-                         "assigningAuthorityName" => "IHE PCC")
-          xml.templateId("root" => "2.16.840.1.113883.3.88.11.83.144",
-                         "assigningAuthorityName" => "HITSP C83")
-          xml.templateId("root" => "2.16.840.1.113883.3.88.11.83.145",
-                         "assigningAuthorityName" => "HITSP C83")
           xml.code("code" => "47519-4", 
                    "displayName" => "Procedures", 
                    "codeSystem" => "2.16.840.1.113883.6.1", 
                    "codeSystemName" => "LOINC")
-          xml.title("Procedures and Interventions")
+          xml.title("Procedures")
           xml.text do
             xml.table("border" => "1", "width" => "100%") do
               xml.thead do
