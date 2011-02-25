@@ -41,7 +41,7 @@ class Result < AbstractResult
                     xml.td(result.value_scalar)
                     xml.td(result.value_unit)
                     xml.td do
-                      xml.content("#{result.result_code_display_name}: #{result.value_scalar} #{result.value_unit}", "ID" => c32_abstract_result_id)
+                      xml.content("#{result.result_code_display_name}: #{result.value_scalar} #{result.value_unit}", "ID" => result.c32_abstract_result_id)
                     end
                   end
                 end

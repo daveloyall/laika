@@ -47,7 +47,7 @@ class VitalSign < AbstractResult
                     xml.td(vital_sign.value_scalar)
                     xml.td(vital_sign.value_unit)
                     xml.td do
-                      xml.content("#{vital_sign.result_code_display_name}: #{vital_sign.value_scalar} #{vital_sign.value_unit}", "ID" => c32_abstract_result_id)
+                      xml.content("#{vital_sign.result_code_display_name}: #{vital_sign.value_scalar} #{vital_sign.value_unit}", "ID" => vital_sign.c32_abstract_result_id)
                     end
                   end
                 end

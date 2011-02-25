@@ -35,6 +35,9 @@ class Procedure < ActiveRecord::Base
             end
           end
         end
+        xml.text do
+          xml.reference("value" => "Proc-"+self.id.to_s)
+        end
         xml.statusCode("code" => "completed")
         if self.procedure_date
           xml.effectiveTime("value" => procedure_date.to_s(:year))

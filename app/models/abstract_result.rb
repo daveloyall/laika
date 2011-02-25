@@ -132,9 +132,9 @@ class AbstractResult < ActiveRecord::Base
                  "codeSystem" => self.code_system.try(:code),
                  "codeSystemName" => self.code_system.try(:name))
       end
-      xml.text(xml.reference("value" => c32_abstract_result_id))
+      xml.text { xml.reference("value" => c32_abstract_result_id) }
       if self.status_code
-        xml.statusCode("code" => self.status_code)
+        xml.statusCode("code" => self.status_code.code)
       end
       if self.result_date
         xml.effectiveTime("value" => self.result_date.to_formatted_s(:brief))
