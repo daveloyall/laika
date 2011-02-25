@@ -12,7 +12,7 @@ describe ResultC32Importer do
     result.result_date.should.eql? Date.civil(2007, 11, 17)
     result.result_code.should == "2093-3"
     result.result_code_display_name.should == "Cholesterol"
-    result.status_code.should == "N"
+    result.status_code.should be_nil
     result.value_scalar.should == "135"
     result.value_unit.should == "mg/dL"
   end

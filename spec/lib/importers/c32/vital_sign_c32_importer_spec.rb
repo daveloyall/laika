@@ -12,7 +12,7 @@ describe VitalSignC32Importer do
     vital.result_date.should.eql? Date.civil(2007, 11, 17)
     vital.result_code.should == "3141-9"
     vital.result_code_display_name.should == "Body Weight (Measured)"
-    vital.status_code.should == "N"
+    vital.status_code.should be_nil
     vital.value_scalar.should == "155"
     vital.value_unit.should == "lbs"
   end

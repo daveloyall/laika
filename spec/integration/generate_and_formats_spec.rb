@@ -11,7 +11,7 @@ describe "GenerateAndFormats" do
   it "should be able to create a generate and format test" do
     visit vendor_test_plans_path(:vendor_id => @test_plan.vendor)
     xhr :get, test_action_path(:id => @test_plan.id, :action => :doc_upload)
-    select 'C32 v2.5'
+    select 'C32 v2.5 C83 v2.0'
     attach_file "upload_#{@test_plan.id}", @c32_file.path
     click_button 'Attach'
     click_link "test_plan_#{@test_plan.id}_doc_inspect"

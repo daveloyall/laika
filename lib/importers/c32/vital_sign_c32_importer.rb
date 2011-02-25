@@ -25,7 +25,7 @@ class VitalSignC32Importer
       
       status = element.find_first("cda:statusCode/@code").try(:value)
       if status
-        vital_sign.status_code = status
+        vital_sign.status_code = ActStatusCode.find_by_code(status)
       end
 
       code = element.find_first("cda:code/@code").try(:value)
