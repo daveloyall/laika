@@ -25,7 +25,7 @@ class ResultC32Importer
 
       status = element.find_first("cda:statusCode/@code").try(:value)
       if status
-        result.status_code = status
+        result.status_code = ActStatusCode.find_by_code(status)
       end
 
       code = element.find_first("cda:code/@code").try(:value)

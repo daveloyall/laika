@@ -14,7 +14,7 @@
   <%= f.select :code_system_id, CodeSystem.select_options, {:include_blank => true} %>
   <%= f.text_field :result_code %>
   <%= f.text_field :result_code_display_name %>
-  <%= f.text_field :status_code %>
+  <%= f.select :status_code_id, ActStatusCode.select_options, {:include_blank => true} %>
   <%= f.text_field :value_scalar %>
   <%= f.text_field :value_unit %>
   <%= f.text_field :organizer_id %>

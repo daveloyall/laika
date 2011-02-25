@@ -9,14 +9,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100521203532) do
+ActiveRecord::Schema.define(:version => 20110225214142) do
 
   create_table "abstract_results", :force => true do |t|
     t.string  "result_id"
     t.date    "result_date"
     t.string  "result_code"
     t.string  "result_code_display_name"
-    t.string  "status_code"
     t.string  "type"
     t.string  "value_scalar"
     t.string  "value_unit"
@@ -26,6 +25,7 @@ ActiveRecord::Schema.define(:version => 20100521203532) do
     t.integer "act_status_code_id"
     t.string  "organizer_id"
     t.integer "loinc_lab_code_id"
+    t.integer "status_code_id"
   end
 
   add_index "abstract_results", ["patient_id"], :name => "index_abstract_results_on_patient_id"
